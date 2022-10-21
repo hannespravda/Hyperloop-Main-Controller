@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{aef089b1-c7c5-479f-8336-a7bf9b8b2785}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+SerialCom_InfoSys_Sample1 (v2.0)
+This sample sends and receives a string via serial communication.
+Three hardware interfaces are used: Pc COM port, EL terminal, KL terminal
+*)
+PROGRAM MAIN
+VAR
+	fbEL6001_send	: FB_Send;
+	fbEL6001_receive	: FB_Receive;
+	
+	
+	(* exchange buffers with background communication with the PC COM port device *)
+	RxBufferPcCom	: ComBuffer;	(* Receive data buffer; used with all receive function blocks *)
+	TxBufferPcCom	: ComBuffer;	(* Transmit data buffer; used with all receive function blocks *)
+	fbEL6001Ctrl: INT;
+	stIn_EL6001: INT;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* background communication with the PC COM port device *)
+//BackgroundPcCOM(RxBufferPcCom:=RxBufferPcCom, TxBufferPcCom:=TxBufferPcCom);
+
+
+(* Send and receive commands *)
+//fbPcCom(TxBuffer:=TxBufferPcCom, RxBuffer:=RxBufferPcCom);
+//fbKL6001(TxBuffer:=TxBufferKL, RxBuffer:=RxBufferKL);
+
+
+fbEL6001_send(TxBuffer:=TxBufferEL, RxBuffer:=RxBufferEL);
+
+fbEL6001_receive(TxBuffer:=TxBufferEL2, RxBuffer:=RxBufferEL2);
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="57" Count="1" />
+      <LineId Id="6" Count="3" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

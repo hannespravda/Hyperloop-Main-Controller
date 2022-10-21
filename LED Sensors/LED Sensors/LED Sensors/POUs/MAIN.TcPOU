@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{2ff7b83e-9d69-4049-8b2d-19c87bd75e82}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbPWMSignal : FB_CTRL_PWM_OUT;
+	rPWMInput : LREAL;			//[-100,100]
+	eMode : E_CTRL_MODE;		//eCTRL_MODE_IDLE:=0,eCTRL_MODE_PASSIVE:=1,eCTRL_MODE_ACTIVE:=2,eCTRL_MODE_RESET:=3,eCTRL_MODE_MANUAL:=4,eCTRL_MODE_TUNE:=5,eCTRL_MODE_SELFTEST:=6,eCTRL_MODE_SYNC_MOVEMENT:=7
+	sParameter : ST_CTRL_PWM_OUT_PARAMS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sParameter.bInstantPWMUpdate := FALSE;
+sParameter.tPWMPeriod := T#10S; 				//period of PWM signal
+sParameter.tTaskCycleTime := T#10S;				//Task cycle time
+
+fbPWMSignal(
+	fPwmInput := rPWMInput,
+	eMode := eMode,
+	stParams := sParameter,
+	bPwmOutBitPos =>,
+	bPwmOutBitNeg =>,
+	eState =>,
+	eErrorId =>,
+	bError =>
+	);]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="21" Count="5" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

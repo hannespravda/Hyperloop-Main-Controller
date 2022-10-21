@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{aef089b1-c7c5-479f-8336-a7bf9b8b2785}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbEL6001	: FB_SerialCom;
+	
+	(* exchange buffers with background communication with the PC COM port device *)
+	RxBufferPcCom	: ComBuffer;	(* Receive data buffer; used with all receive function blocks *)
+	TxBufferPcCom	: ComBuffer;	(* Transmit data buffer; used with all receive function blocks *)
+	
+	acc_x : REAL;
+	acc_y : REAL;	
+	acc_z : REAL;
+//	acc_x2 : REAL;
+//	acc_y2 : REAL;	
+//	acc_z2 : REAL;
+//	acc_x3 : REAL;
+//	acc_y3 : REAL;	
+//	acc_z3 : REAL;
+//	acc_x4 : REAL;
+//	acc_y4 : REAL;	
+//	acc_z4 : REAL;
+
+	fbTimer : TON;
+	fbReset : TON;
+	fbTrigger : R_TRIG;
+	iCounter1 : UDINT;
+	iCounter2 : UDINT;
+	a_iPackets : ARRAY [0..9] OF UDINT;
+	i : UDINT := 0;
+	iSum : UDINT := 0;
+	rPacketRate : REAL := 0;
+	bTrigger : BOOL := FALSE;
+	bCount : BOOL;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6001(TxBuffer:=TxBufferEL, RxBuffer:=RxBufferEL);
+
+acc_x := fbEL6001.getAccelerationValueX;
+acc_y := fbEL6001.getAccelerationValueY;
+acc_z := fbEL6001.getAccelerationValueZ;
+
+//acc_x2 := fbEL6001.getAccelerationValueX2;
+//acc_y2 := fbEL6001.getAccelerationValueY2;
+//acc_z2 := fbEL6001.getAccelerationValueZ2;
+
+//acc_x3 := fbEL6001.getAccelerationValueX3;
+//acc_y3 := fbEL6001.getAccelerationValueY3;
+//acc_z3 := fbEL6001.getAccelerationValueZ3;
+
+//acc_x4 := fbEL6001.getAccelerationValueX4;
+//acc_y4 := fbEL6001.getAccelerationValueY4;
+//acc_z4 := fbEL6001.getAccelerationValueZ4;
+
+doPacketCount();					//start packet count by setting bCount 'true' --> rPacketRate shows average rate per second
+
+]]></ST>
+    </Implementation>
+    <Method Name="doPacketCount" Id="{f491d74c-1c83-4939-a57e-78d104db15c3}">
+      <Declaration><![CDATA[METHOD doPacketCount : REAL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbTimer(IN := bCount, PT := T#1S);
+fbTrigger(CLK := fbTimer.IN);
+
+IF fbTrigger.Q THEN
+	iCounter1 := fbEL6001.nReceiveCounter;
+END_IF
+
+IF fbTimer.Q THEN
+	iCounter2 := fbEL6001.nReceiveCounter;
+	a_iPackets[i] := iCounter2 - iCounter1;
+	iSum := iSum + a_iPackets[i];
+	i := i + 1;
+	bTrigger := TRUE;
+	bCount := FALSE;
+END_IF
+
+IF i = 10 THEN
+	bTrigger := FALSE;
+	rPacketRate := (UDINT_TO_REAL(iSum) / UDINT_TO_REAL(i));			//times amount of packets
+	i := 0;
+	iSum := 0;
+END_IF
+
+fbReset(IN := bTrigger, PT := T#3S);
+IF fbReset.Q THEN
+	bCount := TRUE;
+	bTrigger := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="0" />
+      <LineId Id="216" Count="1" />
+      <LineId Id="221" Count="1" />
+      <LineId Id="530" Count="2" />
+      <LineId Id="529" Count="0" />
+      <LineId Id="568" Count="2" />
+      <LineId Id="566" Count="0" />
+      <LineId Id="606" Count="2" />
+      <LineId Id="528" Count="0" />
+      <LineId Id="527" Count="0" />
+      <LineId Id="245" Count="0" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="396" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.doPacketCount">
+      <LineId Id="6" Count="3" />
+      <LineId Id="12" Count="14" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="27" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

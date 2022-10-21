@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{53583b87-03a2-4d6c-8e12-0ff25b6d14c6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fb_humiditysensor : FB_HumiditySensor;
+	rHumidity : REAL;
+	fb_cO2sensor : FB_CO2Sensor;
+	rCO2Value : REAL;
+	fb_temperaturesensor : FB_TemperatureSensor;
+	rTemperature : REAL;
+	fb_pressuresensor : FB_PressureSensor;
+	rPressure : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fb_humiditysensor();
+rHumidity := fb_humiditysensor.getHumidity;
+
+fb_co2sensor();
+rCO2Value := fb_co2sensor.getCO2Value;
+
+fb_temperaturesensor();
+rTemperature := fb_temperaturesensor.getTemperature;
+
+fb_pressuresensor();
+rPressure := fb_pressuresensor.getPressure;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="13" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

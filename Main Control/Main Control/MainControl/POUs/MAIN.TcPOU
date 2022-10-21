@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{c0a909f1-bd32-4d83-9fa7-8f7919b7094f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	iTest AT %I* : INT;
+	iTest2 : INT := 0;
+	
+	iKlemme AT %I* : USINT;
+	iOut AT %Q* : USINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[iTest2 := iKlemme;
+
+iOut := iKlemme;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

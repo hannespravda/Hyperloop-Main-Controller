@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_Receive" Id="{af516fa6-dd76-431e-80af-a81ebd3aa034}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Receive
+VAR_IN_OUT
+	TxBuffer	: ComBuffer;
+	RxBuffer	: ComBuffer;
+END_VAR
+VAR
+	//Timer		: TON := (PT:=T#1S);
+	//fbSend		: SendString;
+	//bSendBusy	: BOOL;
+	//eSendErrorID: ComError_t;
+	//bReceivedByte	: BYTE;
+	//bByteReceived	: BOOL;
+	//bReceiveBusy	: BOOL;
+	//bReceiveError	: BOOL;
+	//bReceiveTimeout	: BOOL;
+	fbReceive		: ReceiveByte;
+	nReceiveCounter	: UDINT;
+	bLastReceivedByte: BYTE;
+	eReceiveErrorID	: ComError_t;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbReceive(
+//	Prefix:= '$02',
+//	Suffix:= '$03',
+//	Timeout:= T#1s,
+//	ReceivedString:= bReceivedByte,
+//	RxTimeout=> bReceiveTimeout 
+//	ByteReceived=> bByteReceived,
+//	Busy=> bReceiveBusy,
+	RXbuffer:= RxBuffer,
+	Error=> ,
+	ByteReceived=>,
+	ReceivedByte=>,
+	);
+IF fbReceive.Error <> COMERROR_NOERROR THEN
+	eReceiveErrorID := fbReceive.Error;
+END_IF
+IF fbReceive.ByteReceived THEN
+	nReceiveCounter := nReceiveCounter + 1;
+	bLastReceivedByte := fbReceive.ReceivedByte;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Receive">
+      <LineId Id="30" Count="7" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="40" Count="5" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

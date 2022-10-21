@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="eStatus" Id="{b7a00471-0d36-4268-b11e-332876bc9ee3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE eStatus :
+(
+	Underrange := 0,
+	Overrange := 1,
+	Limit1 := 2,
+	Limit2 := 3,
+	ErrorOverORUnderrange := 4,
+	SyncError := 5,
+	TxPDOState := 6,
+	TxPDOToggle := 7
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

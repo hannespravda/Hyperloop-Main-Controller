@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="BackgroundEL" Id="{9a20473f-0d3f-4584-b429-33e10587a848}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM BackgroundEL
+VAR
+	(* background communication with the EL6001 terminal *)
+	fbEL6001Ctrl		: SerialLineControl;
+	bEL6001CtrlError	: BOOL;
+	eEL6001CtrlErrorID	: ComError_t;
+	(* 	I/O variables for a EL6001 terminal*)
+	stIn_EL6001 AT %I*	: EL6inData22B;	(* linked to the EL6001 in the TwinCAT System Manager *)
+	stOut_EL6001 AT %Q*	: EL6outData22B;(* linked to the EL6001 in the TwinCAT System Manager *)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6001Ctrl(
+	Mode:= SERIALLINEMODE_EL6_22B, 
+	pComIn:= ADR(stIn_EL6001), 
+	pComOut:= ADR(stOut_EL6001), 
+	SizeComIn:= SIZEOF(stIn_EL6001), 
+	Error=> , 
+	ErrorID=> , 
+	TxBuffer:= TxBufferEL, 
+	RxBuffer:= RxBufferEL );
+IF fbEL6001Ctrl.Error THEN
+	bEL6001CtrlError := TRUE;
+	eEL6001CtrlErrorID := fbEL6001Ctrl.ErrorID;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="BackgroundEL">
+      <LineId Id="13" Count="11" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

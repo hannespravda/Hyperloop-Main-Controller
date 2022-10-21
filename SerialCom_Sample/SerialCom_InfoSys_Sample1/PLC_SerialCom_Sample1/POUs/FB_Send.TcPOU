@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_Send" Id="{7e0bad22-157e-4d25-a435-3bba775cd8cf}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Send
+VAR_IN_OUT
+	TxBuffer	: ComBuffer;
+	RxBuffer	: ComBuffer;
+END_VAR
+VAR
+	Timer		: TON := (PT:=T#1S);
+	fbSend		: SendByte;
+	bSendBusy	: BOOL;
+	eSendErrorID: ComError_t;
+
+//	fbReceive		: ReceiveString;
+//	sReceivedString	: STRING;
+//	sLastReceivedString: STRING;
+//	bStringReceived	: BOOL;
+//	bReceiveBusy	: BOOL;
+//	bReceiveError	: BOOL;
+//	eReceiveErrorID	: ComError_t;
+//	bReceiveTimeout	: BOOL;
+//	nReceiveCounter	: UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Call the send block every second to repeat the transmission.
+// Also call the block as long as it is busy to finish a transmission.
+Timer(IN:=TRUE);
+IF Timer.Q OR fbSend.Busy THEN
+	Timer(IN:=FALSE); (* reset timer *)
+	fbSend(	SendByte:= 255,
+		TXbuffer:= TxBuffer,
+		Busy=> bSendBusy,
+		Error=> );
+	IF fbSend.Error <> COMERROR_NOERROR THEN
+		eSendErrorID := fbSend.Error;
+	END_IF
+END_IF	]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Send">
+      <LineId Id="30" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="60" Count="6" />
+      <LineId Id="72" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

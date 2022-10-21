@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_HumiditySensor" Id="{900ae7ef-ff62-41aa-a512-a88f4015ca2e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HumiditySensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	rHumidity : REAL;
+	iRange : INT := 32767;
+	iVmax : INT := 10;
+	rZeroOffset : REAL := 0.95800;
+	rSlope : REAL := 0.03068;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rHumidity := ((INT_TO_REAL(MyGVL.iInput1)/iRange)*iVmax - rZeroOffset)/rSlope;
+]]></ST>
+    </Implementation>
+    <Property Name="getHumidity" Id="{15cf90e6-56c2-465b-8947-e07dd6a62a25}">
+      <Declaration><![CDATA[PROPERTY getHumidity : REAL]]></Declaration>
+      <Get Name="Get" Id="{737b34dd-306f-4e55-a8c4-1d63e8717ea1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getHumidity := rHumidity;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_HumiditySensor">
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HumiditySensor.getHumidity.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

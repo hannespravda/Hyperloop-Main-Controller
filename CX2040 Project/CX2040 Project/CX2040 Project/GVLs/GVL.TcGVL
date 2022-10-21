@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="GVL" Id="{5f69d258-9bbe-4b2c-a610-4eed396bd09b}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	iTest AT %I* : UINT;
+	NetId AT %I* : AMSNETID;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

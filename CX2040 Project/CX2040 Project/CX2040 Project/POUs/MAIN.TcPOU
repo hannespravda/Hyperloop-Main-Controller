@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{c474b279-45ae-49a1-aa1e-ee0327b7f910}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	iCount : UINT;
+	fbSlaveStateChange : FB_EcSetSlaveState;
+	AmsNetId : AMSNETID;
+	Ams : T_AmsNetId;
+	bTrigger : BOOL;
+	State : WORD;
+	test123 AT %Q* : USINT;
+	vonKlemme AT %I* : USINT;
+	
+	CurrentState : ST_EcSlaveState;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[iCount := GVL.iTest;
+Ams := '10.183.66.136.4.1';
+test123 := TO_USINT(iCount); 
+fbSlaveStateChange(
+	 sNetId := Ams,
+	 nSlaveAddr := 1001,
+	 bExecute := bTrigger,
+	 tTimeout := T#10S,
+	 reqState := State,
+	 
+	 bBusy =>,
+	 bError =>,
+	 nErrId =>,
+	 currState=>
+	 );
+	 
+CurrentState := fbSlaveStateChange.currState;
+
+IF CurrentState.deviceState = State AND bTrigger THEN
+	bTrigger := FALSE;
+END_IF
+
+
+	 ]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="7" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="30" Count="2" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="1" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
