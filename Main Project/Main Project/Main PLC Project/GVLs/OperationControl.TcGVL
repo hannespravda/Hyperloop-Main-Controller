@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="OperationControl" Id="{fbd1d27c-c77f-407f-916d-9f01d87716ae}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Outputs
+	G_state_FSM_IPC 	AT %Q* : eMainStateMachine;
+	G_state_FSM_LLCB 	AT %Q* : ARRAY [0..3] OF eXMCStateMachine;
+	G_tstamp_IPC		AT %Q* : DINT;
+	G_tstamp_LLCB		AT %Q* : ARRAY [0..3] OF DINT;
+	
+	M_dist_LEV			AT %Q* : ARRAY [0..3] OF LREAL;
+	M_dist_GUI			AT %Q* : ARRAY [0..3] OF LREAL;
+	M_curr_LEV			AT %Q* : ARRAY [0..3] OF LREAL;
+	M_curr_GUI			AT %Q* : ARRAY [0..3] OF LREAL;				
+	
+	E_array_LLCB		AT %Q* : ARRAY [0..3] OF ARRAY [0..12] OF BOOL;
+	E_array_IPC			AT %Q* : ARRAY [0..5] OF BOOL;
+	
+	C_act_arch_LEV		AT %Q* : ARRAY [0..3] OF eControlArchitectures;
+	C_int_active_LEV	AT %Q* : ARRAY [0..3] OF BOOL;
+	C_int_saturated_LEV	AT %Q* : ARRAY [0..3] OF BOOL;
+	C_Kmat_arch1_LEV	AT %Q* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;		//Sind das nicht Enums???
+	C_Kmat_arch2_LEV	AT %Q* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;
+	C_Kmat_arch3_LEV	AT %Q* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;
+	C_Kcurr_GUI			AT %Q* : ARRAY [0..3] OF LREAL;
+	
+	
+	//Inputs
+	OC_F_start_ms		AT %I* : BOOL;
+	OC_F_stop_ms		AT %I* : BOOL;
+	OC_F_error_res		AT %I* : BOOL;
+	OC_F_trans_trig		AT %I* : BOOL;
+	OC_F_trans_time		AT %I* : INT;
+	OC_F_trans_dist_LEV	AT %I* : LREAL;
+	
+	OC_C_enable_out		AT %I* : ARRAY [0..3] OF BOOL;
+	OC_C_act_arch_LEV	AT %I* : ARRAY [0..3] OF eControlArchitectures;
+	OC_C_int_active_LEV	AT %I* : ARRAY [0..3] OF BOOL;
+	OC_C_int_res_LEV	AT %I* : ARRAY [0..3] OF BOOL;
+	OC_C_Kmat_arch1_LEV	AT %I* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;		//Sollte das nicht ENUM sein???
+	OC_C_Kmat_arch2_LEV	AT %I* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;
+	OC_C_Kmat_arch3_LEV	AT %I* : ARRAY [0..3] OF ARRAY [0..3] OF LREAL;
+	OC_C_Kcurr_GUI	AT %I* : ARRAY [0..3] OF LREAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

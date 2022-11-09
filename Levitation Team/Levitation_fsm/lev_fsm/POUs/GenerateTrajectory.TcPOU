@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="GenerateTrajectory" Id="{8b998690-ed16-4338-aecd-b3c65a32db15}" SpecialFunc="None">
+    <Declaration><![CDATA[(*FUNCTION GenerateTrajectory :  ARRAY[1..3] OF REAL
+VAR_INPUT
+	z_meas : REAL;
+	v_meas : REAL;
+	I_meas : REAL;
+END_VAR
+VAR
+END_VAR*)
+(*
+ *
+ * File: trajectory_generator.st
+ *
+ * IEC 61131-3 Structured Text (ST) code generated for subsystem "trajectory_generator/getTrajectory"
+ *
+ * Model name                      : trajectory_generator
+ * Model version                   : 3.24
+ * Model creator                   : xiaomi
+ * Model last modified by          : xiaomi
+ * Model last modified on          : Tue Oct 25 16:42:44 2022
+ * Model sample time               : 0.0005s
+ * Subsystem name                  : trajectory_generator/getTrajectory
+ * Subsystem sample time           : 0.1s
+ * Simulink PLC Coder version      : 3.7 (R2022b) 13-May-2022
+ * ST code generated on            : Tue Oct 25 16:44:27 2022
+ *
+ * Target IDE selection            : Beckhoff TwinCAT 3
+ * Test Bench included             : No
+ *
+ *)
+FUNCTION_BLOCK GenerateTrajectory
+VAR_INPUT
+    ssMethodType: SINT;
+    t: LREAL;
+    Tdes: LREAL;
+    z0: LREAL;
+    v0: LREAL;
+    a0: LREAL;
+    zdes: LREAL;
+    vdes: LREAL;
+    ades: LREAL;
+    sus_params: sus_bus;
+    mag_params: mag_bus;
+END_VAR
+VAR_OUTPUT
+    zd: LREAL;
+    vd: LREAL;
+    ad: LREAL;
+    id: LREAL;
+END_VAR
+VAR
+    zd_prev_not_empty: BOOL;
+    zd_prev: LREAL;
+    vd_prev_not_empty: BOOL;
+    vd_prev: LREAL;
+    ad_prev_not_empty: BOOL;
+    ad_prev: LREAL;
+    id_prev: LREAL;
+END_VAR
+VAR_TEMP
+    b2: LREAL;
+    Fsus: LREAL;
+    K: LREAL;
+    zd_norm: LREAL;
+    Fmag_norm: LREAL;
+    A: ARRAY [0..8] OF LREAL;
+    B: ARRAY [0..2] OF LREAL;
+    r1: DINT;
+    r2: DINT;
+    r3: DINT;
+    maxval: LREAL;
+    a21: LREAL;
+    rtemp: DINT;
+    v: ARRAY [0..29] OF LREAL;
+    b_v: ARRAY [0..15] OF LREAL;
+    ry: LREAL;
+    b_mid_i: DINT;
+    x_idx_1: LREAL;
+    x_idx_2: LREAL;
+    x_idx_0: LREAL;
+    u: DINT;
+    b_u: DINT;
+END_VAR
+
+VAR CONSTANT
+    SS_INITIALIZE: SINT := 0;
+    SS_STEP: SINT := 1;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*GenerateTrajectory[1] := z_meas/2;
+GenerateTrajectory[2] := 0;
+GenerateTrajectory[3] := I_meas/2;*)
+CASE ssMethodType OF
+    SS_INITIALIZE: 
+        (* SystemInitialize for MATLAB Function: '<Root>/getTrajectory' *)
+        zd_prev_not_empty := FALSE;
+        vd_prev_not_empty := FALSE;
+        ad_prev_not_empty := FALSE;
+        (* '<S1>:1:25' id_prev = 0; *)
+        id_prev := 0.0;
+    SS_STEP: 
+        (* MATLAB Function: '<Root>/getTrajectory' *)
+        (* %% Solve the system of equations *)
+        (* MATLAB Function 'getTrajectory': '<S1>:1' *)
+        (* '<S1>:1:4' T_matrix = [ Tdes^3 Tdes^4 Tdes^5; 3*Tdes^2 4*Tdes^3 5*Tdes^4; 6*Tdes 12*Tdes^2 20*Tdes^3]; *)
+        maxval := EXPT(Tdes, 3.0);
+        a21 := EXPT(Tdes, 4.0);
+        (* MATLAB Function: '<Root>/getTrajectory' incorporates:
+         *  Inport: '<Root>/mag_params' *)
+        A[0] := maxval;
+        A[3] := a21;
+        A[6] := EXPT(Tdes, 5.0);
+        ry := Tdes * Tdes;
+        A[1] := ry * 3.0;
+        A[4] := 4.0 * maxval;
+        A[7] := 5.0 * a21;
+        A[2] := 6.0 * Tdes;
+        A[5] := ry * 12.0;
+        A[8] := 20.0 * maxval;
+        (* '<S1>:1:5' y = [zdes-z0-v0*Tdes-a0/2*Tdes^2; vdes-v0-a0*Tdes; ades-a0]; *)
+        B[0] := ((zdes - z0) - (v0 * Tdes)) - ((a0 / 2.0) * ry);
+        B[1] := (vdes - v0) - (a0 * Tdes);
+        B[2] := ades - a0;
+        (* '<S1>:1:6' x = T_matrix\y; *)
+        r1 := 0;
+        r2 := 1;
+        r3 := 2;
+        maxval := ABS(maxval);
+        a21 := ABS(A[1]);
+        IF a21 > maxval THEN 
+            maxval := a21;
+            r1 := 1;
+            r2 := 0;
+        END_IF;
+        IF ABS(A[2]) > maxval THEN 
+            r1 := 2;
+            r2 := 1;
+            r3 := 0;
+        END_IF;
+        A[r2] := A[r2] / A[r1];
+        A[r3] := A[r3] / A[r1];
+        A[r2 + 3] := A[r2 + 3] - (A[r1 + 3] * A[r2]);
+        A[r3 + 3] := A[r3 + 3] - (A[r1 + 3] * A[r3]);
+        A[r2 + 6] := A[r2 + 6] - (A[r1 + 6] * A[r2]);
+        A[r3 + 6] := A[r3 + 6] - (A[r1 + 6] * A[r3]);
+        IF ABS(A[r3 + 3]) > ABS(A[r2 + 3]) THEN 
+            rtemp := r2;
+            r2 := r3;
+            r3 := rtemp;
+        END_IF;
+        A[r3 + 3] := A[r3 + 3] / A[r2 + 3];
+        A[r3 + 6] := A[r3 + 6] - (A[r3 + 3] * A[r2 + 6]);
+        x_idx_1 := B[r2] - (B[r1] * A[r2]);
+        x_idx_2 := ((B[r3] - (B[r1] * A[r3])) - (A[r3 + 3] * x_idx_1)) / A[r3 + 6];
+        x_idx_1 := (x_idx_1 - (A[r2 + 6] * x_idx_2)) / A[r2 + 3];
+        x_idx_0 := ((B[r1] - (A[r1 + 6] * x_idx_2)) - (A[r1 + 3] * x_idx_1)) / A[r1];
+        (* %% Define the trajectory polynomial coefficiets *)
+        (* '<S1>:1:8' b0 = z0; *)
+        (* '<S1>:1:9' b1 = v0; *)
+        (* '<S1>:1:10' b2 = a0/2; *)
+        b2 := a0 / 2.0;
+        (* '<S1>:1:11' b3 = x(1); *)
+        (* '<S1>:1:12' b4 = x(2); *)
+        (* '<S1>:1:13' b5 = x(3); *)
+        (* '<S1>:1:15' if isempty(zd_prev) *)
+        IF  NOT zd_prev_not_empty THEN 
+            (* '<S1>:1:16' zd_prev = z0; *)
+            zd_prev := z0;
+            zd_prev_not_empty := TRUE;
+        END_IF;
+        (* '<S1>:1:18' if isempty(vd_prev) *)
+        IF  NOT vd_prev_not_empty THEN 
+            (* '<S1>:1:19' vd_prev = v0; *)
+            vd_prev := v0;
+            vd_prev_not_empty := TRUE;
+        END_IF;
+        (* '<S1>:1:21' if isempty(ad_prev) *)
+        IF  NOT ad_prev_not_empty THEN 
+            (* '<S1>:1:22' ad_prev = a0; *)
+            ad_prev := a0;
+            ad_prev_not_empty := TRUE;
+        END_IF;
+        (* '<S1>:1:24' if isempty(id_prev) *)
+        (* '<S1>:1:27' if t <= Tdes *)
+        IF t <= Tdes THEN 
+            (* %% Define the trajectory polynomial functions *)
+            (* '<S1>:1:29' zd = b0 + b1*t + b2*t^2 + b3*t^3 + b4*t^4 + b5*t^5; *)
+            maxval := EXPT(t, 3.0);
+            a21 := EXPT(t, 4.0);
+            ry := t * t;
+            zd := (((((v0 * t) + z0) + (ry * b2)) + (x_idx_0 * maxval)) + (x_idx_1 * a21)) + (x_idx_2 * EXPT(t, 5.0));
+            (* '<S1>:1:30' vd = b1 + 2*b2*t + 3*b3*t^2 + 4*b4*t^3 + 5*b5*t^4; *)
+            vd := (((((2.0 * b2) * t) + v0) + ((3.0 * x_idx_0) * ry)) + ((4.0 * x_idx_1) * maxval)) + ((5.0 * x_idx_2) * a21);
+            (* '<S1>:1:31' ad = 2*b2 + 6*b3*t + 12*b4*t^2 + 20*b5*t^3; *)
+            ad := ((((6.0 * x_idx_0) * t) + (2.0 * b2)) + ((12.0 * x_idx_1) * ry)) + ((20.0 * x_idx_2) * maxval);
+            (* %% Find id through system dynamics model *)
+            (* '<S1>:1:34' M = 1000; *)
+            (* mass  *)
+            (* '<S1>:1:35' g = 9.81; *)
+            (* gravitational acceleration *)
+            (* '<S1>:1:36' Fres = ad*M; *)
+            (* resultant force *)
+            (* '<S1>:1:37' Fg = g*M; *)
+            (* gravitational force *)
+            (* '<S1>:1:38' Fsus = susModel(zd,sus_params,Fg); *)
+            (* 'susModel:2' zmax = sus_params.zmax; *)
+            (* 'susModel:3' zcont = sus_params.zcont; *)
+            (* 'susModel:4' Fmax = Fg; *)
+            (* 'susModel:5' Fmin = 0; *)
+            (* 'susModel:7' K = (Fmax - Fmin) / (zmax - zcont); *)
+            K := 9810.0 / (sus_params.zmax - sus_params.zcont);
+            (* 'susModel:8' N = Fmax - K * zmax; *)
+            (* 'susModel:10' if zd > zmax *)
+            IF zd > sus_params.zmax THEN 
+                (* 'susModel:11' Fsus = Fg; *)
+                Fsus := 9810.0;
+            ELSIF zd < sus_params.zcont THEN 
+                (* 'susModel:12' elseif zd < zcont *)
+                (* 'susModel:13' Fsus = 0; *)
+                Fsus := 0.0;
+            ELSE 
+                (* 'susModel:14' else *)
+                (* 'susModel:15' Fsus = K * zd + N; *)
+                Fsus := (9810.0 - (K * sus_params.zmax)) + (K * zd);
+            END_IF;
+            (* suspenssion force *)
+            (* '<S1>:1:39' Fmag = Fg - Fsus - Fres; *)
+            (* magnetic force (second newton law) *)
+            (* use the inverse force model to compute the desired current for the specified force and distance *)
+            (* '<S1>:1:41' id = invForceModel(Fmag,zd,mag_params); *)
+            (* %% parameters *)
+            (* 'invForceModel:3' znorm = mag_params.znorm; *)
+            (* normalising constant for the input distance (1/zmax) *)
+            (* 'invForceModel:4' Fnorm = mag_params.Fnorm; *)
+            (* normalising constant for the input force (1/Fmax) *)
+            (* 'invForceModel:5' invFmax =  mag_params.invFmax; *)
+            (* gain for the inverse matrix (this is actually Imax) *)
+            (* 'invForceModel:6' zmat = mag_params.zmat; *)
+            (* (input) distance matrix  *)
+            (* 'invForceModel:7' Fmat = mag_params.Fmat; *)
+            (* (input) force matrix  *)
+            (* 'invForceModel:8' invFmat = mag_params.invFmat; *)
+            (* (output) inverse force matrix - this is actually a current matrix  *)
+            (* 'invForceModel:11' zd_norm = zd * znorm; *)
+            zd_norm := zd * mag_params.znorm;
+            (* normalised input distance     *)
+            (* 'invForceModel:12' Fmag_norm = Fmag * Fnorm; *)
+            Fmag_norm := ((9810.0 - Fsus) - (ad * 1000.0)) * mag_params.Fnorm;
+            (* normalised input force *)
+            (* %% compute desired current *)
+            (* 'invForceModel:16' if (Fmag_norm > 1) *)
+            IF Fmag_norm > 1.0 THEN 
+                (* force is out of range *)
+                (* 'invForceModel:17' id = invFmax; *)
+                id := mag_params.invFmax;
+            ELSIF Fmag_norm < 0.0 THEN 
+                (* 'invForceModel:18' elseif (Fmag_norm <0) *)
+                (* force is smaller than zero *)
+                (* 'invForceModel:19' id = 0; *)
+                id := 0.0;
+            ELSE 
+                (* 'invForceModel:20' else *)
+                (* 'invForceModel:21' id = invFmax * interp2(Fmat, zmat, invFmat, Fmag_norm, zd_norm); *)
+                FOR r1 := 0 TO 29 DO 
+                    v[r1] := mag_params.Fmat[r1 * 16];
+                END_FOR;
+                FOR r1 := 0 TO 15 DO 
+                    b_v[r1] := mag_params.zmat[r1];
+                END_FOR;
+                IF Fmag_norm >= v[0] THEN 
+                    IF Fmag_norm <= v[29] THEN 
+                        IF zd_norm >= b_v[0] THEN 
+                            IF zd_norm <= b_v[15] THEN 
+                                r2 := 30;
+                                r1 := 0;
+                                r3 := 2;
+                                WHILE r2 > r3 DO
+                                    u := (r1 + r2) + 1;
+                                    IF u >= 0 THEN 
+                                        rtemp := UDINT_TO_DINT(DWORD_TO_UDINT(SHR(UDINT_TO_DWORD(DINT_TO_UDINT(u)), 1)));
+                                    ELSE 
+                                        rtemp := ( -UDINT_TO_DINT(DWORD_TO_UDINT(SHR(UDINT_TO_DWORD(DINT_TO_UDINT(-1 - u)), 1)))) - 1;
+                                    END_IF;
+                                    IF Fmag_norm >= v[rtemp - 1] THEN 
+                                        r1 := rtemp - 1;
+                                        r3 := rtemp + 1;
+                                    ELSE 
+                                        r2 := rtemp;
+                                    END_IF;
+                                END_WHILE;
+                                r2 := 16;
+                                r3 := 1;
+                                rtemp := 2;
+                                WHILE r2 > rtemp DO
+                                    b_u := r3 + r2;
+                                    IF b_u >= 0 THEN 
+                                        b_mid_i := UDINT_TO_DINT(DWORD_TO_UDINT(SHR(UDINT_TO_DWORD(DINT_TO_UDINT(b_u)), 1)));
+                                    ELSE 
+                                        b_mid_i := ( -UDINT_TO_DINT(DWORD_TO_UDINT(SHR(UDINT_TO_DWORD(DINT_TO_UDINT(-1 - b_u)), 1)))) - 1;
+                                    END_IF;
+                                    IF zd_norm >= b_v[b_mid_i - 1] THEN 
+                                        r3 := b_mid_i;
+                                        rtemp := b_mid_i + 1;
+                                    ELSE 
+                                        r2 := b_mid_i;
+                                    END_IF;
+                                END_WHILE;
+                                IF Fmag_norm = v[r1] THEN 
+                                    r1 := DWORD_TO_DINT(SHL(DINT_TO_DWORD(r1), 4)) + r3;
+                                    maxval := mag_params.invFmat[r1 - 1];
+                                    a21 := mag_params.invFmat[r1];
+                                ELSE 
+                                    ry := v[r1 + 1];
+                                    IF ry = Fmag_norm THEN 
+                                        r1 := DWORD_TO_DINT(SHL(DINT_TO_DWORD(r1 + 1), 4)) + r3;
+                                        maxval := mag_params.invFmat[r1 - 1];
+                                        a21 := mag_params.invFmat[r1];
+                                    ELSE 
+                                        a21 := (Fmag_norm - v[r1]) / (ry - v[r1]);
+                                        ry := mag_params.invFmat[(((r1 + 1) * 16) + r3) - 1];
+                                        r2 := (DWORD_TO_DINT(SHL(DINT_TO_DWORD(r1), 4)) + r3) - 1;
+                                        maxval := mag_params.invFmat[r2];
+                                        IF ry = maxval THEN 
+                                            maxval := mag_params.invFmat[r2];
+                                        ELSE 
+                                            maxval := (ry * a21) + (maxval * (1.0 - a21));
+                                        END_IF;
+                                        r2 := DWORD_TO_DINT(SHL(DINT_TO_DWORD(r1 + 1), 4)) + r3;
+                                        r1 := DWORD_TO_DINT(SHL(DINT_TO_DWORD(r1), 4)) + r3;
+                                        IF mag_params.invFmat[r2] = mag_params.invFmat[r1] THEN 
+                                            a21 := mag_params.invFmat[r1];
+                                        ELSE 
+                                            a21 := (mag_params.invFmat[r2] * a21) + (mag_params.invFmat[r1] * (1.0 - a21));
+                                        END_IF;
+                                    END_IF;
+                                END_IF;
+                                ry := b_v[r3 - 1];
+                                IF ry = zd_norm THEN 
+                                    a21 := maxval;
+                                ELSIF maxval = a21 THEN 
+                                    a21 := maxval;
+                                ELSIF zd_norm <> b_v[r3] THEN 
+                                    ry := (zd_norm - ry) / (b_v[r3] - ry);
+                                    a21 := ((1.0 - ry) * maxval) + (ry * a21);
+                                END_IF;
+                            ELSE 
+                                a21 := 0.0;
+                            END_IF;
+                        ELSE 
+                            a21 := 0.0;
+                        END_IF;
+                    ELSE 
+                        a21 := 0.0;
+                    END_IF;
+                ELSE 
+                    a21 := 0.0;
+                END_IF;
+                id := mag_params.invFmax * a21;
+            END_IF;
+            (* %% Update previous values *)
+            (* '<S1>:1:44' zd_prev = zd; *)
+            zd_prev := zd;
+            (* '<S1>:1:45' vd_prev = vd; *)
+            vd_prev := vd;
+            (* '<S1>:1:46' ad_prev = ad; *)
+            ad_prev := ad;
+            (* '<S1>:1:47' id_prev = id; *)
+            id_prev := id;
+        ELSE 
+            (* '<S1>:1:48' else *)
+            (* %% Keep previous values *)
+            (* '<S1>:1:50' zd = zd_prev; *)
+            zd := zd_prev;
+            (* '<S1>:1:51' vd = vd_prev; *)
+            vd := vd_prev;
+            (* '<S1>:1:52' ad = ad_prev; *)
+            ad := ad_prev;
+            (* '<S1>:1:53' id = id_prev; *)
+            id := id_prev;
+        END_IF;
+END_CASE;]]></ST>
+    </Implementation>
+    <LineIds Name="GenerateTrajectory">
+      <LineId Id="7" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="413" Count="287" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

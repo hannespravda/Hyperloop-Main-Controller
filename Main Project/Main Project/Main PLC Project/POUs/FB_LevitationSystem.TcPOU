@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_LevitationSystem" Id="{45b5dcec-3c1d-41ef-adf9-89d78336b527}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LevitationSystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eCondition : eConditionCheck;
+END_VAR
+VAR
+	eMode : eSystemMode;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="setSLEEP" Id="{eddd6ec8-da5e-43f0-9778-e8a801acc406}">
+      <Declaration><![CDATA[PROPERTY setSLEEP : BOOL]]></Declaration>
+      <Set Name="Set" Id="{2adcb4b0-dd81-47de-87f7-52be68cb2e7e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF setSLEEP THEN
+	eMode := eSystemMode.SLEEP;
+ELSE
+	eMode := eSystemMode.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_LevitationSystem">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.setSLEEP.Set">
+      <LineId Id="7" Count="3" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

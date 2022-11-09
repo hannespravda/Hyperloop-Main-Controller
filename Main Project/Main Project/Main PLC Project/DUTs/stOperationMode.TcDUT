@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="stOperationMode" Id="{e4a3406a-b7fd-454d-9a81-329f16445255}">
+    <Declaration><![CDATA[TYPE stOperationMode :
+STRUCT
+	eMode : eOperationMode;
+	bTestServiceModule : BOOL;
+	bTestLevitationSystem : BOOL;
+	bTestGuidanceSystem : BOOL;
+	nTestMode : BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
