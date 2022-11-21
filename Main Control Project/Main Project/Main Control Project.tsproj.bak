@@ -1,0 +1,661 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6inData22B</Name>
+			<Comment><![CDATA[ This data type is corresponding to the
+   EL-6xxx data structure used in the
+   TwinCAT SystemManager
+   (EL-6xxx version using 22 data bytes) 
+]]></Comment>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>Status</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>D</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>22</Elements>
+				</ArrayInfo>
+				<BitSize>176</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6outData22B</Name>
+			<Comment><![CDATA[ This data type is corresponding to the
+   EL-6xxx data structure used in the
+   TwinCAT SystemManager
+   (EL-6xxx version using 22 data bytes) 
+]]></Comment>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>Ctrl</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>D</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>22</Elements>
+				</ArrayInfo>
+				<BitSize>176</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF BOOL</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{7D7B82AF-F3BC-671D-4B50-A15F02780299}" AutoDeleteType="true">eControlArchitectures</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[AggregatedLinear]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[CascadedWithElectricalCompensation]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[CascadedWithFullDecoupling]]></Text>
+				<Enum>2</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[YET_TO_DEFINE]]></Text>
+				<Enum>3</Enum>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>strict</Name>
+				</Property>
+				<Property>
+					<Name>generate_implicit_init_function</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF eControlArchitectures</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{7D7B82AF-F3BC-671D-4B50-A15F02780299}">eControlArchitectures</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Name>
+			<BitSize>1024</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+			<ArrayInfo Level="1">
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF LREAL</Name>
+			<BitSize>256</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{86AC9828-A863-F681-42E8-BC8848EF1B59}" AutoDeleteType="true">eXMCStateMachine</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[INIT]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[STOP]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[OP]]></Text>
+				<Enum>2</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ERROR]]></Text>
+				<Enum>3</Enum>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>strict</Name>
+				</Property>
+				<Property>
+					<Name>generate_implicit_init_function</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF eXMCStateMachine</Name>
+			<Comment><![CDATA[Inputs]]></Comment>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{86AC9828-A863-F681-42E8-BC8848EF1B59}">eXMCStateMachine</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF DINT</Name>
+			<BitSize>128</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000009}">DINT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{65F2794F-3C5B-7F56-B674-27D1245CF5BE}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..1] OF LREAL</Name>
+			<BitSize>512</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+			<ArrayInfo Level="1">
+				<LBound>0</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{EF17D0C5-AC9D-3286-F0D8-64983B1C81F8}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..12] OF BOOL</Name>
+			<BitSize>104</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>13</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{2B11C313-E1ED-D4F3-7DB2-553E489037BB}" AutoDeleteType="true">eMainStateMachine</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[STARTUP]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[READY]]></Text>
+				<Enum>1</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[OPERATIONAL]]></Text>
+				<Enum>2</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[SHUTDOWN]]></Text>
+				<Enum>3</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ERROR]]></Text>
+				<Enum>4</Enum>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>strict</Name>
+				</Property>
+				<Property>
+					<Name>generate_implicit_init_function</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..9] OF STRING(80)</Name>
+			<BitSize>6480</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>10</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{C9CE49FC-2677-D9E5-3935-C4CE57574B94}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..12] OF BOOL</Name>
+			<BitSize>416</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+			<ArrayInfo Level="1">
+				<LBound>0</LBound>
+				<Elements>13</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{6644EF2B-B70B-B0BD-5217-732A7A5D6190}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..5] OF BOOL</Name>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
+	</DataTypes>
+	<Project ProjectGUID="{EA771B35-EEFD-4EAE-8B25-D71A080FEDBF}" Target64Bit="true" ShowHideConfigurations="#x106">
+		<System>
+			<Settings MaxCpus="12" NonWinCpus="1">
+				<Cpu CpuId="11"/>
+				<Debugger Priority="61"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="351" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+				<Task Id="4" Priority="19" CycleTime="10000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask_Fast</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{50432714-684A-9C13-9687-52D9C3EA019B}">
+					<Name>MainControl Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="1">
+						<Name>PlcTask_Fast Inputs</Name>
+						<Var>
+							<Name>BackgroundEL6001.stIn_EL6001</Name>
+							<Comment><![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+						<Var>
+							<Name>BackgroundEL6021.stIn_EL6021</Name>
+							<Comment><![CDATA[ linked to the EL6021 in the TwinCAT System Manager]]></Comment>
+							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask_Fast Outputs</Name>
+						<Var>
+							<Name>BackgroundEL6001.stOut_EL6001</Name>
+							<Comment><![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+						<Var>
+							<Name>BackgroundEL6021.stOut_EL6021</Name>
+							<Comment><![CDATA[ linked to the EL6021 in the TwinCAT System Manager]]></Comment>
+							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>OperationControl.OC_F_start_ms</Name>
+							<Comment><![CDATA[Inputs]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_F_stop_ms</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_F_error_res</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_F_trans_trig</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_F_trans_time</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_enable_out</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>TEST.iTest</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_F_trans_dist_LEV</Name>
+							<Type>LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_act_arch_LEV</Name>
+							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_int_active_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_int_res_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_Kmat_arch1_LEV</Name>
+							<Comment><![CDATA[Sollte das nicht ENUM sein???]]></Comment>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_Kmat_arch2_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_Kmat_arch3_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.OC_C_Kcurr_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.G_state_FSM_LLCB</Name>
+							<Comment><![CDATA[Inputs]]></Comment>
+							<Type GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}">ARRAY [0..3] OF eXMCStateMachine</Type>
+						</Var>
+						<Var>
+							<Name>XMC.G_tstamp_LLCB</Name>
+							<Type GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}">ARRAY [0..3] OF DINT</Type>
+						</Var>
+						<Var>
+							<Name>XMC.M_dist_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.M_dist_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.M_curr_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.M_curr_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.M_sens_dist_GUI_filt</Name>
+							<Type GUID="{65F2794F-3C5B-7F56-B674-27D1245CF5BE}">ARRAY [0..3] OF ARRAY [0..1] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.E_array_LLCB</Name>
+							<Type GUID="{EF17D0C5-AC9D-3286-F0D8-64983B1C81F8}">ARRAY [0..12] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_act_arch_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_int_active_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_int_saturated_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_Kmat_arch1_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_Kmat_arch2_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_Kmat_arch3_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.C_Duty_cycle_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>OperationControl.G_state_FSM_IPC</Name>
+							<Comment><![CDATA[Outputs]]></Comment>
+							<Type GUID="{2B11C313-E1ED-D4F3-7DB2-553E489037BB}">eMainStateMachine</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.lrDistanceSensorServiceModule</Name>
+							<Type>LREAL</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.sWarningMessage</Name>
+							<Type GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}">ARRAY [0..9] OF STRING(80)</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.sErrorMessage</Name>
+							<Type GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}">ARRAY [0..9] OF STRING(80)</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.sErrorMessageServiceModule</Name>
+							<Type>STRING(80)</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.sErrorMessageLevitationSystem</Name>
+							<Type>STRING(80)</Type>
+						</Var>
+						<Var>
+							<Name>MyGVLData.sErrorMessageGuidanceSystem</Name>
+							<Type>STRING(80)</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.G_state_FSM_LLCB</Name>
+							<Type GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}">ARRAY [0..3] OF eXMCStateMachine</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.G_tstamp_IPC</Name>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.G_tstamp_LLCB</Name>
+							<Type GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}">ARRAY [0..3] OF DINT</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_int_active_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.M_dist_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.M_dist_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.M_curr_LEV</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.M_curr_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.E_array_LLCB</Name>
+							<Type GUID="{C9CE49FC-2677-D9E5-3935-C4CE57574B94}">ARRAY [0..3] OF ARRAY [0..12] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.E_array_IPC</Name>
+							<Type GUID="{6644EF2B-B70B-B0BD-5217-732A7A5D6190}">ARRAY [0..5] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_act_arch_LEV</Name>
+							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_int_saturated_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_Kmat_arch1_LEV</Name>
+							<Comment><![CDATA[Sind das nicht Enums???]]></Comment>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_Kmat_arch2_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_Kmat_arch3_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>OperationControl.C_Kcurr_GUI</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.TG_dist_des</Name>
+							<Comment><![CDATA[0=XMC1, 1=XMC2, 2=XMC3, 3=XMC4]]></Comment>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.TG_velo_des</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.TG_curr_des</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.TG_volt_des</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_Kmat_arch1_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_Kmat_arch2_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_Kmat_arch3_LEV</Name>
+							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_enable_out</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_act_arch_LEV</Name>
+							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_int_active_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.OC_C_int_res_LEV</Name>
+							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>RGBController.iRed</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>RGBController.iGreen</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>XMC.LEC_dist_incr</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.GPC_curr_des</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>XMC.GPC_volt_des</Name>
+							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+						</Var>
+						<Var>
+							<Name>RGBController.iBlue</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>RGBController.iWhite</Name>
+							<Type>INT</Type>
+						</Var>
+					</Vars>
+					<Contexts>
+						<Context>
+							<Id NeedCalleeCall="true">0</Id>
+							<Name>PlcTask_Fast</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>19</Priority>
+							<CycleTime>1000000</CycleTime>
+						</Context>
+						<Context>
+							<Id NeedCalleeCall="true">1</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>1000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="19" OTCID="#x08502002"/>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+		<Io>
+			<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="10.183.66.136.2.1" RemoteName="Gerät 1 (EtherCAT)" InfoImageId="2">
+				<Name>Gerät 1 (EtherCAT)</Name>
+				<AddressInfo>
+					<Pnp>
+						<DeviceDesc>Ethernet 2 (Intel(R) Ethernet Connection (16) I219-</DeviceDesc>
+						<DeviceName>\DEVICE\{EDB4A0A2-F087-4C11-A458-C1F80493A5CD}</DeviceName>
+						<DeviceData>f4a80df6803f</DeviceData>
+					</Pnp>
+				</AddressInfo>
+				<Image Id="1" AddrType="9" ImageType="3">
+					<Name>Prozessabbild</Name>
+				</Image>
+				<EtherCAT/>
+			</Device>
+		</Io>
+	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2001-0850-0120-500810000403}" Id="#x02030010"/>
+		<OwnerA Name="TIPC^MainControl^MainControl Instance">
+			<OwnerB Name="TIID^Device 1 (EtherCAT)">
+				<Link VarA="PlcTask Inputs^TEST.iTest" VarB="Inputs^DevState"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
+</TcSmProject>

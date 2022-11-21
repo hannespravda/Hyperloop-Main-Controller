@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_GuidanceSystem" Id="{f33f1b41-c667-4ee8-81c9-ea9b824242db}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceSystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eCondition : eConditionCheck;
+	eState : eHighLevelState;
+END_VAR
+VAR
+	fbAccelerationSensor1 : FB_AccelerationSensor;
+	fbAccelerationSensor2 : FB_AccelerationSensor;
+	
+	eAccelerationSensor1LastMessage : eErrorList;
+	eAccelerationSensor2LastMessage : eErrorList;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbAccelerationSensor1();
+fbAccelerationSensor2();
+
+//Condition
+IF fbAccelerationSensor1.eCondition = eConditionCheck.READY AND fbAccelerationSensor2.eCondition = eConditionCheck.READY THEN
+	eCondition := eConditionCheck.READY;
+	
+	eAccelerationSensor1LastMessage := eErrorList.NoError;
+	eAccelerationSensor1LastMessage := eErrorList.NoError;
+ELSE
+	eCondition := eConditionCheck.INIT;
+	
+	IF fbAccelerationSensor1.eErrorID <> eAccelerationSensor1LastMessage THEN
+		eAccelerationSensor1LastMessage := fbAccelerationSensor1.eErrorID;
+		IF fbAccelerationSensor1.eErrorID <> eErrorList.NoError THEN
+			MainControl.fbErrorHandling.fbErrorBufferAccelerationSensor1.AddErrorMessage(eErrorMessage := fbAccelerationSensor1.eErrorID);
+		END_IF
+	END_IF
+	
+	IF fbAccelerationSensor2.eErrorID <> eAccelerationSensor2LastMessage THEN
+		eAccelerationSensor2LastMessage := fbAccelerationSensor2.eErrorID;
+		IF fbAccelerationSensor2.eErrorID <> eErrorList.NoError THEN
+			MainControl.fbErrorHandling.fbErrorBufferAccelerationSensor2.AddErrorMessage(eErrorMessage := fbAccelerationSensor2.eErrorID);
+		END_IF
+	END_IF
+	
+END_IF
+
+
+
+
+//High Level State Machine
+
+]]></ST>
+    </Implementation>
+    <Property Name="getAccelerationSensor1" Id="{d02b525a-bc1b-492a-a816-47305250732e}">
+      <Declaration><![CDATA[PROPERTY getAccelerationSensor1 : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{a44a823d-8479-4c86-a9d4-e6594c5cc29d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getAccelerationSensor1 := fbAccelerationSensor1.getAcceleration;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationSensor2" Id="{77f151eb-f5be-47a3-8ffb-b31bed26cce9}">
+      <Declaration><![CDATA[PROPERTY getAccelerationSensor2 : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{dc8e6747-1f97-4ee1-9ae5-87cfe2fd9cb4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getAccelerationSensor2 := fbAccelerationSensor1.getAcceleration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_GuidanceSystem">
+      <LineId Id="114" Count="1" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="166" Count="4" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="171" Count="8" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="187" Count="4" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="130" Count="1" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="77" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.getAccelerationSensor1.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.getAccelerationSensor2.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

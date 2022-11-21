@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{e75f66b2-0f3b-4b4f-87b1-d2f1b9f38d80}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbTest : FB_Test;
+	
+	i : INT;
+	
+	nTest : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbTest();
+
+CASE i OF
+	1: fbTest();
+	
+	2: fbTest(); nTest := fbTest.iRes;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="41" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="36" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

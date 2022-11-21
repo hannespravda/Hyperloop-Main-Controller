@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AccelerationSensor" Id="{4efed543-46dd-452e-af75-10c16bcd4501}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AccelerationSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eCondition : eConditionCheck := eConditionCheck.INIT;
+	eErrorID : eErrorList;
+END_VAR
+VAR
+	fbEL6001	: FB_SerialComRS232;
+	
+	acc_x : REAL;
+	acc_y : REAL;	
+	acc_z : REAL;
+	
+	bInRange : BOOL;
+	
+	fbErrorTimer : TON;
+	
+	//doPacketCount
+	fbTimer : TON;
+	fbReset : TON;
+	fbTrigger : R_TRIG;
+	iCounter1 : UDINT;
+	iCounter2 : UDINT;
+	a_iPackets : ARRAY [0..9] OF UDINT;
+	i : UDINT := 0;
+	iSum : UDINT := 0;
+	rPacketRate : REAL := 0;
+	bTrigger : BOOL := FALSE;
+	bCount : BOOL;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6001(TxBuffer:=AccelerationSensor.TxBufferEL, RxBuffer:=AccelerationSensor.RxBufferEL);
+
+acc_x := fbEL6001.getAccelerationValueX;
+acc_y := fbEL6001.getAccelerationValueY;
+acc_z := fbEL6001.getAccelerationValueZ;
+bInRange := fbEL6001.getRange;
+
+doPacketCount();					//start packet count by setting bCount 'true' --> rPacketRate shows average rate per second
+
+
+//Error
+IF fbEL6001.eReceiveErrorID <> COMERROR_NOERROR THEN
+	eErrorID := eErrorList.CommunicationError;
+ELSE
+	IF NOT bInRange THEN
+		eErrorID := eErrorList.OutOfRange;
+	ELSE
+		eErrorID := eErrorList.NoError;
+	END_IF
+END_IF
+
+//Condition
+IF eErrorID <> eErrorList.NoError THEN
+	eCondition := eConditionCheck.INIT;
+ELSE
+	eCondition := eConditionCheck.READY;
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="doPacketCount" Id="{f491d74c-1c83-4939-a57e-78d104db15c3}">
+      <Declaration><![CDATA[METHOD doPacketCount : REAL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbTimer(IN := bCount, PT := T#1S);
+fbTrigger(CLK := fbTimer.IN);
+
+IF fbTrigger.Q THEN
+	iCounter1 := fbEL6001.nReceiveCounter;
+END_IF
+
+IF fbTimer.Q THEN
+	iCounter2 := fbEL6001.nReceiveCounter;
+	a_iPackets[i] := iCounter2 - iCounter1;
+	iSum := iSum + a_iPackets[i];
+	i := i + 1;
+	bTrigger := TRUE;
+	bCount := FALSE;
+END_IF
+
+IF i = 10 THEN
+	bTrigger := FALSE;
+	rPacketRate := (UDINT_TO_REAL(iSum) / UDINT_TO_REAL(i));			//times amount of packets
+	i := 0;
+	iSum := 0;
+END_IF
+
+fbReset(IN := bTrigger, PT := T#3S);
+IF fbReset.Q THEN
+	bCount := TRUE;
+	bTrigger := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="getAcceleration" Id="{7f341113-eca5-463c-9030-ebf06298c316}">
+      <Declaration><![CDATA[PROPERTY getAcceleration : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{df28e51c-b3ab-4ae5-ba7e-439352126421}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getAcceleration[0] := acc_x;
+getAcceleration[1] := acc_y;
+getAcceleration[2] := acc_z;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_AccelerationSensor">
+      <LineId Id="50" Count="4" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="121" Count="1" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="118" Count="2" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="321" Count="1" />
+      <LineId Id="310" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.doPacketCount">
+      <LineId Id="6" Count="3" />
+      <LineId Id="12" Count="14" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="27" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.getAcceleration.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

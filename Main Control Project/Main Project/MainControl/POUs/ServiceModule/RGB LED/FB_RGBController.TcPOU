@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RGBController" Id="{ca565f89-09bf-4fd8-94fd-f485682ef50c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RGBController
+VAR
+	eLEDColor : eColor;
+	iRedLED : INT;
+	iGreenLED : INT;
+	iBlueLED : INT;
+	iWhiteLED : INT;
+END_VAR
+VAR CONSTANT
+	iMAX : INT := 32767;		//Maximum Intensity
+	iMIN : INT := 0;			//Off
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eLEDColor OF
+	eColor.RED:
+			iRedLED := iMAX;
+			iGreenLED := iMIN;
+			iBlueLED := iMIN;
+			iWhiteLED := iMIN;
+	eColor.GREEN:
+			iRedLED := iMIN;
+			iGreenLED := iMAX;
+			iBlueLED := iMIN;
+			iWhiteLED := iMIN;	
+	eColor.BLUE:
+			iRedLED := iMIN;
+			iGreenLED := iMIN;
+			iBlueLED := iMAX;	
+			iWhiteLED := iMIN;
+	eColor.WHITE:
+			iRedLED := iMIN;
+			iGreenLED := iMIN;
+			iBlueLED := iMIN;
+			iWhiteLED := iMAX;
+END_CASE
+
+RGBController.iRed := iRedLED;
+RGBController.iGreen := iGreenLED;
+RGBController.iBlue := iBlueLED;
+RGBController.iWhite := iWhiteLED;]]></ST>
+    </Implementation>
+    <Property Name="setLEDColor" Id="{e01a2934-0ec9-4d27-bfed-ba0348471b8d}">
+      <Declaration><![CDATA[PROPERTY setLEDColor : eColor]]></Declaration>
+      <Set Name="Set" Id="{be286157-1cf5-46db-b1dc-fe4aefc1685d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eLEDColor := setLEDColor;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_RGBController">
+      <LineId Id="9" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="28" Count="2" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="37" Count="2" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="54" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBController.setLEDColor.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="BackgroundEL6021" Id="{16fc184f-810c-4eff-9dfe-508ee9d55ca4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM BackgroundEL6021
+VAR
+	(* background communication with the EL6021 terminal *)
+	fbEL6021Ctrl		: SerialLineControl;
+	bEL6021CtrlError	: BOOL;
+	eEL6021CtrlErrorID	: ComError_t;
+	(*
+	I/O variables for a EL6021 terminal.
+	Be sure to link both of the variables exposed by the EL6inData22B struct, the `Status` as
+	well as it's `D` array. If only one is linked, the data transfer will not work.
+	*)
+	stIn_EL6021  AT %I*	: EL6inData22B;	// linked to the EL6021 in the TwinCAT System Manager
+	stOut_EL6021 AT %Q*	: EL6outData22B;	// linked to the EL6021 in the TwinCAT System Manager
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6021Ctrl(
+	Mode:= SERIALLINEMODE_EL6_22B,
+	pComIn:= ADR(stIn_EL6021),
+	pComOut:= ADR(stOut_EL6021),
+	SizeComIn:= SIZEOF(stIn_EL6021),
+	Error=>,
+	ErrorID=>,
+	TxBuffer:= DistanceSensor.TxBufferEL,
+	RxBuffer:= DistanceSensor.RxBufferEL);
+IF fbEL6021Ctrl.Error THEN
+	bEL6021CtrlError := TRUE;
+	eEL6021CtrlErrorID := fbEL6021Ctrl.ErrorID;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="BackgroundEL6021">
+      <LineId Id="550" Count="8" />
+      <LineId Id="567" Count="3" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

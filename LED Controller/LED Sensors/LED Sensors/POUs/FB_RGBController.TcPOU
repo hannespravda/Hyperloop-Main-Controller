@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RGBController" Id="{469ae6ce-499d-4fa3-8525-1529c7798012}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RGBController
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	iIntensityRedLED : INT;			//[0..100]
+	iIntensityGreenLED : INT;
+	iIntensityBlueLED : INT;
+	iIntensityWhiteLED : INT;
+	
+	iRedLED : INT;
+	iGreenLED : INT;
+	iBlueLED : INT;
+	iWhiteLED : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF iIntensityRedLED > 100 THEN
+	iIntensityRedLED := iIntensityRedLED MOD 100;
+END_IF
+iRedLED := REAL_TO_INT(iIntensityRedLED * 0.01 * 32767);
+
+IF iIntensityGreenLED > 100 THEN
+	iIntensityGreenLED := iIntensityGreenLED MOD 100;
+END_IF
+iGreenLED := REAL_TO_INT(iIntensityGreenLED * 0.01 * 32767);
+
+IF iIntensityBlueLED > 100 THEN
+	iIntensityBlueLED := iIntensityBlueLED MOD 100;
+END_IF
+iBlueLED := REAL_TO_INT(iIntensityBlueLED * 0.01 * 32767);
+
+IF iIntensityWhiteLED > 100 THEN
+	iIntensityWhiteLED := iIntensityWhiteLED MOD 100;
+END_IF
+iWhiteLED := REAL_TO_INT(iIntensityWhiteLED * 0.01 * 32767);]]></ST>
+    </Implementation>
+    <Property Name="setRedLED" Id="{5645f41f-39f6-4d9d-aa8e-5d7d57c0ef99}">
+      <Declaration><![CDATA[PROPERTY setRedLED : INT]]></Declaration>
+      <Set Name="Set" Id="{b79647bd-b4d7-4a42-8dd2-230e2ad1139d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_RGBController">
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="38" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBController.setRedLED.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

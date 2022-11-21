@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ForwardXMC1ToOperationControl" Id="{93258a73-8f6c-4ebd-9d41-e77b39ccbd19}">
+    <Declaration><![CDATA[TYPE ForwardXMC1ToOperationControl :
+STRUCT
+	MO_origE_DistanceLevitationFiltered		: REAL;
+	MO_origE_DistanceGuidanceFiltered		: REAL;
+	MO_origE_DistanceRawLev11				: REAL;
+	MO_origE_DistanceRawLev12				: REAL;
+	MO_origE_DistanceRawLev21				: REAL;
+	MO_origE_DistanceRawLev22				: REAL;
+	MO_origE_DistanceRawGuid11				: REAL;
+	MO_origE_DistanceRawGuid12				: REAL;
+	MO_origE_IMUX							: REAL;
+	MO_origE_IMUY							: REAL;
+	MO_origE_IMUZ							: REAL;
+	MO_origE_VelocityZFiltered				: REAL;
+	MO_origE_TemperatureBox					: REAL;
+	MO_origE_TemperatureLev0				: REAL;
+	MO_origE_TemperatureLev1				: REAL;
+	MO_origE_TemperatureGuid				: REAL;
+	MO_origE_PressureBox					: REAL;
+	MO_origE_CurrentLev						: REAL;
+	MO_origE_CurrentGuid					: REAL;
+	
+	MO_origE_SafetyCounter					: UDINT;
+	MO_origE_State							: USINT;
+	MO_origE_WarnBits						: ARRAY [0..10] OF UDINT;
+	MO_origE_ErrBits						: ARRAY [0..10] OF UDINT;
+	MO_origE_Timestamp						: UDINT;
+	
+	MO_origE_LoggingCounterIn				: USINT;
+	MO_origE_LoggingSize					: USINT;
+	MO_origE_LoggingBuf						: ARRAY [0..9] OF BYTE;
+	
+	////
+	MO_origM_DesiredGuidCurrent				: REAL;
+	MO_origM_DesiredGuidForce				: REAL;
+	MO_origM_DesiredGuidVoltage				: REAL;
+	
+	MO_origM_DesiredLevDistance				: REAL;
+	MO_origM_DesiredLevVelocity				: REAL;
+	MO_origM_DesiredLevAcceleration			: REAL;
+	MO_origM_DesiredLevForce				: REAL;
+	MO_origM_DesiredLevCurrent				: REAL;	
+	MO_origM_DesiredLevVoltage				: REAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

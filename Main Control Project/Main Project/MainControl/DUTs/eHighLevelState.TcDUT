@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="eHighLevelState" Id="{2feee283-07ee-4d6c-9c1d-1916b946fef8}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE eHighLevelState :
+(
+	SLEEP,
+	READY,
+	OPERATIONAL,
+	SHUTDOWN
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

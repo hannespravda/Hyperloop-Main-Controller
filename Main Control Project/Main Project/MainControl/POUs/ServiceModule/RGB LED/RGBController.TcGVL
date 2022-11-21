@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="RGBController" Id="{43ebbbac-30a0-4414-8b43-c77b57a7845c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	iRed AT %Q* : INT;
+	iGreen AT %Q* : INT;
+	iBlue AT %Q* : INT;
+	iWhite AT %Q* : INT;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

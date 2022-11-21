@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_LevitationSystem" Id="{45b5dcec-3c1d-41ef-adf9-89d78336b527}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LevitationSystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eCondition : eConditionCheck;
+	eState : eHighLevelState;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_LevitationSystem">
+      <LineId Id="40" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

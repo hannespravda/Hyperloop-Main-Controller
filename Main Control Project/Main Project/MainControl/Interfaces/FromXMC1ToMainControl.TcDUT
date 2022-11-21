@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="FromXMC1ToMainControl" Id="{309d13aa-063e-4836-8a55-49a41fdd78cd}">
+    <Declaration><![CDATA[TYPE FromXMC1ToMainControl :
+STRUCT
+	EM_origE_DistanceLevitationFiltered	: REAL;
+	EM_origE_DistanceGuidanceFiltered	: REAL;
+	EM_origE_DistanceRawLev11			: REAL;
+	EM_origE_DistanceRawLev12			: REAL;
+	EM_origE_DistanceRawLev21			: REAL;
+	EM_origE_DistanceRawLev22			: REAL;
+	EM_origE_DistanceRawGuid11			: REAL;
+	EM_origE_DistanceRawGuid12			: REAL;
+	EM_origE_IMUX						: REAL;
+	EM_origE_IMUY						: REAL;
+	EM_origE_IMUZ						: REAL;
+	EM_origE_VelocityZFiltered			: REAL;
+	EM_origE_TemperatureBox				: REAL;
+	EM_origE_TemperatureLev0			: REAL;
+	EM_origE_TemperatureLev1			: REAL;
+	EM_origE_TemperatureGuid			: REAL;
+	EM_origE_PressureBox				: REAL;
+	EM_origE_CurrentLev					: REAL;
+	EM_origE_CurrentGuid				: REAL;
+	
+	EM_origE_SafetyCounter				: UDINT;
+	EM_origE_State						: USINT;
+	EM_origE_WarnBits					: ARRAY [0..10] OF UDINT;
+	EM_origE_ErrBits					: ARRAY [0..10] OF UDINT;
+	EM_origE_Timestamp					: UDINT;
+	
+	EM_origE_LoggingCounterIn			: USINT;
+	EM_origE_LoggingCounterSize			: USINT;
+	EM_origE_LoggingCounterBuf			: ARRAY [0..9] OF BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

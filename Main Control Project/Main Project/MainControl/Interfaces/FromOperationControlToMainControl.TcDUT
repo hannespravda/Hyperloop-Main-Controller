@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="FromOperationControlToMainControl" Id="{dbe6afd4-ad42-468d-9e5d-fd1df17f9ed1}">
+    <Declaration><![CDATA[TYPE FromOperationControlToMainControl :
+STRUCT
+	OM_origO_AckError			: BIT;
+	OM_origO_GoToError			: BIT;
+	OM_origO_GuidanceDisable 	: BIT := 0;
+	OM_origO_LevitationDisable	: BIT := 0;
+	OM_origO_ServiceModuleDisabled : BIT := 0;
+	OM_origO_SafetyCounter		: UDINT;
+	OM_origO_StartOperational	: BIT;
+	OM_origO_StopOperational	: BIT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

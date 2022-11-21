@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ErrorHandling" Id="{e04ced6c-c731-48e4-8d82-f7134c556dd6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ErrorHandling
+VAR_INPUT
+	fbErrorBufferDistanceSensor : FB_ErrorBuffer;
+	fbErrorBufferAccelerationSensor1 : FB_ErrorBuffer;
+	fbErrorBufferAccelerationSensor2 : FB_ErrorBuffer;
+END_VAR
+VAR_OUTPUT
+	bGoToSHUTDOWN : BOOL;
+	bGoToERROR : BOOL;
+END_VAR
+VAR
+	eState : eErrorHandlingSTM := eErrorhandlingSTM.CheckforErrorMessages;
+	
+	fbErrorBuffer : FB_MessageBuffer;
+	fbWarningBuffer : FB_MessageBuffer;
+
+	eErrorMessageDistanceSensor : eErrorList := eErrorList.NoError;	
+	eErrorMessageAccelerationSensor1 : eErrorList := eErrorList.NoError;
+	eErrorMessageAccelerationSensor2 : eErrorList := eErrorList.NoError;
+	
+	sMessage : STRING;
+	bCriticalError : BOOL;
+	i : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//ErrorHandlingSTM
+CASE eState OF
+	eErrorhandlingSTM.CheckforErrorMessages:
+		bGoToSHUTDOWN := FALSE;
+		bGoToERROR := FALSE;
+		IF MainControl.fbServiceModule.eCondition = eConditionCheck.READY AND MainControl.fbLevitationSystem.eCondition = eConditionCheck.READY AND MainControl.fbGuidanceSystem.eCondition = eConditionCheck.READY THEN
+			eState := eErrorhandlingSTM.CheckforErrorMessages;
+		ELSE
+			//DistanceSensor
+			IF fbErrorBufferDistanceSensor.getNumberOfMessages > 0 THEN
+				fbErrorBufferDistanceSensor.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageDistanceSensor);
+				CASE eErrorMessageDistanceSensor OF
+					eErrorList.CommunicationError:
+						sMessage := TO_STRING(eWarningMessages.DistanceSensor_CommunicationError);
+						fbWarningBuffer.AddMessage(eMessage := sMessage);
+					eErrorList.OutOfRange:
+						sMessage := TO_STRING(eWarningMessages.DistanceSensor_OutOfRange);
+						fbWarningBuffer.AddMessage(eMessage := sMessage);
+				END_CASE
+			END_IF
+			//AccelerationSensor1
+			IF fbErrorBufferAccelerationSensor1.getNumberOfMessages > 0 THEN
+				fbErrorBufferAccelerationSensor1.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageAccelerationSensor1);
+				CASE eErrorMessageAccelerationSensor1 OF
+					eErrorList.OutOfRange:
+						sMessage := TO_STRING(eWarningMessages.IMU1_OutOfRange);
+						fbWarningBuffer.AddMessage(eMessage := sMessage);
+					eErrorList.CommunicationError:
+						sMessage := TO_STRING(eErrorMessages.IMU1_CommunicationError);
+						fbErrorBuffer.AddMessage(eMessage := sMessage);	
+						bCriticalError := TRUE;	
+				END_CASE
+			END_IF
+			//AccelerationSensor2
+			IF fbErrorBufferAccelerationSensor2.getNumberOfMessages > 0 THEN
+				fbErrorBufferAccelerationSensor2.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageAccelerationSensor2);
+				CASE eErrorMessageAccelerationSensor2 OF
+					eErrorList.OutOfRange:
+						sMessage := TO_STRING(eWarningMessages.IMU2_OutOfRange);
+						fbWarningBuffer.AddMessage(eMessage := sMessage);
+					eErrorList.CommunicationError:
+						sMessage := TO_STRING(eErrorMessages.IMU2_CommunicationError);
+						fbErrorBuffer.AddMessage(eMessage := sMessage);	
+						bCriticalError := TRUE;	
+				END_CASE
+			END_IF
+			
+			IF bCriticalError THEN
+				eState := eErrorHandlingSTM.ShowError;
+				bCriticalError := FALSE;
+			ELSE
+				eState := eErrorHandlingSTM.ShowWarning;
+			END_IF
+		
+		END_IF
+		
+	eErrorhandlingSTM.ShowWarning:
+		FOR i:=0 TO fbWarningBuffer.getNumberOfMessages-1 BY 1 DO
+			fbWarningBuffer.GetAndRemoveMessage(eMessage => MyGVLData.sWarningMessage[i]);
+		END_FOR
+		eState := eErrorHandlingSTM.CheckforErrorMessages;
+		
+	eErrorhandlingSTM.ShowError:
+		FOR i:=0 TO fbErrorBuffer.getNumberOfMessages-1 BY 1 DO
+			fbErrorBuffer.GetAndRemoveMessage(eMessage => MyGVLData.sErrorMessage[i]);
+		END_FOR
+		
+		IF MainControl.eMainState = eMainStateMachine.OPERATIONAL THEN
+			bGoToSHUTDOWN := TRUE;
+		ELSIF MainControl.eMainState = eMainStateMachine.READY THEN
+			bGoToERROR := TRUE;
+		END_IF
+		eState := eErrorHandlingSTM.CheckforErrorMessages;
+END_CASE
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ErrorHandling">
+      <LineId Id="237" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="352" Count="1" />
+      <LineId Id="154" Count="1" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="266" Count="2" />
+      <LineId Id="280" Count="1" />
+      <LineId Id="299" Count="1" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="301" Count="1" />
+      <LineId Id="282" Count="0" />
+      <LineId Id="270" Count="3" />
+      <LineId Id="295" Count="1" />
+      <LineId Id="303" Count="1" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="305" Count="1" />
+      <LineId Id="315" Count="0" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="275" Count="3" />
+      <LineId Id="307" Count="6" />
+      <LineId Id="316" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="317" Count="2" />
+      <LineId Id="321" Count="0" />
+      <LineId Id="323" Count="1" />
+      <LineId Id="320" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="328" Count="1" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="335" Count="2" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="341" Count="2" />
+      <LineId Id="348" Count="1" />
+      <LineId Id="351" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

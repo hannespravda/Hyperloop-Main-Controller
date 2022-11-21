@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="eErrorMessages" Id="{4b7afbe5-9294-4060-aff6-c8ebece7094f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE eErrorMessages :
+(
+	Levitation_NoConnectionToXMC,
+	Guidance_NoConnectionToXMC,
+	IMU1_CommunicationError,
+	IMU2_CommunicationError
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

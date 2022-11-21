@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="sus_bus" Id="{97c76a77-404d-41b4-97d1-bb6c22951164}">
+    <Declaration><![CDATA[TYPE sus_bus:
+    STRUCT
+        zmax: LREAL;
+        zcont: LREAL;
+    END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

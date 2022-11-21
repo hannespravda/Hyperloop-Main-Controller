@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="BackgroundRS422" Id="{93f68232-d285-4c23-bd55-21756aa79839}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM BackgroundRS422
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[BackgroundEL6021();	]]></ST>
+    </Implementation>
+    <LineIds Name="BackgroundRS422">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
