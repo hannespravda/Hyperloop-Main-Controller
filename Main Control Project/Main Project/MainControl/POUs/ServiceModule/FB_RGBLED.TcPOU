@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RGBLED" Id="{469ae6ce-499d-4fa3-8525-1529c7798012}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RGBLED
+VAR_INPUT
+	eColor : eLEDColor;
+END_VAR
+VAR_OUTPUT
+	eCondition : eConditionCheck;
+	nErrorID : UDINT;
+END_VAR
+VAR
+	//Local
+	iRedLED : INT;
+	iGreenLED : INT;
+	iBlueLED : INT;
+	
+	//ErrorBits
+	bRedTemperatureTooHigh : BIT;
+	bRedNoSupplyVoltage : BIT;
+	bGreenTemperatureTooHigh : BIT;
+	bGreenNoSupplyVoltage : BIT;
+	bBlueTemperatureTooHigh : BIT;
+	bBlueNoSupplyVoltage : BIT;	
+END_VAR
+VAR CONSTANT
+	iMAX : INT := 32767;		//Maximum Intensity (100%)
+	iMIN : INT := 0;			//Off (0%)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eColor OF
+	eLEDColor.RED:
+			iRedLED := iMAX;
+			iGreenLED := iMIN;
+			iBlueLED := iMIN;
+	eLEDColor.GREEN:
+			iRedLED := iMIN;
+			iGreenLED := iMAX;
+			iBlueLED := iMIN;
+	eLEDColor.BLUE:
+			iRedLED := iMIN;
+			iGreenLED := iMIN;
+			iBlueLED := iMAX;	
+END_CASE
+
+doSetClampValues();
+doGetClampValues();
+
+
+//ConditionCheck
+doConditionCheck();
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="doConditionCheck" Id="{9bdb9f12-6304-42a4-97b2-384908e32aa4}">
+      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//ErrorBits
+nErrorID.0 := bRedTemperatureTooHigh;
+nErrorID.1 := bRedNoSupplyVoltage;
+nErrorID.2 := bGreenTemperatureTooHigh;
+nErrorID.3 := bGreenNoSupplyVoltage;
+nErrorID.4 := bBlueTemperatureTooHigh;
+nErrorID.5 := bBlueNoSupplyVoltage;
+
+//Condition
+IF nErrorID <> 0 THEN
+	eCondition := eConditionCheck.INIT;
+ELSE
+	eCondition := eConditionCheck.RUN;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doGetClampValues" Id="{52eec7f2-2131-4ede-95da-3597bc5e0c67}">
+      <Declaration><![CDATA[METHOD PRIVATE doGetClampValues
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bRedTemperatureTooHigh := RGBLED.bRedWarning;
+bRedNoSupplyVoltage := RGBLED.bRedError;
+bGreenTemperatureTooHigh := RGBLED.bGreenWarning;
+bGreenNoSupplyVoltage := RGBLED.bGreenError;
+bBlueTemperatureTooHigh := RGBLED.bBlueWarning;
+bBlueNoSupplyVoltage := RGBLED.bBlueError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetClampValues" Id="{dbe16808-2cac-4096-8234-89397ca2e1ed}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetClampValues
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RGBLED.iRed := iRedLED;
+RGBLED.iGreen := iGreenLED;
+RGBLED.iBlue := iBlueLED;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_RGBLED">
+      <LineId Id="144" Count="4" />
+      <LineId Id="150" Count="3" />
+      <LineId Id="155" Count="3" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="291" Count="1" />
+      <LineId Id="290" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="191" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.doConditionCheck">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="4" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="3" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.doGetClampValues">
+      <LineId Id="14" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.doSetClampValues">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

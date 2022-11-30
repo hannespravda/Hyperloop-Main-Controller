@@ -2,54 +2,31 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_GuidanceSystem" Id="{f33f1b41-c667-4ee8-81c9-ea9b824242db}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceSystem
-VAR_INPUT
-END_VAR
-VAR_OUTPUT
-	eCondition : eConditionCheck;
-	eState : eHighLevelState;
-END_VAR
 VAR
 	fbAccelerationSensor1 : FB_AccelerationSensor;
 	fbAccelerationSensor2 : FB_AccelerationSensor;
+	fbGuidanceController : FB_GuidanceController;
 	
-	eAccelerationSensor1LastMessage : eErrorList;
-	eAccelerationSensor2LastMessage : eErrorList;
+	eCondition : eConditionCheck;
+	nErrorBits : UDINT;
+	
+	eState : eGuidanceSystemSTM;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbAccelerationSensor1();
 fbAccelerationSensor2();
+fbGuidanceController();
 
-//Condition
-IF fbAccelerationSensor1.eCondition = eConditionCheck.READY AND fbAccelerationSensor2.eCondition = eConditionCheck.READY THEN
-	eCondition := eConditionCheck.READY;
-	
-	eAccelerationSensor1LastMessage := eErrorList.NoError;
-	eAccelerationSensor1LastMessage := eErrorList.NoError;
-ELSE
-	eCondition := eConditionCheck.INIT;
-	
-	IF fbAccelerationSensor1.eErrorID <> eAccelerationSensor1LastMessage THEN
-		eAccelerationSensor1LastMessage := fbAccelerationSensor1.eErrorID;
-		IF fbAccelerationSensor1.eErrorID <> eErrorList.NoError THEN
-			MainControl.fbErrorHandling.fbErrorBufferAccelerationSensor1.AddErrorMessage(eErrorMessage := fbAccelerationSensor1.eErrorID);
-		END_IF
-	END_IF
-	
-	IF fbAccelerationSensor2.eErrorID <> eAccelerationSensor2LastMessage THEN
-		eAccelerationSensor2LastMessage := fbAccelerationSensor2.eErrorID;
-		IF fbAccelerationSensor2.eErrorID <> eErrorList.NoError THEN
-			MainControl.fbErrorHandling.fbErrorBufferAccelerationSensor2.AddErrorMessage(eErrorMessage := fbAccelerationSensor2.eErrorID);
-		END_IF
-	END_IF
-	
-END_IF
 
 
 
 
 //High Level State Machine
-
+CASE eState OF
+	eGuidanceSystemSTM.Initializing:
+			fbGuidanceController.setOperationMode := eOperationMode.CurrentControlled;
+END_CASE
 ]]></ST>
     </Implementation>
     <Property Name="getAccelerationSensor1" Id="{d02b525a-bc1b-492a-a816-47305250732e}">
@@ -59,7 +36,7 @@ END_IF
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[getAccelerationSensor1 := fbAccelerationSensor1.getAcceleration;
+          <ST><![CDATA[getAccelerationSensor1 := fbAccelerationSensor1.Acceleration;
 ]]></ST>
         </Implementation>
       </Get>
@@ -71,26 +48,76 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[getAccelerationSensor2 := fbAccelerationSensor1.getAcceleration;]]></ST>
+          <ST><![CDATA[getAccelerationSensor2 := fbAccelerationSensor1.Acceleration;]]></ST>
         </Implementation>
       </Get>
     </Property>
+    <Property Name="getCondition" Id="{d81d16bd-6fab-4376-9342-f6cd6b1e3f96}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getCondition : eConditionCheck]]></Declaration>
+      <Get Name="Get" Id="{8a207ab6-0d3c-4869-a39e-e38208db9a65}">
+        <Declaration><![CDATA[
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF fbAccelerationSensor1.eCondition = eConditionCheck.RUN AND fbAccelerationSensor2.eCondition = eConditionCheck.RUN THEN
+	eCondition := eConditionCheck.RUN;
+ELSE
+	eCondition := eConditionCheck.INIT;
+END_IF
+
+getCondition := eCondition;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getErrorBits" Id="{021c21fe-bed6-401f-b12e-35782d4573cb}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getErrorBits : UDINT]]></Declaration>
+      <Get Name="Get" Id="{82f17a23-4a29-423a-af8d-82b958a60f13}">
+        <Declaration><![CDATA[VAR
+	nErrorBitsIMU1 : UDINT;
+	nErrorBitsIMU2 : UDINT;
+	nErrorBitsGC : UDINT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorBitsIMU1 :=	fbAccelerationSensor1.nErrorID;
+nErrorBitsIMU2 := 	fbAccelerationSensor2.nErrorID;
+nErrorBitsGC := fbGuidanceController.getErrorBits;
+
+nErrorBits.0 := nErrorBitsIMU1.0;
+nErrorBits.1 := nErrorBitsIMU1.1;
+nErrorBits.2 := nErrorBitsIMU2.0;
+nErrorBits.3 := nErrorBitsIMU2.1;
+nErrorBits.4 := nErrorBitsGC.0;
+nErrorBits.5 := nErrorBitsGC.1;
+nErrorBits.6 := nErrorBitsGC.2;
+nErrorBits.7 := nErrorBitsGC.3;
+
+getErrorBits := nErrorBits;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="setActive" Id="{c9812c11-d6e8-4ac1-8fb5-1b19b95767e5}">
+      <Declaration><![CDATA[PROPERTY PUBLIC setActive : BOOL]]></Declaration>
+      <Set Name="Set" Id="{c5487772-93c8-4199-a85c-2f67f7614972}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <LineIds Name="FB_GuidanceSystem">
       <LineId Id="114" Count="1" />
-      <LineId Id="117" Count="0" />
-      <LineId Id="166" Count="4" />
-      <LineId Id="184" Count="0" />
-      <LineId Id="171" Count="8" />
-      <LineId Id="185" Count="0" />
-      <LineId Id="187" Count="4" />
-      <LineId Id="186" Count="0" />
-      <LineId Id="180" Count="0" />
+      <LineId Id="160" Count="0" />
       <LineId Id="113" Count="0" />
       <LineId Id="146" Count="0" />
       <LineId Id="145" Count="0" />
       <LineId Id="130" Count="1" />
       <LineId Id="129" Count="0" />
       <LineId Id="87" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="173" Count="0" />
       <LineId Id="77" Count="0" />
     </LineIds>
     <LineIds Name="FB_GuidanceSystem.getAccelerationSensor1.Get">
@@ -98,6 +125,26 @@ END_VAR
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_GuidanceSystem.getAccelerationSensor2.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.getCondition.Get">
+      <LineId Id="6" Count="3" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.getErrorBits.Get">
+      <LineId Id="19" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="35" Count="3" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.setActive.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

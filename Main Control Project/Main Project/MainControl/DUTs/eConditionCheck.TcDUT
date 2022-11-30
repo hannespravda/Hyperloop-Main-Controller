@@ -6,8 +6,7 @@
 TYPE eConditionCheck :
 (
 	INIT,
-	RUN,
-	DISABLED 
+	RUN
 );
 END_TYPE
 ]]></Declaration>

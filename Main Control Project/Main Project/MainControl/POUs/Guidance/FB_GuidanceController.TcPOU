@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_GuidanceController" Id="{b762347b-0b73-4a03-97c5-dc8d2cb401ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceController
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eCondition : eConditionCheck;
+	
+	//ErrorBits
+	bNoConnectionToXMC1 : BIT;
+	bNoConnectionToXMC2 : BIT;
+	bNoConnectionToXMC3 : BIT;
+	bNoConnectionToXMC4 : BIT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="getErrorBits" Id="{d4fcf835-b458-46eb-981e-25fdd3e9b530}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getErrorBits : UDINT]]></Declaration>
+      <Get Name="Get" Id="{93cb6893-f33f-44b3-a6c1-fdd7cc87a2c7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+
+getErrorBits.0 := bNoConnectionToXMC1;
+getErrorBits.1 := bNoConnectionToXMC2;
+getErrorBits.2 := bNoConnectionToXMC3;
+getErrorBits.3 := bNoConnectionToXMC4;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="setOperationMode" Id="{55ec2b6b-3216-4db4-8f9f-e85f6c9fd494}">
+      <Declaration><![CDATA[PROPERTY PUBLIC setOperationMode : eOperationMode]]></Declaration>
+      <Set Name="Set" Id="{83ecf48f-df13-45b8-b986-d9d5f53a92bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_GuidanceController">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.getErrorBits.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="8" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.setOperationMode.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

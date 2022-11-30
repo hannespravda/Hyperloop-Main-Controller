@@ -12,8 +12,8 @@ STRUCT
 	MO_origM_GuidanceIMUZ0			: REAL;
 	MO_origM_GuidanceIMUZ1			: REAL;
 	MO_origM_State					: USINT;
-	MO_origM_WarnBits				: ARRAY [0..10] OF UDINT;
-	MO_origM_ErrBits				: ARRAY [0..10] OF UDINT;
+	MO_origM_WarnBits				: UDINT;
+	MO_origM_ErrBits				: UDINT;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

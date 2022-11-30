@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_TrajectoryGenerator" Id="{0fe2a302-c596-4eee-ba7e-45869f82e2bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TrajectoryGenerator
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eCondition : eConditionCheck;
+	
+	//ErrorBits
+	bNoConnectionToXMC1 : BIT;
+	bNoConnectionToXMC2 : BIT;
+	bNoConnectionToXMC3 : BIT;
+	bNoConnectionToXMC4 : BIT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="getErrorBits" Id="{2190d3fb-f308-4551-a1c4-7e82ba23d84f}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getErrorBits : UDINT]]></Declaration>
+      <Get Name="Get" Id="{54f29ea6-985f-45e3-bb86-9d768df60d77}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+
+
+getErrorBits.0 := bNoConnectionToXMC1;
+getErrorBits.1 := bNoConnectionToXMC2;
+getErrorBits.2 := bNoConnectionToXMC3;
+getErrorBits.3 := bNoConnectionToXMC4;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_TrajectoryGenerator">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.getErrorBits.Get">
+      <LineId Id="5" Count="5" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

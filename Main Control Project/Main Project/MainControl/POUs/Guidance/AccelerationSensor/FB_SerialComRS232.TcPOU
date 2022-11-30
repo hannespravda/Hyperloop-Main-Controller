@@ -3,212 +3,160 @@
   <POU Name="FB_SerialComRS232" Id="{181e7c70-138b-446a-a6f5-34e588388885}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialComRS232
 VAR_INPUT
-	TxBuffer	: ComBuffer;
-	RxBuffer	: ComBuffer;
+	stEL6001In : EL6inData22B;
+	stEL6001Out : EL6outData22B;
 END_VAR
 VAR_OUTPUT
+	aAcceleration : ARRAY [0..2] OF REAL;
 	eReceiveErrorID	: ComError_t;
+	nReceiveCounter	: UDINT;
 END_VAR
 VAR
+	//Receive Buffer
+	fbEL6001Ctrl		: SerialLineControl;
+	TxBuffer	: ComBuffer;
+	RxBuffer	: ComBuffer;
+	//Receive Data
 	fbReceive		: ReceiveData;
-	nReceiveCounter	: UDINT;
-	prefix : ARRAY[0..1] OF BYTE;
-	receivedata : ARRAY [0..15] OF BYTE;
-	packet_ID : BYTE := 37;
-	packet_length : BYTE := 12;	
+	nPrefix : ARRAY[0..1] OF BYTE;
+	aReceiveData : ARRAY [0..15] OF BYTE;
+	nPacketID : BYTE := 37;
+	nPacketLength : BYTE := 12;	
 	
-	crc : WORD;
-	crc_check : WORD;
-	pt_crc : POINTER TO WORD;
-	crc12 : ARRAY [0..1] OF BYTE;	
-	dataArray : ARRAY[0..11] OF BYTE;
+	nCRC : WORD;
+	nCheckCRC : WORD;
+	nPointerCRC : POINTER TO WORD;
+	aCRC : ARRAY [0..1] OF BYTE;	
+	aDataArray : ARRAY[0..11] OF BYTE;
 	i : USINT;
-	acc_x : ARRAY [0..3] OF BYTE;
-	acc_y : ARRAY [0..3] OF BYTE;
-	acc_z : ARRAY [0..3] OF BYTE;
-	pt_x : POINTER TO REAL;
-    x_acc : REAL;
-	pt_y : POINTER TO REAL;
-    y_acc : REAL;
-	pt_z : POINTER TO REAL;
-    z_acc : REAL;
+	aAccX : ARRAY [0..3] OF BYTE;
+	aAccY : ARRAY [0..3] OF BYTE;
+	aAccZ : ARRAY [0..3] OF BYTE;
+	fPointerToX : POINTER TO REAL;
+    fAccX : REAL;
+	fPointerToY : POINTER TO REAL;
+    fAccY : REAL;
+	fPointerToZ : POINTER TO REAL;
+    fAccZ : REAL;
 END_VAR
-VAR CONSTANT
-	GRAVITATIONAL_ACCELERATION : REAL := 9.81;  		//in m/s^2
-END_VAR
+
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[prefix[0] := packet_ID;
-prefix[1] := packet_length;
+      <ST><![CDATA[fbEL6001Ctrl(
+	Mode:= SERIALLINEMODE_EL6_22B, 
+	pComIn:= ADR(stEL6001In), 
+	pComOut:= ADR(stEL6001Out), 
+	SizeComIn:= SIZEOF(stEL6001In), 
+	Error=> , 
+	ErrorID=> , 
+	TxBuffer:= TxBuffer, 
+	RxBuffer:= RxBuffer);
+
+nPrefix[0] := nPacketID;
+nPrefix[1] := nPacketLength;
 
 fbReceive(
 	RXbuffer:= RxBuffer,
-	pPrefix := ADR(prefix),
+	pPrefix := ADR(nPrefix),
 	LenPrefix := 2,
-	pReceiveData := ADR(receivedata),
+	pReceiveData := ADR(aReceiveData),
 	SizeReceiveData  := 16,								
 	Error => eReceiveErrorID,
-	DataReceived=>,
-	);
+	DataReceived=>);
 		
 IF fbReceive.DataReceived THEN							
 	nReceiveCounter := nReceiveCounter + 1;
 END_IF
 
-doCRC16Check1();
+doCRC16Check();
+doCalculateAccValues();
+
 
 	]]></ST>
     </Implementation>
-    <Method Name="doCRC16Check1" Id="{402d79e6-a8fb-4a7c-8d55-db08bc01f1c2}">
-      <Declaration><![CDATA[METHOD doCRC16Check1 : BOOL
+    <Method Name="doCalculateAccValues" Id="{752dfdc0-a0a9-4925-a6a6-e26264e0e3c3}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateAccValues
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nCheckCRC = nCRC THEN
+	aAccX[0] := aReceiveData[4];
+	aAccX[1] := aReceiveData[5];
+	aAccX[2] := aReceiveData[6];
+	aAccX[3] := aReceiveData[7];
+	fPointerToX := ADR(aAccX);
+	fAccX := fPointerToX^;
+	
+	aAccY[0] := aReceiveData[8];
+	aAccY[1] := aReceiveData[9];
+	aAccY[2] := aReceiveData[10];
+	aAccY[3] := aReceiveData[11];
+	fPointerToY := ADR(aAccY);
+	fAccY := fPointerToY^;
+	
+	aAccZ[0] := aReceiveData[12];
+	aAccZ[1] := aReceiveData[13];
+	aAccZ[2] := aReceiveData[14];
+	aAccZ[3] := aReceiveData[15];
+	fPointerToZ := ADR(aAccZ);
+	fAccZ := fPointerToZ^;
+END_IF
+
+aAcceleration[0] := fAccX;
+aAcceleration[1] := fAccY;
+aAcceleration[2] := fAccZ;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCRC16Check" Id="{402d79e6-a8fb-4a7c-8d55-db08bc01f1c2}">
+      <Declaration><![CDATA[METHOD PRIVATE doCRC16Check : BOOL
 VAR_INPUT
 END_VAR
 
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[FOR i:=0 TO 11 DO
-	dataArray[i] := receivedata[i+4];
+	aDataArray[i] := aReceiveData[i+4];
 END_FOR
 
 
-crc := F_DATA_TO_CRC16_CCITT(
-	pData := ADR(dataArray),
-	cbData := BYTE_TO_UDINT(packet_length),
+nCRC := F_DATA_TO_CRC16_CCITT(
+	pData := ADR(aDataArray),
+	cbData := BYTE_TO_UDINT(nPacketLength),
 	crc := 16#FFFF);
 
-crc12[0] := receivedata[2];
-crc12[1] := receivedata[3];
-pt_crc := ADR(crc12);
-crc_check := pt_crc^;]]></ST>
+aCRC[0] := aReceiveData[2];
+aCRC[1] := aReceiveData[3];
+nPointerCRC := ADR(aCRC);
+nCheckCRC := nPointerCRC^;]]></ST>
       </Implementation>
     </Method>
-    <Property Name="getAccelerationValueX" Id="{bc94098a-9a77-45c6-908e-086ed4a9c91b}">
-      <Declaration><![CDATA[PROPERTY getAccelerationValueX : REAL]]></Declaration>
-      <Get Name="Get" Id="{ba6ddbbc-cc5d-417a-8cf7-c48fe0e1a0b2}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF crc_check = crc THEN
-
-	acc_x[0] := receivedata[4];
-	acc_x[1] := receivedata[5];
-	acc_x[2] := receivedata[6];
-	acc_x[3] := receivedata[7];
-	pt_x := ADR(acc_x);
-	x_acc := pt_x^;
-END_IF
-
-getAccelerationValueX := x_acc;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="getAccelerationValueY" Id="{bf4e2282-4810-4b14-b6bd-6cc9d8487ce8}">
-      <Declaration><![CDATA[PROPERTY getAccelerationValueY : REAL]]></Declaration>
-      <Get Name="Get" Id="{5a78a6f3-4b22-4600-9d01-dc7af91cccc7}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF crc_check = crc THEN
-	
-	acc_y[0] := receivedata[8];
-	acc_y[1] := receivedata[9];
-	acc_y[2] := receivedata[10];
-	acc_y[3] := receivedata[11];
-	pt_y := ADR(acc_y);
-	y_acc := pt_y^;
-
-END_IF
-getAccelerationValueY := y_acc;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="getAccelerationValueZ" Id="{7c40e5c6-9f5b-49d3-8d6e-7d9c99c30b17}">
-      <Declaration><![CDATA[PROPERTY getAccelerationValueZ : REAL]]></Declaration>
-      <Get Name="Get" Id="{82b17f14-e3c3-4811-8412-1ca005785c16}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF crc_check = crc THEN
-	
-	acc_z[0] := receivedata[12];
-	acc_z[1] := receivedata[13];
-	acc_z[2] := receivedata[14];
-	acc_z[3] := receivedata[15];
-	pt_z := ADR(acc_z);
-	z_acc := pt_z^;
-END_IF
-
-getAccelerationValueZ := z_acc;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="getRange" Id="{5d8b256d-383b-4be5-8cb3-d89ac2615844}">
-      <Declaration><![CDATA[PROPERTY getRange : BOOL]]></Declaration>
-      <Get Name="Get" Id="{1a5ddbd8-a0d7-4852-8a30-a68e764a9d93}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF ABS(x_acc) <= 2*GRAVITATIONAL_ACCELERATION AND ABS(y_acc) <= 2*GRAVITATIONAL_ACCELERATION AND ABS(z_acc) <= 2*GRAVITATIONAL_ACCELERATION THEN
-	getRange := TRUE;
-ELSE
-	getRange := FALSE;
-END_IF]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <LineIds Name="FB_SerialComRS232">
-      <LineId Id="88" Count="0" />
-      <LineId Id="90" Count="0" />
-      <LineId Id="173" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="79" Count="0" />
-      <LineId Id="82" Count="1" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="62" Count="0" />
-      <LineId Id="287" Count="0" />
-      <LineId Id="286" Count="0" />
-      <LineId Id="32" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="207" Count="0" />
-      <LineId Id="248" Count="0" />
+      <LineId Id="341" Count="26" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="368" Count="0" />
       <LineId Id="247" Count="0" />
     </LineIds>
-    <LineIds Name="FB_SerialComRS232.doCRC16Check1">
+    <LineIds Name="FB_SerialComRS232.doCalculateAccValues">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="4" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialComRS232.doCRC16Check">
       <LineId Id="6" Count="12" />
       <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS232.getAccelerationValueX.Get">
-      <LineId Id="5" Count="7" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS232.getAccelerationValueY.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="13" Count="6" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="27" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS232.getAccelerationValueZ.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="20" Count="6" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="27" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS232.getRange.Get">
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="1" />
-      <LineId Id="9" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

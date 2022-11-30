@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
-	<Project ProjectGUID="{80694B5C-CF55-4578-8DA9-D59410FB5CAB}" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{2BE001EF-62CD-42D9-BA87-83DF3D40706C}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings MaxCpus="12" NonWinCpus="1">
 				<Cpu CpuId="11"/>
@@ -9,29 +9,26 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="4" Priority="21" CycleTime="100000" AmsPort="351" AdtTasks="true">
-					<Name>PlcTask1</Name>
-				</Task>
 			</Tasks>
 		</System>
 		<Plc>
-			<Project GUID="{E2C9F0A7-99AC-44E8-B170-F4057CAD35C7}" Name="Test PLC" PrjFilePath="Test PLC\Test PLC.plcproj" TmcFilePath="Test PLC\Test PLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Test PLC\Test PLC.tmc" TmcHash="{4C467979-DA6C-C6AC-7F83-7F82576528A5}">
-					<Name>Test PLC Instance</Name>
+			<Project GUID="{4A4DE7FD-CC54-49FF-86A7-FC75B99E60B3}" Name="Test" PrjFilePath="Test\Test.plcproj" TmcFilePath="Test\Test.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E006D2D7-9703-EBC6-ED33-1C8D000D98A8}">
+					<Name>Test Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
 						<Context>
 							<Id NeedCalleeCall="true">0</Id>
 							<Name>PlcTask</Name>
 							<ManualConfig>
-								<OTCID>#x02010040</OTCID>
+								<OTCID>#x02010030</OTCID>
 							</ManualConfig>
-							<Priority>21</Priority>
+							<Priority>20</Priority>
 							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
 					<TaskPouOids>
-						<TaskPouOid Prio="21" OTCID="#x08502001"/>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>

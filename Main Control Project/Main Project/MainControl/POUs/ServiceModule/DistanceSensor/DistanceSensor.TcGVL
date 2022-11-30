@@ -1,22 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <GVL Name="DistanceSensor" Id="{baca80ce-a208-42b3-b2b4-8a03c96bd8b9}">
-    <Declaration><![CDATA[// How to use ILD1420 Distance Sensor (digital Output) with El6021 clamp:
-//
-// 1. Add 'Tc2_SerialCom' to references
-// 2. change 'dNumOfSensors' in 'GVL_SerialBuffers' to the amount of senors connected to a Beckhoff coupler or PLC
-//		-> all variables and %I*/%Q* are automaticly adjusted to the amount of desired ILD1420 sensors
-// 3. PRG SerialComms_EL6021_ILD1420() needs to be called in MAIN 
-// 4. Objects of FB ILD1420 can now be initialized according to it's input variables 
-//		(example: ILD1420_Sensor1(RxBuffer := GVL_SerialBuffers.RxBufferEL[0]);		// init sensor 1
-//				  ILD1420_Sensor2(RxBuffer := GVL_SerialBuffers.RxBufferEL[1]);		// init sensor 2)
-// 5. Connect 'COM TxPDO-Map Inputs' and 'COM RxPDO-Map Outputs' to PLC variables
-//		HINT: Code needs be be build once in order for PLC to find all In-/Output variables
-//		HINT: ALL Inputs and Outputs (Status, Data In [0..21], Ctrl & Data Out [0..21] need to be connected, even if Tx is not needed
-{attribute 'qualified_only'}
+    <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	RxBufferEL	: ComBuffer;	// Receive data buffer; used with all receive function blocks
-	TxBufferEL	: ComBuffer;	// Transmit data buffer; used with all receive function blocks
+	stEL6021In  AT %I*	: EL6inData22B;		//**To EL6021 Inputs**
+	stEL6021Out AT %Q*	: EL6outData22B;	//**To EL6021 Outputs**
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

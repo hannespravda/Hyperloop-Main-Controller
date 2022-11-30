@@ -3,139 +3,123 @@
   <POU Name="FB_SerialComRS422" Id="{8c4f0a94-3b42-4b95-a0bb-7a0189ed27a7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialComRS422
 VAR_INPUT
-	RxBuffer 	: ComBuffer;
-	TxBuffer	: ComBuffer;
+	stReceiveData 	: EL6inData22B;
+	stTransmitData 	: EL6outData22B;
 END_VAR
 VAR_OUTPUT
+	fDistance : LREAL;
 	eReceiveErrorID	: ComError_t;
 END_VAR
 VAR
-	//Receive data
+	//Receive Buffer
+	fbEL6021Ctrl					: SerialLineControl;
+	RxBuffer 						: ComBuffer;
+	TxBuffer						: ComBuffer;
+	//Receive Data
 	fbReceiveByte					: ReceiveByte;				
-	first_three_bytes_of_rx_buffer  : ARRAY[0..2] OF BYTE;		// buffer storage for the three bytes that contain the distance information
-	uiRcvIndex						: UINT := 0;				// Counter
-
-	//decoding values
-	diDistance_As_String_Of_Bits	: DINT;
-	
-	//Output values
-	lrDistance  : LREAL := 0;
-	bInRange 	: BOOL;
+	nFirstThreeBytesOfBuffer  		: ARRAY[0..2] OF BYTE;		// buffer storage for the three bytes that contain the distance information
+	nRcvIndex						: UINT := 0;				// Counter
+	nDistanceAsStringOfBits			: DINT;
 END_VAR
 VAR CONSTANT
-	lrSMR 		: LREAL := 50.0;				// Start of Measuring Range
-	lrEMR 		: LREAL := 150.0;				// End of Measuring Range
-	lrMR  		: LREAL := lrEMR - lrSMR;		// Measuring Range
+	fSMR 		: LREAL := 50.0;				// Start of Measuring Range
+	fEMR 		: LREAL := 150.0;				// End of Measuring Range
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbReceiveByte(RXbuffer := RxBuffer, Error => eReceiveErrorID);
+      <ST><![CDATA[fbEL6021Ctrl(
+			Mode:= SERIALLINEMODE_EL6_22B,
+			pComIn:= ADR(stReceiveData),
+			pComOut:= ADR(stTransmitData),
+			SizeComIn:= SIZEOF(stReceiveData),
+			Error=>,
+			ErrorID=>,
+			TxBuffer:=TxBuffer,
+			RxBuffer:=RxBuffer,);
 
-WHILE fbReceiveByte.ByteReceived AND (uiRcvIndex <= SIZEOF(first_three_bytes_of_rx_buffer)) DO
+fbReceiveByte(RXbuffer := RxBuffer, Error => eReceiveErrorID);
+
+WHILE fbReceiveByte.ByteReceived AND (nRcvIndex <= SIZEOF(nFirstThreeBytesOfBuffer)) DO
 	fbReceiveByte(RXbuffer := RxBuffer);
 	IF (fbReceiveByte.ReceivedByte.7) = 0 THEN
-		first_three_bytes_of_rx_buffer[uiRcvIndex] := fbReceiveByte.ReceivedByte;
-		uiRcvIndex := uiRcvIndex + 1;
+		nFirstThreeBytesOfBuffer[nRcvIndex] := fbReceiveByte.ReceivedByte;
+		nRcvIndex := nRcvIndex + 1;
 	ELSE
-		first_three_bytes_of_rx_buffer[2] := fbReceiveByte.ReceivedByte;
-		uiRcvIndex	:= 0;
+		nFirstThreeBytesOfBuffer[2] := fbReceiveByte.ReceivedByte;
+		nRcvIndex	:= 0;
 	END_IF
 END_WHILE
 
-doSortBits();
+doSortBits(nByteBuffer:=nFirstThreeBytesOfBuffer);
+doConvertToDistanceValue(nBitString:=nDistanceAsStringOfBits, fMax:=fEMR, fMin:=fSMR);
+
 
 
 
 ]]></ST>
     </Implementation>
-    <Method Name="doSortBits" Id="{8d19dca6-c1dd-418d-8b4b-45882b11fbb2}">
-      <Declaration><![CDATA[METHOD doSortBits
+    <Method Name="doConvertToDistanceValue" Id="{331c485d-7840-4e25-8319-f55a586a5f0d}">
+      <Declaration><![CDATA[METHOD PRIVATE doConvertToDistanceValue
 VAR_INPUT
+	nBitString : DINT;
+	fMax : LREAL;
+	fMIn : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fDistance := 50.0 + 1.0/100.0 * (102.0/65520.0 * DINT_TO_LREAL(nBitString) - 1.0) * (fMax - fMIn);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSortBits" Id="{8d19dca6-c1dd-418d-8b4b-45882b11fbb2}">
+      <Declaration><![CDATA[METHOD PRIVATE doSortBits
+VAR_INPUT
+	nByteBuffer : ARRAY [0..2] OF BYTE;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Rearrange L,M,H Refer Pg 85. We seperate the distance bits from the error, transmissions, ect. -bits in this step.
 // MemCopy is a possilbe way to simplify code. But since we need to work with bit and not buyts, this is actually the more readable code.
 // Also TwinCAT demands CONST values when working with bit handeling, so loops are also not possible.
-diDistance_As_String_Of_Bits.0 	:= first_three_bytes_of_rx_buffer[0].0;
-diDistance_As_String_Of_Bits.1 	:= first_three_bytes_of_rx_buffer[0].1;
-diDistance_As_String_Of_Bits.2 	:= first_three_bytes_of_rx_buffer[0].2;
-diDistance_As_String_Of_Bits.3 	:= first_three_bytes_of_rx_buffer[0].3;
-diDistance_As_String_Of_Bits.4 	:= first_three_bytes_of_rx_buffer[0].4;
-diDistance_As_String_Of_Bits.5 	:= first_three_bytes_of_rx_buffer[0].5;
-diDistance_As_String_Of_Bits.6 	:= first_three_bytes_of_rx_buffer[1].0;
-diDistance_As_String_Of_Bits.7 	:= first_three_bytes_of_rx_buffer[1].1;
-diDistance_As_String_Of_Bits.8 	:= first_three_bytes_of_rx_buffer[1].2;
-diDistance_As_String_Of_Bits.9 	:= first_three_bytes_of_rx_buffer[1].3;
-diDistance_As_String_Of_Bits.10 := first_three_bytes_of_rx_buffer[1].4;
-diDistance_As_String_Of_Bits.11	:= first_three_bytes_of_rx_buffer[1].5;
-diDistance_As_String_Of_Bits.12 := first_three_bytes_of_rx_buffer[2].0;
-diDistance_As_String_Of_Bits.13 := first_three_bytes_of_rx_buffer[2].1;
-diDistance_As_String_Of_Bits.14 := first_three_bytes_of_rx_buffer[2].2;
-diDistance_As_String_Of_Bits.15 := first_three_bytes_of_rx_buffer[2].3;]]></ST>
+nDistanceAsStringOfBits.0 	:= nByteBuffer[0].0;
+nDistanceAsStringOfBits.1 	:= nByteBuffer[0].1;
+nDistanceAsStringOfBits.2 	:= nByteBuffer[0].2;
+nDistanceAsStringOfBits.3 	:= nByteBuffer[0].3;
+nDistanceAsStringOfBits.4 	:= nByteBuffer[0].4;
+nDistanceAsStringOfBits.5 	:= nByteBuffer[0].5;
+nDistanceAsStringOfBits.6 	:= nByteBuffer[1].0;
+nDistanceAsStringOfBits.7 	:= nByteBuffer[1].1;
+nDistanceAsStringOfBits.8 	:= nByteBuffer[1].2;
+nDistanceAsStringOfBits.9 	:= nByteBuffer[1].3;
+nDistanceAsStringOfBits.10 	:= nByteBuffer[1].4;
+nDistanceAsStringOfBits.11	:= nByteBuffer[1].5;
+nDistanceAsStringOfBits.12 	:= nByteBuffer[2].0;
+nDistanceAsStringOfBits.13 	:= nByteBuffer[2].1;
+nDistanceAsStringOfBits.14 	:= nByteBuffer[2].2;
+nDistanceAsStringOfBits.15 	:= nByteBuffer[2].3;]]></ST>
       </Implementation>
     </Method>
-    <Property Name="getDistanceValue" Id="{d51fdc18-3473-46da-b855-91bef75b52b6}">
-      <Declaration><![CDATA[PROPERTY getDistanceValue : LREAL]]></Declaration>
-      <Get Name="Get" Id="{47bceb63-392d-486a-a0d4-80d03e54c79c}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[lrDistance := 50.0 + 1.0/100.0 * (102.0/65520.0 * DINT_TO_LREAL(diDistance_As_String_Of_Bits) - 1.0) * lrMR;
-
-getDistanceValue := lrDistance;
-
-]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="getRange" Id="{caffcb8c-b2d5-4dfc-a215-39a1a4d64ad0}">
-      <Declaration><![CDATA[PROPERTY getRange : BOOL]]></Declaration>
-      <Get Name="Get" Id="{a1dd8fee-1e80-48e3-96a4-fac2df402db3}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF lrDistance < lrSMR OR lrDistance > lrEMR THEN
-	bInRange := FALSE;
-ELSE
-	bInRange := TRUE;
-END_IF
-
-getRange := bInRange;
-
-
-]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <LineIds Name="FB_SerialComRS422">
+      <LineId Id="1150" Count="7" />
+      <LineId Id="1145" Count="0" />
+      <LineId Id="1149" Count="0" />
       <LineId Id="1007" Count="0" />
       <LineId Id="1063" Count="0" />
       <LineId Id="1009" Count="9" />
-      <LineId Id="1106" Count="0" />
-      <LineId Id="1038" Count="2" />
+      <LineId Id="1141" Count="0" />
+      <LineId Id="1140" Count="0" />
+      <LineId Id="1144" Count="0" />
+      <LineId Id="1133" Count="0" />
+      <LineId Id="1039" Count="1" />
       <LineId Id="1048" Count="0" />
       <LineId Id="346" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialComRS422.doConvertToDistanceValue">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_SerialComRS422.doSortBits">
       <LineId Id="8" Count="17" />
       <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS422.getDistanceValue.Get">
-      <LineId Id="7" Count="0" />
-      <LineId Id="15" Count="1" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_SerialComRS422.getRange.Get">
-      <LineId Id="6" Count="1" />
-      <LineId Id="9" Count="1" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="12" Count="1" />
-      <LineId Id="11" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

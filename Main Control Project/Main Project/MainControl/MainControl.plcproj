@@ -17,16 +17,16 @@
     <LibraryReferences>{5244a443-ac85-4dec-8b83-2c54b66fa8b8}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\eColor.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\eConditionCheck.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eErrorMessages.TcDUT">
+    <Compile Include="DUTs\eGuidanceSystemSTM.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eWarningMessages.TcDUT">
+    <Compile Include="DUTs\eLEDColor.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\eLEDMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\eErrorHandlingSTM.TcDUT">
@@ -35,13 +35,13 @@
     <Compile Include="DUTs\eHighLevelState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eLightMode.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\eMainStateMachine.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eErrorList.TcDUT">
+    <Compile Include="DUTs\eOperationMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\eServiceModuleSTM.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Schnittstelle\eControlArchitectures.TcDUT">
@@ -135,16 +135,13 @@
     <Compile Include="POUs\Guidance\AccelerationSensor\AccelerationSensor.TcGVL">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Guidance\AccelerationSensor\BackgroundRS232.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Guidance\AccelerationSensor\BackgroundEL6001.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Guidance\AccelerationSensor\FB_AccelerationSensor.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\Guidance\AccelerationSensor\FB_SerialComRS232.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Guidance\FB_AccelerationSensor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Guidance\FB_GuidanceController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Levitation\DUTs\E_FsmError.TcDUT">
@@ -162,46 +159,50 @@
     <Compile Include="POUs\Levitation\DUTs\sus_bus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\getFmagnetic.TcPOU">
+    <Compile Include="POUs\Levitation\FB_EqualizingController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\getTrajectory.TcPOU">
+    <Compile Include="POUs\Levitation\FB_TrajectoryGenerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\LevitationEqualizingController.TcPOU">
+    <Compile Include="POUs\Levitation\outdated\getFmagnetic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\MAIN.TcPOU">
+    <Compile Include="POUs\Levitation\outdated\getTrajectory.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\runIpcFsm.TcPOU">
+    <Compile Include="POUs\Levitation\outdated\LevitationEqualizingController.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Levitation\outdated\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Levitation\outdated\runIpcFsm.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MainControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\ServiceModule\BoxLED\FB_BoxLED.TcPOU">
+    <Compile Include="POUs\ServiceModule\BoxLED\BoxLED.TcGVL">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\ServiceModule\DistanceSensor\BackgroundEL6021.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\ServiceModule\DistanceSensor\BackgroundRS422.TcPOU">
-      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="POUs\ServiceModule\DistanceSensor\DistanceSensor.TcGVL">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\ServiceModule\DistanceSensor\FB_DistanceSensor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\ServiceModule\DistanceSensor\FB_SerialComRS422.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\ServiceModule\RGB LED\FB_RGBController.TcPOU">
+    <Compile Include="POUs\ServiceModule\FB_BoxLED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\ServiceModule\RGB LED\RGBController.TcGVL">
+    <Compile Include="POUs\ServiceModule\FB_DistanceSensor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\ServiceModule\FB_RGBLED.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\ServiceModule\RGBLED\RGBLED.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -216,10 +217,11 @@
     <Folder Include="POUs\Levitation" />
     <Folder Include="POUs\Guidance" />
     <Folder Include="POUs\Levitation\DUTs" />
+    <Folder Include="POUs\Levitation\outdated" />
     <Folder Include="POUs\ServiceModule" />
     <Folder Include="POUs\ServiceModule\DistanceSensor" />
     <Folder Include="POUs\ServiceModule\BoxLED" />
-    <Folder Include="POUs\ServiceModule\RGB LED" />
+    <Folder Include="POUs\ServiceModule\RGBLED" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

@@ -3,21 +3,19 @@
   <POU Name="MAIN" Id="{2ff7b83e-9d69-4049-8b2d-19c87bd75e82}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbRGBController : FB_RGBController;
+	fbBoxLED : FB_BoxLED;
+	
 
-	rL
-	i : INT;			//[0..100]%
-	bNeg : BOOL;
-	bPos : BOOL;
-	berror : BOOL;
-	lrTest : LREAL;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[fbRGBController();
+fbBoxLED();
 			]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="70" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="88" Count="0" />
       <LineId Id="61" Count="0" />
     </LineIds>
   </POU>

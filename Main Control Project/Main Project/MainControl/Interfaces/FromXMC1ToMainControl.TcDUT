@@ -25,8 +25,8 @@ STRUCT
 	
 	EM_origE_SafetyCounter				: UDINT;
 	EM_origE_State						: USINT;
-	EM_origE_WarnBits					: ARRAY [0..10] OF UDINT;
-	EM_origE_ErrBits					: ARRAY [0..10] OF UDINT;
+	EM_origE_WarnBits					: UDINT;
+	EM_origE_ErrBits					: UDINT;
 	EM_origE_Timestamp					: UDINT;
 	
 	EM_origE_LoggingCounterIn			: USINT;

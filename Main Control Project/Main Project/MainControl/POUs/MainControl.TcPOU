@@ -8,28 +8,24 @@ VAR
 	fbLevitationSystem : FB_LevitationSystem;
 	fbGuidanceSystem : FB_GuidanceSystem;
 	
+	stFromOperationControlToMainControl : FromOperationControlToMainControl;
+	stFromMainControlToOperationControl : FromMainControlToOperationControl;
+	
 	eMainState : eMainStateMachine := eMainStateMachine.STARTUP;
-	fbErrorTimer : TON := (PT := T#10s);
-	bTransition : BOOL;
+	
+	fbErrorTimer : TON := (PT := T#10S);
 	bStartUpError : BOOL;
+	bGoToError : BOOL;
+	
+	bOnGround : BOOL;
+
 	
 	nMode : BYTE := 0;
-
 	
-
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF eMainState = eMainStateMachine.READY OR eMainState = eMainStateMachine.OPERATIONAL THEN
-	IF fbErrorHandling.bGoToERROR THEN
-		eMainState := eMainStateMachine.ERROR;
-	ELSIF fbErrorHandling.bGoToSHUTDOWN THEN
-		eMainState := eMainStateMachine.SHUTDOWN;
-	END_IF	
-END_IF
-
-
-
+      <ST><![CDATA[fbErrorHandling();
 
 CASE eMainState OF
 	//
@@ -40,57 +36,89 @@ CASE eMainState OF
 	//
 	eMainStateMachine.READY:
 		doCallSubsystems();
-		IF fbServiceModule.eState = eHighLevelState.OPERATIONAL AND fbLevitationSystem.eState = eHighLevelState.OPERATIONAL AND fbGuidanceSystem.eState = eHighLevelState.OPERATIONAL THEN
-			bTransition := OperationControl.OC_F_start_ms;
-		ELSE
-			bTransition := FALSE;
-		END_IF
+		doActivateHighLevelSTM();
 		
-		IF bTransition THEN
-			eMainState := eMainStateMachine.OPERATIONAL;
-			bTransition := FALSE;
+		IF fbErrorHandling.getGoToERROR THEN
+			fbServiceModule.eState := eServiceModuleSTM.PreparingForError;
+		ELSE
+			fbServiceModule.eState := eServiceModuleSTM.Waiting;
 		END_IF
+
+	
+		IF fbErrorHandling.getGoToERROR THEN
+			eMainState := eMainStateMachine.ERROR;
+		ELSIF stFromOperationControlToMainControl.OM_origO_StartOperational THEN
+			eMainState := eMainStateMachine.OPERATIONAL;
+		END_IF
+
 	//
 	eMainStateMachine.OPERATIONAL:
 		doCallSubsystems();
-		IF fbServiceModule.eState = eHighLevelState.SHUTDOWN AND fbLevitationSystem.eState = eHighLevelState.SHUTDOWN AND fbGuidanceSystem.eState = eHighLevelState.SHUTDOWN THEN
-			bTransition := OperationControl.OC_F_stop_ms;
-		ELSE
-			bTransition := FALSE;
-		END_IF
 		
-		IF bTransition THEN
+		fbServiceModule.eState := eServiceModuleSTM.Running;
+		
+		
+		IF fbErrorHandling.getGoToSHUTDOWN OR stFromOperationControlToMainControl.OM_origO_StopOperational THEN
 			eMainState := eMainStateMachine.SHUTDOWN;
-			bTransition := FALSE;
+		ELSE
+			eMainState := eMainStateMachine.OPERATIONAL;
 		END_IF
 	//
 	eMainStatemachine.SHUTDOWN:
 		doCallSubsystems();
-		IF fbServiceModule.eState = eHighLevelState.READY AND fbLevitationSystem.eState = eHighLevelState.READY AND fbGuidanceSystem.eState = eHighLevelState.READY THEN
-			eMainState := eMainStateMachine.READY;
-		END_IF		
+		
+		IF fbErrorHandling.getGoToSHUTDOWN THEN
+			fbServiceModule.eState := eServiceModuleSTM.PreparingForError;
+		ELSE
+			fbServiceModule.eState := eServiceModuleSTM.PostRunning;
+		END_IF
+		
+		
+		
+		IF bOnGround THEN
+			IF fbErrorHandling.getGoToSHUTDOWN THEN
+				eMainState := eMainStateMachine.ERROR;
+			ELSE
+				eMainState := eMainStateMachine.READY;
+			END_IF
+		END_IF
 	//	
 	eMainStateMachine.ERROR:
-	IF bStartUpError THEN
-		bTransition := Operationcontrol.OC_F_error_res;
-		IF bTransition THEN
-			bStartUpError := FALSE;
-			bTransition := FALSE;
+		
+		IF stFromOperationControlToMainControl.OM_origO_AckError THEN
 			eMainState := eMainStateMachine.STARTUP;
-		ELSE
-			eMainState := eMainStateMachine.ERROR;
 		END_IF
-	ELSE
-		bTransition := Operationcontrol.OC_F_error_res;
-		IF bTransition THEN
-			bTransition := FALSE;
-			eMainState := eMainStateMachine.READY;
-		ELSE
-			eMainState := eMainStateMachine.ERROR;
-		END_IF
-	END_IF
+
 END_CASE]]></ST>
     </Implementation>
+    <Method Name="doActivateHighLevelSTM" Id="{47446e0a-b75b-4c67-8d8c-35029d1ee551}">
+      <Declaration><![CDATA[METHOD PRIVATE doActivateHighLevelSTM
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE nMode OF
+	0:	fbServiceModule.bSTMActive := TRUE;
+		fbLevitationSystem.setActive := TRUE;
+		fbGuidanceSystem.setActive := TRUE;
+	
+	1:	fbLevitationSystem.setActive := TRUE;
+		fbGuidanceSystem.setActive := TRUE;
+	
+	2:	fbServiceModule.bSTMActive := TRUE;
+		fbGuidanceSystem.setActive := TRUE;
+	
+	4:	fbServiceModule.bSTMActive := TRUE;
+		fbLevitationSystem.setActive := TRUE;
+	
+	3:	fbGuidanceSystem.setActive := TRUE;
+	
+	5:	fbLevitationSystem.setActive := TRUE;
+	
+	6:	fbServiceModule.bSTMActive := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="doCallSubsystems" Id="{c330acab-a3df-4219-8ed4-48f648a160a3}">
       <Declaration><![CDATA[METHOD doCallSubsystems
 VAR_INPUT
@@ -147,6 +175,7 @@ END_VAR
 	1:	//ServiceModule Disabled
 		IF fbLevitationSystem.eCondition = eConditionCheck.RUN AND fbGuidanceSystem.eCondition = eConditionCheck.RUN THEN
 			fbErrorTimer(IN := FALSE);
+			
 			eMainState := eMainStateMachine.READY;
 		ELSE
 			fbErrorTimer(IN := TRUE);
@@ -257,65 +286,35 @@ END_CASE
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="doDataHandling" Id="{6650b2a5-53d2-4d59-90c1-16aa8c80f746}">
+      <Declaration><![CDATA[METHOD PRIVATE doDataHandling
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="doEnableSubsystems" Id="{4402bbf9-07a3-41dd-916a-44a19b1d489b}">
       <Declaration><![CDATA[METHOD doEnableSubsystems
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[nMode.0 := FromOperationControlToMainControl.OM_origO_ServiceModuleDisabled;
-nMode.1 := FromOperationControlToMainControl.OM_origO_LevitationDisable;
-nMode.2 := FromOperationControlToMainControl.OM_origO_GuidanceDisable;]]></ST>
+        <ST><![CDATA[nMode.0 := stFromOperationControlToMainControl.OM_origO_ServiceModuleDisabled;
+nMode.1 := stFromOperationControlToMainControl.OM_origO_LevitationDisable;
+nMode.2 := stFromOperationControlToMainControl.OM_origO_GuidanceDisable;
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="MainControl">
-      <LineId Id="123" Count="0" />
-      <LineId Id="245" Count="3" />
-      <LineId Id="194" Count="0" />
-      <LineId Id="126" Count="0" />
-      <LineId Id="283" Count="0" />
-      <LineId Id="282" Count="0" />
-      <LineId Id="277" Count="0" />
-      <LineId Id="236" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="278" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="44" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="279" Count="0" />
-      <LineId Id="67" Count="1" />
-      <LineId Id="71" Count="1" />
-      <LineId Id="69" Count="0" />
-      <LineId Id="73" Count="2" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="76" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="280" Count="0" />
-      <LineId Id="83" Count="8" />
-      <LineId Id="82" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="270" Count="0" />
-      <LineId Id="281" Count="0" />
-      <LineId Id="114" Count="1" />
-      <LineId Id="111" Count="0" />
-      <LineId Id="95" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="132" Count="0" />
-      <LineId Id="135" Count="0" />
-      <LineId Id="139" Count="0" />
-      <LineId Id="185" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="141" Count="1" />
-      <LineId Id="137" Count="0" />
-      <LineId Id="211" Count="0" />
-      <LineId Id="237" Count="1" />
-      <LineId Id="240" Count="3" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="212" Count="1" />
+      <LineId Id="402" Count="63" />
+      <LineId Id="213" Count="0" />
+    </LineIds>
+    <LineIds Name="MainControl.doActivateHighLevelSTM">
+      <LineId Id="27" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="11" Count="15" />
+      <LineId Id="10" Count="0" />
     </LineIds>
     <LineIds Name="MainControl.doCallSubsystems">
       <LineId Id="7" Count="19" />
@@ -327,7 +326,9 @@ nMode.2 := FromOperationControlToMainControl.OM_origO_GuidanceDisable;]]></ST>
       <LineId Id="101" Count="11" />
       <LineId Id="100" Count="0" />
       <LineId Id="113" Count="1" />
-      <LineId Id="116" Count="11" />
+      <LineId Id="116" Count="1" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="118" Count="9" />
       <LineId Id="115" Count="0" />
       <LineId Id="131" Count="13" />
       <LineId Id="128" Count="0" />
@@ -353,9 +354,13 @@ nMode.2 := FromOperationControlToMainControl.OM_origO_GuidanceDisable;]]></ST>
       <LineId Id="66" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
+    <LineIds Name="MainControl.doDataHandling">
+      <LineId Id="5" Count="0" />
+    </LineIds>
     <LineIds Name="MainControl.doEnableSubsystems">
       <LineId Id="6" Count="1" />
       <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

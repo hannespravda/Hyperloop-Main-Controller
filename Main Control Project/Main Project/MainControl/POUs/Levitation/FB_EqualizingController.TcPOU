@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EqualizingController" Id="{1b93f9fb-b1f3-4cac-8dde-1961920761d2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EqualizingController
+VAR_OUTPUT
+	eCondition : INT;
+	nErrorID : UDINT;
+END_VAR
+VAR
+	//Local
+	fbPIDController : FB_BasicPID;
+	fPIDOutput : LREAL;
+	fzVector : ARRAY [0..3] OF LREAL;
+	nPIDErrorID : UINT;
+
+	
+	//Error Bits
+	bInvalidParamters : BIT;
+	bInvalidCycleTime : BIT;
+END_VAR
+VAR CONSTANT
+	//PID paramters
+	fSetpointValue : LREAL := 0; // Reference delta F = 0 N
+	fCtrlCycleTime : LREAL := 0.1; // Update cycle time of PID block
+	fKp : LREAL := 0.001;  // Proportional gain of PID block
+	fTn : LREAL := 1/INT_TO_LREAL(150); 
+	fTv : LREAL := 0;
+	fTd : LREAL := 0;
+	// Saturation parameter
+	fdzMax : LREAL := 0.001;
+	fdzMin : LREAL := -0.001;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Enable THEN
+	fbPIDController(fSetpointValue := fSetpointValue,
+					fActualValue := ActualDeltaFmag,
+					bReset := NOT Enable,
+					fCtrlCycleTime := fCtrlCycleTime,
+					fKp := fKp,
+					fTn := fTn,
+					fTv := fTv,
+					fTd := fTd,
+					fCtrlOutput => fPIDOutput, nErrorStatus => nPIDErrorID);
+
+					
+	// Update the dz output vector
+	fzVector[0] := (-1/INT_TO_LREAL(7900))*fPIDOutput; // TO DO : change it to lookup table function F_inv(F)
+	fzVector[1] := (1/INT_TO_LREAL(7900))*fPIDOutput;
+	fzVector[2] := (-1/INT_TO_LREAL(7900))*fPIDOutput;
+	fzVector[3] := (1/INT_TO_LREAL(7900))*fPIDOutput;	  
+	
+	
+	// Saturate the dz output vector
+	IF fzVector[0] > fdzMax THEN
+		fzVector[0] := fdzMax;
+	ELSIF fzVector[0] < fdzMin THEN
+		fzVector[0] := fdzMin;
+	END_IF
+	
+	IF fzVector[1] > fdzMax THEN
+		fzVector[1] := fdzMax;
+	ELSIF fzVector[1] < fdzMin THEN
+		fzVector[1] := fdzMin;
+	END_IF
+	
+	IF fzVector[2] > fdzMax THEN
+		fzVector[2] := fdzMax;
+	ELSIF fzVector[2] < fdzMin THEN
+		fzVector[2] := fdzMin;
+	END_IF
+	
+	IF fzVector[3] > fdzMax THEN
+		fzVector[3] := fdzMax;
+	ELSIF fzVector[3] < fdzMin THEN
+		fzVector[3] := fdzMin;
+	END_IF
+	
+ELSE
+	fzVector[0] := 0;
+	fzVector[1] := 0;
+	fzVector[2] := 0;
+	fzVector[3] := 0;
+END_IF
+
+						
+
+//ConditionCheck
+doConditionCheck();
+
+]]></ST>
+    </Implementation>
+    <Property Name="ActualDeltaFmag" Id="{d283dde5-3c8d-44fe-94db-0e1ec4b44370}">
+      <Declaration><![CDATA[PROPERTY PUBLIC ActualDeltaFmag : LREAL]]></Declaration>
+      <Get Name="Get" Id="{8d60b8fa-c6d7-4a93-8dc9-257eefb89d15}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3f153b8d-9911-456d-b816-14a4d14289d7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="doConditionCheck" Id="{adef0d41-81eb-4ec4-a7f7-51daab4c057a}">
+      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//ErrorBits
+CASE nPIDErrorID OF
+	0: 	bInvalidCycleTime := FALSE;
+		bInvalidParamters := FALSE;
+	1:	bInvalidParamters := TRUE;
+	2:	bInvalidCycleTime := TRUE;
+END_CASE
+nErrorID.0 := bInvalidParamters;
+nErrorID.1 := bInvalidCycleTime;
+
+//Condition
+IF nErrorID <> 0 THEN
+	eCondition := eConditionCheck.RUN;
+ELSE
+	eCondition := eConditionCheck.INIT;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="dzVector" Id="{0d4ac289-2214-4165-966c-dbb8bffa69f8}">
+      <Declaration><![CDATA[PROPERTY PUBLIC dzVector : ARRAY [0..3] OF LREAL]]></Declaration>
+      <Get Name="Get" Id="{13856d78-071c-4704-83b1-7383f86033d3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[dzVector := fzVector;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Enable" Id="{a56c2218-6280-4344-ae2c-7de24a34225c}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Enable : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ab66a0d3-6824-4809-9705-6a23e537e705}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{6280eb65-a77a-4887-9d9a-d072e15c53bd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_EqualizingController">
+      <LineId Id="788" Count="0" />
+      <LineId Id="791" Count="7" />
+      <LineId Id="789" Count="0" />
+      <LineId Id="808" Count="0" />
+      <LineId Id="790" Count="0" />
+      <LineId Id="810" Count="29" />
+      <LineId Id="809" Count="0" />
+      <LineId Id="875" Count="0" />
+      <LineId Id="840" Count="1" />
+      <LineId Id="843" Count="2" />
+      <LineId Id="842" Count="0" />
+      <LineId Id="714" Count="1" />
+      <LineId Id="698" Count="3" />
+      <LineId Id="293" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.ActualDeltaFmag.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.ActualDeltaFmag.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.doConditionCheck">
+      <LineId Id="13" Count="7" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.dzVector.Get">
+      <LineId Id="35" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.Enable.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.Enable.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

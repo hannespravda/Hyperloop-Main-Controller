@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{07cbdbd4-f29d-49b4-8bb2-d67835f4e601}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+
+VAR CONSTANT
+	tTIMER_TRESHOLD: TIME := T#10S;
+END_VAR
+
+VAR
+	// LOGGING 
+	fbOpenLogFile : FB_FileOpen := (sPathName:='.\logs\ipc.log', nMode:= FOPEN_MODEAPPEND OR FOPEN_MODETEXT);
+    fbPutsLogFile : FB_FilePuts;		
+	// Reference vector
+	x_ref : ARRAY[1..3] OF REAL := [0.01, 0, 32.5]; // [z_nom, v_des, I_nom]
+	z_nom : REAL := x_ref[1]; // Nominal air gap
+	v_des : REAL := x_ref[2]; // Desired vertical velocity at nominal state
+	I_nom: REAL := x_ref[3]; // Nominal current	
+	eFsmState : E_FsmState := E_FsmState.INIT; // Finite State Machine State initialization
+	eNextFsmState : E_FsmState := E_FsmState.INIT; // Next Finite State Machine State initialization
+	stEvent : ST_Event; // Finite State Machine Event definition
+	eFsmErrorStatus : E_FsmError; // Finite State Machine Error status
+	
+	fbTimer: TON := (PT:= tTIMER_TRESHOLD);
+	bTimerStart: BOOL := TRUE;
+	
+	pz_nom : POINTER TO REAL := ADR(z_nom);
+	rz_nom : REFERENCE TO REAL REF=z_nom;
+	bRunOnlyOnce: BOOL := FALSE;
+	nSizeOfLoggerMessage: UINT;
+	sLoggerMessage: STRING(100) := 'Logging Finite State Machine State';
+	tTime: TIME := T#0D0H0M0S0MS;
+	
+	// Levitation Equalizing Controller
+	fSetpointValue : LREAL := 0; // Reference delta F = 0 N
+	bReset : BOOL; // Reset flag for PID block
+	fCtrlCycleTime : LREAL := 0.1; // Update cycle time of PID block
+	fKp : LREAL := 1/1000;  // Proportional gain of PID block
+	fTn : LREAL := 1/150; 
+	fTv : LREAL := 0;
+	fTd : LREAL := 0;
+	fCtrlOutput : LREAL; // Output of PID block
+	nErrorStatus : UINT; // Error status of levitation equalizing controller
+	// Levitation equalizing controller function block initialization
+	LevEqCtrl : LevitationEqualizingController(fSetpointValue := fSetpointValue,
+											   bReset := bReset,
+                                               fCtrlCycleTime := fCtrlCycleTime,
+											   fKp := fKp,
+											   fTn := fTn,
+											   fTv := fTv,
+											   fTd := fTd);
+	fActualdF : LREAL; // Actual delta F = (F1 + F3) - (F2 + F4)
+	fdz : ARRAY[1..4] OF LREAL;	// dz output vector of levitation equalizing controller
+	// Forces
+	fFmagFL : LREAL;
+	fFmagFR : LREAL;
+	fFmagBR : LREAL;
+	fFmagBL : LREAL;
+	// Test current, airgap and magnetic force
+	fztest : LREAL;
+	fItest : LREAL;
+	fFmagtest : LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[eFsmErrorStatus := runIpcFsm(eFsmState, eNextFsmState, fbTimer, bTimerStart);
+
+fActualdF := (fFmagFL + fFmagBR) - (fFmagFR + fFmagBL);
+LevEqCtrl(fActualdF := fActualdF, fdz => fdz, nErrorStatus => nErrorStatus);
+
+fFmagtest := getFmagnetic(fItest,fztest);
+
+
+
+
+
+(*
+IF NOT bRunOnlyOnce THEN
+	eNextFsmState := FiniteStateMachine(eArgFsmState := eFsmState);
+	pz_nom^ := 0.015;
+	x_ref := GenerateTrajectory(z_meas := 0.015, v_meas := 0.01, I_meas := 40);
+	stEvent.sEventDescription := 'Start magnetic suspension';
+	UpdateEventTimestampWithSystemTime(stEvent := stEvent);
+	nSizeOfLoggerMessage := SIZEOF(sLoggerMessage);
+	ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG, 
+		  msgFmtStr := sLoggerMessage,
+		  strArg := '');
+	bRunOnlyOnce := TRUE;
+END_IF	 
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="252" Count="0" />
+      <LineId Id="587" Count="0" />
+      <LineId Id="451" Count="0" />
+      <LineId Id="507" Count="0" />
+      <LineId Id="521" Count="6" />
+      <LineId Id="520" Count="0" />
+      <LineId Id="508" Count="11" />
+      <LineId Id="320" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

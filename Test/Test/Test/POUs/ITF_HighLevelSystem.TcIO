@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="ITF_HighLevelSystem" Id="{d9a9a368-2a2c-4761-bef7-495e5c9c88bd}">
+    <Declaration><![CDATA[INTERFACE ITF_HighLevelSystem
+]]></Declaration>
+    <Method Name="doConditionCheck" Id="{13d88c0d-5cfb-414c-b085-09fd1b4bdec1}">
+      <Declaration><![CDATA[METHOD doConditionCheck : eConditionCheck
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="eCondition" Id="{1f74cffe-96df-460f-bb16-9f45f604c8f8}">
+      <Declaration><![CDATA[PROPERTY PUBLIC eCondition : eConditionCheck]]></Declaration>
+      <Get Name="Get" Id="{55e2130a-734f-438c-a5ea-aed8c7d08a8e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{d2c33a6c-2ee7-495e-baad-58716203d8d9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="nErrorID" Id="{646cf28d-12b6-4e41-aac5-c9225262184a}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT]]></Declaration>
+      <Get Name="Get" Id="{67003bea-16cc-4867-b989-2f00a77297a2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{9f3e4eb6-a725-4d9d-a80b-c124e1388481}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

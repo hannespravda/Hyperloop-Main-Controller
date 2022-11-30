@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BoxLED" Id="{7417f049-9846-439d-bd3a-1b6848121830}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	eMode : eLEDMode;
+	iBoxLED : INT;
+	
+	fbSlowTimer : TON := (PT:=T#1S);
+	fbSlowTimerReset : TON := (PT:=T#1S);
+	fbFastTimer : TON := (PT:=T#100MS);
+	fbFastTimerReset : TON := (PT:=T#100MS);
+	bTrigger : BOOL := TRUE;
+	bReset : BOOL;
+	
+	bWarning : BOOL;
+	bError : BOOL;
+END_VAR
+VAR CONSTANT
+	iMAX : INT := 32767;		//Maximum Intensity (100%)
+	iMIN : INT := 0;			//Off (0%)
+	rDimFactor : REAL := 0.01;	//Percentage (0..100%)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eMode OF
+	eLEDMode.On:
+			iBoxLED := iMAX;
+	eLEDMode.Off:
+			iBoxLED := iMIN;
+	eLEDMode.Dimmed:
+			iBoxLED := REAL_TO_INT(rDimFactor * iMAX);
+	eLEDMode.SlowFlashing:
+			fbSlowTimer(IN:=bTrigger);
+			fbSlowTimerReset(IN:=bReset);
+			IF fbSlowTimer.Q THEN
+				iBoxLED := iMAX;
+				bReset := TRUE;
+			ELSE
+				iBoxLED := iMIN;
+			END_IF
+			IF fbSlowTimerReset.Q THEN
+					bTrigger := FALSE;
+					fbSlowTimer(IN:=bTrigger);		
+					bReset := FALSE;
+					fbSlowTimerReset(IN:=bReset);
+					bTrigger := TRUE;	
+			END_IF
+	eLEDMode.FastFlashing:
+			fbFastTimer(IN:=bTrigger);
+			fbFastTimerReset(IN:=bReset);
+			IF fbFastTimer.Q THEN
+				iBoxLED := iMAX;
+				bReset := TRUE;
+			ELSE
+				iBoxLED := iMIN;
+			END_IF
+			IF fbFastTimerReset.Q THEN
+					bTrigger := FALSE;
+					fbFastTimer(IN:=bTrigger);		
+					bReset := FALSE;
+					fbFastTimerReset(IN:=bReset);
+					bTrigger := TRUE;
+			END_IF
+END_CASE
+
+GVL.iWhite := iBoxLED;
+bWarning := GVL.bRedWarning;
+bError := GVL.bRedError;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BoxLED">
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="222" Count="1" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="130" Count="2" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="137" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="166" Count="5" />
+      <LineId Id="173" Count="6" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="248" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

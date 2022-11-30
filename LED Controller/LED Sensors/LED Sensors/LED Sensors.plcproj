@@ -17,11 +17,20 @@
     <LibraryReferences>{8b79fde7-0da0-4601-a4a3-ec255c9bfba9}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\eLEDColor.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\eLEDMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_BoxLED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_RGBController.TcPOU">

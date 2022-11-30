@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Subsystem" Id="{ab3fc085-c768-42c3-a433-84834ffda54a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Subsystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	iInput : INT;
+	iOutput : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF iInput = 66 THEN
+	iOutput := 99;
+END_IF]]></ST>
+    </Implementation>
+    <Property Name="Input" Id="{f5dcf4b8-1cd4-4bb2-bd5e-69745bef9350}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'variable'}
+{attribute 'monitoring' := 'call'}
+PROPERTY Input : INT]]></Declaration>
+      <Set Name="Set" Id="{f34f6e86-a5d6-4669-9220-0574243f434e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[iInput := Input;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Output" Id="{fde8b9d3-5545-4818-bb59-260b78222f7b}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'variable'}
+{attribute 'monitoring' := 'call'}
+PROPERTY Output : INT]]></Declaration>
+      <Get Name="Get" Id="{1d42b521-2931-4dac-9731-d59a54efdaa1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Output := iOutput;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_Subsystem">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Subsystem.Input.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Subsystem.Output.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

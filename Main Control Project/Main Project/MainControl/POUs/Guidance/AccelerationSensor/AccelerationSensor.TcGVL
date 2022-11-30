@@ -2,8 +2,8 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <GVL Name="AccelerationSensor" Id="{3e4349e6-a99a-4aa8-b94a-96e30307ccae}">
     <Declaration><![CDATA[VAR_GLOBAL
-	RxBufferEL			: ComBuffer;	(* Receive data buffer; used with all receive function blocks *)
-	TxBufferEL			: ComBuffer;	(* Transmit data buffer; used with all receive function blocks *)
+	stEL6001In AT %I*	: EL6inData22B;		//**To EL6021 Inputs**
+	stEL6001Out AT %Q*	: EL6outData22B;	//**To EL6021 Outputs**
 END_VAR
 ]]></Declaration>
   </GVL>

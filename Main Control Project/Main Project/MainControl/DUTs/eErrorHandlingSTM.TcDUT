@@ -5,7 +5,7 @@
 {attribute 'strict'}
 TYPE eErrorHandlingSTM :
 (
-	CheckforErrorMessages,
+	CheckSystem,
 	ShowWarning,
 	ShowError,
 	Clear

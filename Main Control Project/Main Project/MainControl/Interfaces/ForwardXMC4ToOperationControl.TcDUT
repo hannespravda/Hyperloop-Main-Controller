@@ -25,8 +25,8 @@ STRUCT
 	
 	MO_origE_SafetyCounter					: UDINT;
 	MO_origE_State							: USINT;
-	MO_origE_WarnBits						: ARRAY [0..10] OF UDINT;
-	MO_origE_ErrBits						: ARRAY [0..10] OF UDINT;
+	MO_origE_WarnBits						: UDINT;
+	MO_origE_ErrBits						: UDINT;
 	MO_origE_Timestamp						: UDINT;
 	
 	MO_origE_LoggingCounterIn				: USINT;

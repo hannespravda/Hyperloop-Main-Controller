@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AccelerationSensor" Id="{4efed543-46dd-452e-af75-10c16bcd4501}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AccelerationSensor
+VAR_OUTPUT
+	eCondition : eConditionCheck;
+	nErrorID : UDINT;
+END_VAR
+VAR
+	//Local
+	fbEL6001	: FB_SerialComRS232;
+	aAccelerationValues : ARRAY [0..2] OF REAL;
+	fPacketRate : REAL := 0;
+	bStartPacketCount : BOOL;
+	
+	fbTimer : TON;
+	fbReset : TON;
+	fbTrigger : R_TRIG;
+	nCounter1 : UDINT;
+	nCounter2 : UDINT;
+	aPackets : ARRAY [0..9] OF UDINT;
+	i : UDINT := 0;
+	nSum : UDINT := 0;
+	bTrigger : BOOL := FALSE;
+	
+	//ErrorBits
+	bCommunicationError : BIT;
+	bOutOfRange : BIT;
+END_VAR
+VAR CONSTANT
+	fGravitationalAcceleration : REAL := 9.81;  					//in m/s^2
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6001(stEL6001In:=AccelerationSensor.stEL6001In, stEL6001Out:=AccelerationSensor.stEL6001Out);
+
+aAccelerationValues := fbEL6001.aAcceleration;
+
+doPacketCount();					//start packet count by setting bCount 'true' --> rPacketRate shows average rate per second
+
+
+//ConditionCheck
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Property Name="Acceleration" Id="{7f341113-eca5-463c-9030-ebf06298c316}">
+      <Declaration><![CDATA[PROPERTY Acceleration : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{df28e51c-b3ab-4ae5-ba7e-439352126421}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Acceleration := aAccelerationValues;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="doCheckRange" Id="{94c692bc-79f2-4b46-aa0a-622a69a512a9}">
+      <Declaration><![CDATA[METHOD PRIVATE doCheckRange : BOOL
+VAR_INPUT
+	aValues : ARRAY [0..2] OF REAL;
+	fMax : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ABS(aValues[0]) <= fMax AND ABS(aValues[1]) <= fMax AND ABS(aValues[2]) <= fMax THEN
+	doCheckRange := TRUE;
+ELSE
+	doCheckRange := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doConditionCheck" Id="{647e63f6-e249-474a-9dba-c986bca1a52e}">
+      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//ErrorBits
+IF fbEL6001.eReceiveErrorID <> COMERROR_NOERROR THEN
+	bCommunicationError := TRUE;
+ELSE
+	bCommunicationError := FALSE;
+END_IF
+
+bOutOfRange := NOT doCheckRange(aValues:=aAccelerationValues, fMax:=2*fGravitationalAcceleration);
+
+nErrorID.0 := bCommunicationError;
+nErrorID.1 := bOutOfRange;
+
+
+//Condition
+IF nErrorID <> 0 THEN
+	eCondition := eConditionCheck.INIT;
+ELSE
+	eCondition := eConditionCheck.RUN;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doPacketCount" Id="{f491d74c-1c83-4939-a57e-78d104db15c3}">
+      <Declaration><![CDATA[METHOD PRIVATE doPacketCount
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbTimer(IN := bStartPacketCount, PT := T#1S);
+fbTrigger(CLK := fbTimer.IN);
+
+IF fbTrigger.Q THEN
+	nCounter1 := fbEL6001.nReceiveCounter;
+END_IF
+
+IF fbTimer.Q THEN
+	nCounter2 := fbEL6001.nReceiveCounter;
+	aPackets[i] := nCounter2 - nCounter1;
+	nSum := nSum + aPackets[i];
+	i := i + 1;
+	bTrigger := TRUE;
+	bStartPacketCount := FALSE;
+END_IF
+
+IF i = 10 THEN
+	bTrigger := FALSE;
+	fPacketRate := (UDINT_TO_REAL(nSum) / UDINT_TO_REAL(i));
+	i := 0;
+	nSum := 0;
+END_IF
+
+fbReset(IN := bTrigger, PT := T#3S);
+IF fbReset.Q THEN
+	bStartPacketCount := TRUE;
+	bTrigger := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_AccelerationSensor">
+      <LineId Id="50" Count="1" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="361" Count="1" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="310" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.Acceleration.Get">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.doCheckRange">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.doConditionCheck">
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="21" Count="3" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_AccelerationSensor.doPacketCount">
+      <LineId Id="6" Count="3" />
+      <LineId Id="12" Count="14" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="27" Count="5" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

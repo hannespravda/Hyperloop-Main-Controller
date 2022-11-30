@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{cb0791d9-20ab-471c-89b2-d7f9c9bf5bec}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbHigh : FB_HighLevelSystem;
+	
+	FromOC : INT;
+	ToOC : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbHigh.InputsFromOC := FromOC;
+
+ToOC := fbHigh.OutputsToOC;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

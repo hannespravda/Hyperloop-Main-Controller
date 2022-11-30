@@ -6,18 +6,92 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	eCondition : eConditionCheck;
-	eState : eHighLevelState;
+	nErrorBits : UDINT;
 END_VAR
 VAR
+	fbEqualizingController : FB_EqualizingController;
+	fbTrajectoryGenerator : FB_TrajectoryGenerator;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[//High Level State Machine
+fbEqualizingController();
+fbTrajectoryGenerator();
+
+//ConditionCheck
+doConditionCheck();
 ]]></ST>
     </Implementation>
+    <Method Name="doConditionCheck" Id="{210fa747-19ea-4fa8-883d-7c90d0db456a}">
+      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Condition
+IF fbEqualizingController.eCondition = eConditionCheck.RUN THEN
+	eCondition := eConditionCheck.RUN;
+ELSE
+	eCondition := eConditionCheck.INIT;
+END_IF
+
+//ErrorBits
+nErrorBits.0 := fbEqualizingController.nErrorID.0;
+nErrorBits.1 := fbEqualizingController.nErrorID.1;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="getdzVector" Id="{1a7f0afc-b703-4abd-926e-f96190624287}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getdzVector : ARRAY [0..3] OF LREAL]]></Declaration>
+      <Get Name="Get" Id="{7cf88145-19b8-43d4-83c4-df68b4f5ad29}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getdzVector := fbEqualizingController.dzVector;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="setActive" Id="{d2bab78f-8113-4a06-8a79-899114d0cad6}">
+      <Declaration><![CDATA[PROPERTY PUBLIC setActive : BOOL]]></Declaration>
+      <Set Name="Set" Id="{9a01e2bc-4e34-488e-8cf0-aee0a9e75fe6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="setActualDeltaFmag" Id="{7c3fc475-00e7-479a-8227-796070da04eb}">
+      <Declaration><![CDATA[PROPERTY PUBLIC setActualDeltaFmag : LREAL]]></Declaration>
+      <Set Name="Set" Id="{a3707c73-798c-4ec7-b67a-6864abb8ae99}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbEqualizingController.ActualDeltaFmag := setActualDeltaFmag;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <LineIds Name="FB_LevitationSystem">
-      <LineId Id="40" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="59" Count="1" />
+      <LineId Id="71" Count="0" />
       <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.doConditionCheck">
+      <LineId Id="6" Count="8" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.getdzVector.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.setActive.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.setActualDeltaFmag.Set">
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

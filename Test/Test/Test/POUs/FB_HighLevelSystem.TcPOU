@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_HighLevelSystem" Id="{abb331e1-7dbc-4c32-8e27-840e8b78c198}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HighLevelSystem IMPLEMENTS ITF_HighLevelSystem
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbSub : FB_Subsystem;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="doConditionCheck" Id="{6411a928-d24d-49af-ab83-db46d4efcd4e}">
+      <Declaration><![CDATA[{warning 'Methodenimplementierung hinzufügen'}
+METHOD PUBLIC doConditionCheck : eConditionCheck
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{e500d94e-e145-43a5-8780-aad128ab23c5}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY PUBLIC eCondition : eConditionCheck
+]]></Declaration>
+      <Get Name="Get" Id="{aa4a8ad1-a4f2-4081-9627-73ab894a3755}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7ed00226-229b-4e0f-8fa0-05d4f7c66428}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="InputsFromOC" Id="{f1f52be5-7e43-4933-b235-803463f0b018}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'variable'}
+{attribute 'monitoring' := 'call'}
+PROPERTY InputsFromOC : INT]]></Declaration>
+      <Set Name="Set" Id="{fd2b779b-3c69-49ac-b979-bfbf078e707e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbSub.Input := InputsFromOC;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nErrorID" Id="{b4f21694-afab-4922-9136-ef2684b9a6cd}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY PUBLIC nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{4d56beb3-4fe1-4603-9b5a-5da5f090d629}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fb4871ec-5ac5-401a-9858-8bed394331b2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="OutputsToOC" Id="{663b89d4-3fa6-487d-9da8-5e7dc0db56dd}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'variable'}
+{attribute 'monitoring' := 'call'}
+PROPERTY OutputsToOC : INT]]></Declaration>
+      <Get Name="Get" Id="{6c4b38f7-7261-4e78-a4c5-6213c217ee31}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+OutputsToOC := fbSub.Output;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_HighLevelSystem">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.doConditionCheck">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.eCondition.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.eCondition.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.InputsFromOC.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.nErrorID.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.nErrorID.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.OutputsToOC.Get">
+      <LineId Id="6" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -2,158 +2,500 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_ErrorHandling" Id="{e04ced6c-c731-48e4-8d82-f7134c556dd6}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ErrorHandling
-VAR_INPUT
-	fbErrorBufferDistanceSensor : FB_ErrorBuffer;
-	fbErrorBufferAccelerationSensor1 : FB_ErrorBuffer;
-	fbErrorBufferAccelerationSensor2 : FB_ErrorBuffer;
-END_VAR
-VAR_OUTPUT
-	bGoToSHUTDOWN : BOOL;
-	bGoToERROR : BOOL;
-END_VAR
 VAR
-	eState : eErrorHandlingSTM := eErrorhandlingSTM.CheckforErrorMessages;
-	
-	fbErrorBuffer : FB_MessageBuffer;
-	fbWarningBuffer : FB_MessageBuffer;
+	nServiceModuleErrorBits : UDINT;
+	nLevitationSystemErrorBits : UDINT;
+	nGuidanceSystemErrorBits : UDINT;
 
-	eErrorMessageDistanceSensor : eErrorList := eErrorList.NoError;	
-	eErrorMessageAccelerationSensor1 : eErrorList := eErrorList.NoError;
-	eErrorMessageAccelerationSensor2 : eErrorList := eErrorList.NoError;
+	nWarningBits : UDINT;
+	nErrorBits : UDINT;
 	
-	sMessage : STRING;
-	bCriticalError : BOOL;
-	i : UDINT;
+	bForceError : BOOL := FALSE;
+	bGoToERROR : BOOL := FALSE;
+	bGoToSHUTDOWN : BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//ErrorHandlingSTM
-CASE eState OF
-	eErrorhandlingSTM.CheckforErrorMessages:
-		bGoToSHUTDOWN := FALSE;
-		bGoToERROR := FALSE;
-		IF MainControl.fbServiceModule.eCondition = eConditionCheck.READY AND MainControl.fbLevitationSystem.eCondition = eConditionCheck.READY AND MainControl.fbGuidanceSystem.eCondition = eConditionCheck.READY THEN
-			eState := eErrorhandlingSTM.CheckforErrorMessages;
-		ELSE
-			//DistanceSensor
-			IF fbErrorBufferDistanceSensor.getNumberOfMessages > 0 THEN
-				fbErrorBufferDistanceSensor.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageDistanceSensor);
-				CASE eErrorMessageDistanceSensor OF
-					eErrorList.CommunicationError:
-						sMessage := TO_STRING(eWarningMessages.DistanceSensor_CommunicationError);
-						fbWarningBuffer.AddMessage(eMessage := sMessage);
-					eErrorList.OutOfRange:
-						sMessage := TO_STRING(eWarningMessages.DistanceSensor_OutOfRange);
-						fbWarningBuffer.AddMessage(eMessage := sMessage);
-				END_CASE
-			END_IF
-			//AccelerationSensor1
-			IF fbErrorBufferAccelerationSensor1.getNumberOfMessages > 0 THEN
-				fbErrorBufferAccelerationSensor1.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageAccelerationSensor1);
-				CASE eErrorMessageAccelerationSensor1 OF
-					eErrorList.OutOfRange:
-						sMessage := TO_STRING(eWarningMessages.IMU1_OutOfRange);
-						fbWarningBuffer.AddMessage(eMessage := sMessage);
-					eErrorList.CommunicationError:
-						sMessage := TO_STRING(eErrorMessages.IMU1_CommunicationError);
-						fbErrorBuffer.AddMessage(eMessage := sMessage);	
-						bCriticalError := TRUE;	
-				END_CASE
-			END_IF
-			//AccelerationSensor2
-			IF fbErrorBufferAccelerationSensor2.getNumberOfMessages > 0 THEN
-				fbErrorBufferAccelerationSensor2.GetAndRemoveErrorMessage(eErrorMessage => eErrorMessageAccelerationSensor2);
-				CASE eErrorMessageAccelerationSensor2 OF
-					eErrorList.OutOfRange:
-						sMessage := TO_STRING(eWarningMessages.IMU2_OutOfRange);
-						fbWarningBuffer.AddMessage(eMessage := sMessage);
-					eErrorList.CommunicationError:
-						sMessage := TO_STRING(eErrorMessages.IMU2_CommunicationError);
-						fbErrorBuffer.AddMessage(eMessage := sMessage);	
-						bCriticalError := TRUE;	
-				END_CASE
-			END_IF
-			
-			IF bCriticalError THEN
-				eState := eErrorHandlingSTM.ShowError;
-				bCriticalError := FALSE;
-			ELSE
-				eState := eErrorHandlingSTM.ShowWarning;
-			END_IF
-		
-		END_IF
-		
-	eErrorhandlingSTM.ShowWarning:
-		FOR i:=0 TO fbWarningBuffer.getNumberOfMessages-1 BY 1 DO
-			fbWarningBuffer.GetAndRemoveMessage(eMessage => MyGVLData.sWarningMessage[i]);
-		END_FOR
-		eState := eErrorHandlingSTM.CheckforErrorMessages;
-		
-	eErrorhandlingSTM.ShowError:
-		FOR i:=0 TO fbErrorBuffer.getNumberOfMessages-1 BY 1 DO
-			fbErrorBuffer.GetAndRemoveMessage(eMessage => MyGVLData.sErrorMessage[i]);
-		END_FOR
-		
-		IF MainControl.eMainState = eMainStateMachine.OPERATIONAL THEN
-			bGoToSHUTDOWN := TRUE;
-		ELSIF MainControl.eMainState = eMainStateMachine.READY THEN
+      <ST><![CDATA[IF MainControl.eMainState <> eMainStateMachine.ERROR THEN
+	doCallSubsystems();
+	doCheckSystem();
+	
+	IF nErrorBits <> 0 OR bForceError THEN
+		IF MainControl.eMainState = eMainStateMachine.READY THEN
 			bGoToERROR := TRUE;
+			RETURN;
+		ELSIF MainControl.eMainState = eMainStateMachine.OPERATIONAL THEN
+			bGoToSHUTDOWN := TRUE;
+			RETURN;
 		END_IF
-		eState := eErrorHandlingSTM.CheckforErrorMessages;
-END_CASE
+	ELSE
+		bGoToERROR := FALSE;
+		bGoToSHUTDOWN := FALSE;
+	END_IF
+END_IF
+
 
 
 
 ]]></ST>
     </Implementation>
+    <Method Name="doCallSubsystems" Id="{9af1a5e7-d8ae-44a5-8445-d427738fa93e}">
+      <Declaration><![CDATA[METHOD doCallSubsystems
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE MainControl.nMode OF
+	0:	MainControl.fbServiceModule();
+		MainControl.fbLevitationSystem();
+		MainControl.fbGuidanceSystem();
+		
+		nServiceModuleErrorBits := MainControl.fbServiceModule.nErrorID;
+		nLevitationSystemErrorBits := MainControl.fbLevitationSystem.nErrorBits;
+		nGuidanceSystemErrorBits := MainControl.fbGuidanceSystem.getErrorBits;
+	
+	1:	MainControl.fbLevitationSystem();
+		MainControl.fbGuidanceSystem();
+		
+		nLevitationSystemErrorBits := MainControl.fbLevitationSystem.nErrorBits;
+		nGuidanceSystemErrorBits := MainControl.fbGuidanceSystem.getErrorBits;
+	
+	2:	MainControl.fbServiceModule();
+		MainControl.fbGuidanceSystem();
+		
+		nServiceModuleErrorBits := MainControl.fbServiceModule.nErrorID;
+		nGuidanceSystemErrorBits := MainControl.fbGuidanceSystem.getErrorBits;
+	
+	4:	MainControl.fbServiceModule();
+		MainControl.fbLevitationSystem();
+
+		nServiceModuleErrorBits := MainControl.fbServiceModule.nErrorID;
+		nLevitationSystemErrorBits := MainControl.fbLevitationSystem.nErrorBits;
+	
+	3:	MainControl.fbGuidanceSystem();
+		
+		nGuidanceSystemErrorBits := MainControl.fbGuidanceSystem.getErrorBits;
+	
+	5:	MainControl.fbLevitationSystem();
+		
+		nLevitationSystemErrorBits := MainControl.fbLevitationSystem.nErrorBits;
+	
+	6:	MainControl.fbServiceModule();
+		
+		nServiceModuleErrorBits := MainControl.fbServiceModule.nErrorID;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCheckSystem" Id="{7be6fb18-b04e-4657-9fe8-376c8d10b165}">
+      <Declaration><![CDATA[METHOD doCheckSystem
+VAR_INPUT
+END_VAR
+VAR	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE MainControl.nMode OF
+	0:	//All Enabled
+		IF MainControl.fbServiceModule.eCondition = eConditionCheck.RUN AND MainControl.fbLevitationSystem.eCondition = eConditionCheck.RUN AND MainControl.fbGuidanceSystem.getCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.0 := nServiceModuleErrorBits.0;
+			nWarningBits.1 := nServiceModuleErrorBits.1;
+			nWarningBits.2 := nServiceModuleErrorBits.2;
+			nWarningBits.3 := nServiceModuleErrorBits.3;
+			nWarningBits.4 := nServiceModuleErrorBits.4;
+			nWarningBits.5 := nServiceModuleErrorBits.5;
+			nWarningBits.6 := nServiceModuleErrorBits.6;
+			nWarningBits.7 := nServiceModuleErrorBits.7;
+			nWarningBits.8 := nServiceModuleErrorBits.8;
+			nWarningBits.9 := nServiceModuleErrorBits.9;
+			
+			nWarningBits.10 := nLevitationSystemErrorBits.0;
+			nWarningBits.11 := nLevitationSystemErrorBits.1;
+			
+			nWarningBits.12 := nGuidanceSystemErrorBits.0;
+			nWarningBits.13 := nGuidanceSystemErrorBits.1;
+			nWarningBits.14 := nGuidanceSystemErrorBits.2;
+			nWarningBits.15 := nGuidanceSystemErrorBits.3;
+			
+			//ErrorBits
+			nErrorBits.0 := nLevitationSystemErrorBits.2;
+			nErrorBits.1 := nLevitationSystemErrorBits.3;
+			nErrorBits.2 := nLevitationSystemErrorBits.4;
+			nErrorBits.3 := nLevitationSystemErrorBits.5;
+			nErrorBits.4 := nLevitationSystemErrorBits.6;
+			nErrorBits.5 := nLevitationSystemErrorBits.7;
+			nErrorBits.6 := nLevitationSystemErrorBits.8;
+			nErrorBits.7 := nLevitationSystemErrorBits.9;
+			
+			nErrorBits.8 := nGuidanceSystemErrorBits.4;
+			nErrorBits.9 := nGuidanceSystemErrorBits.5;
+			nErrorBits.10 := nGuidanceSystemErrorBits.6;
+			nErrorBits.11 := nGuidanceSystemErrorBits.7;
+		END_IF
+		
+	1:	//ServiceModule Disabled
+		IF MainControl.fbLevitationSystem.eCondition = eConditionCheck.RUN AND MainControl.fbGuidanceSystem.getCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits			
+			nWarningBits.10 := nLevitationSystemErrorBits.0;
+			nWarningBits.11 := nLevitationSystemErrorBits.1;
+			
+			nWarningBits.12 := nGuidanceSystemErrorBits.0;
+			nWarningBits.13 := nGuidanceSystemErrorBits.1;
+			nWarningBits.14 := nGuidanceSystemErrorBits.2;
+			nWarningBits.15 := nGuidanceSystemErrorBits.3;
+			
+			//ErrorBits
+			nErrorBits.0 := nLevitationSystemErrorBits.2;
+			nErrorBits.1 := nLevitationSystemErrorBits.3;
+			nErrorBits.2 := nLevitationSystemErrorBits.4;
+			nErrorBits.3 := nLevitationSystemErrorBits.5;
+			nErrorBits.4 := nLevitationSystemErrorBits.6;
+			nErrorBits.5 := nLevitationSystemErrorBits.7;
+			nErrorBits.6 := nLevitationSystemErrorBits.8;
+			nErrorBits.7 := nLevitationSystemErrorBits.9;
+			
+			nErrorBits.8 := nGuidanceSystemErrorBits.4;
+			nErrorBits.9 := nGuidanceSystemErrorBits.5;
+			nErrorBits.10 := nGuidanceSystemErrorBits.6;
+			nErrorBits.11 := nGuidanceSystemErrorBits.7;
+		END_IF
+		
+	2: //Levitation Disabled
+		IF MainControl.fbServiceModule.eCondition = eConditionCheck.RUN AND MainControl.fbGuidanceSystem.getCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.0 := nServiceModuleErrorBits.0;
+			nWarningBits.1 := nServiceModuleErrorBits.1;
+			nWarningBits.2 := nServiceModuleErrorBits.2;
+			nWarningBits.3 := nServiceModuleErrorBits.3;
+			nWarningBits.4 := nServiceModuleErrorBits.4;
+			nWarningBits.5 := nServiceModuleErrorBits.5;
+			nWarningBits.6 := nServiceModuleErrorBits.6;
+			nWarningBits.7 := nServiceModuleErrorBits.7;
+			nWarningBits.8 := nServiceModuleErrorBits.8;
+			nWarningBits.9 := nServiceModuleErrorBits.9;
+						
+			nWarningBits.12 := nGuidanceSystemErrorBits.0;
+			nWarningBits.13 := nGuidanceSystemErrorBits.1;
+			nWarningBits.14 := nGuidanceSystemErrorBits.2;
+			nWarningBits.15 := nGuidanceSystemErrorBits.3;
+			
+			//ErrorBits			
+			nErrorBits.8 := nGuidanceSystemErrorBits.4;
+			nErrorBits.9 := nGuidanceSystemErrorBits.5;
+			nErrorBits.10 := nGuidanceSystemErrorBits.6;
+			nErrorBits.11 := nGuidanceSystemErrorBits.7;
+		END_IF
+
+	4: //Guidance Disabled	
+		IF MainControl.fbServiceModule.eCondition = eConditionCheck.RUN AND MainControl.fbLevitationSystem.eCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.0 := nServiceModuleErrorBits.0;
+			nWarningBits.1 := nServiceModuleErrorBits.1;
+			nWarningBits.2 := nServiceModuleErrorBits.2;
+			nWarningBits.3 := nServiceModuleErrorBits.3;
+			nWarningBits.4 := nServiceModuleErrorBits.4;
+			nWarningBits.5 := nServiceModuleErrorBits.5;
+			nWarningBits.6 := nServiceModuleErrorBits.6;
+			nWarningBits.7 := nServiceModuleErrorBits.7;
+			nWarningBits.8 := nServiceModuleErrorBits.8;
+			nWarningBits.9 := nServiceModuleErrorBits.9;
+			
+			nWarningBits.10 := nLevitationSystemErrorBits.0;
+			nWarningBits.11 := nLevitationSystemErrorBits.1;
+			
+			//ErrorBits
+			nErrorBits.0 := nLevitationSystemErrorBits.2;
+			nErrorBits.1 := nLevitationSystemErrorBits.3;
+			nErrorBits.2 := nLevitationSystemErrorBits.4;
+			nErrorBits.3 := nLevitationSystemErrorBits.5;
+			nErrorBits.4 := nLevitationSystemErrorBits.6;
+			nErrorBits.5 := nLevitationSystemErrorBits.7;
+			nErrorBits.6 := nLevitationSystemErrorBits.8;
+			nErrorBits.7 := nLevitationSystemErrorBits.9;
+		END_IF
+		
+	3: //ServiceModule and Levitation Disabled
+		IF MainControl.fbGuidanceSystem.getCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.12 := nGuidanceSystemErrorBits.0;
+			nWarningBits.13 := nGuidanceSystemErrorBits.1;
+			nWarningBits.14 := nGuidanceSystemErrorBits.2;
+			nWarningBits.15 := nGuidanceSystemErrorBits.3;
+			
+			//ErrorBits
+			nErrorBits.8 := nGuidanceSystemErrorBits.4;
+			nErrorBits.9 := nGuidanceSystemErrorBits.5;
+			nErrorBits.10 := nGuidanceSystemErrorBits.6;
+			nErrorBits.11 := nGuidanceSystemErrorBits.7;
+		END_IF
+		
+	5: //ServiceModule and Guidance Disabled
+		IF MainControl.fbLevitationSystem.eCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.10 := nLevitationSystemErrorBits.0;
+			nWarningBits.11 := nLevitationSystemErrorBits.1;
+			
+			//ErrorBits
+			nErrorBits.0 := nLevitationSystemErrorBits.2;
+			nErrorBits.1 := nLevitationSystemErrorBits.3;
+			nErrorBits.2 := nLevitationSystemErrorBits.4;
+			nErrorBits.3 := nLevitationSystemErrorBits.5;
+			nErrorBits.4 := nLevitationSystemErrorBits.6;
+			nErrorBits.5 := nLevitationSystemErrorBits.7;
+			nErrorBits.6 := nLevitationSystemErrorBits.8;
+			nErrorBits.7 := nLevitationSystemErrorBits.9;
+		END_IF
+		
+	6: //Levitation and Guidance Disabled
+		IF MainControl.fbServiceModule.eCondition = eConditionCheck.RUN THEN
+			nWarningBits := 0;
+			nErrorBits := 0;
+		ELSE
+			//WarningBits
+			nWarningBits.0 := nServiceModuleErrorBits.0;
+			nWarningBits.1 := nServiceModuleErrorBits.1;
+			nWarningBits.2 := nServiceModuleErrorBits.2;
+			nWarningBits.3 := nServiceModuleErrorBits.3;
+			nWarningBits.4 := nServiceModuleErrorBits.4;
+			nWarningBits.5 := nServiceModuleErrorBits.5;
+			nWarningBits.6 := nServiceModuleErrorBits.6;
+			nWarningBits.7 := nServiceModuleErrorBits.7;
+			nWarningBits.8 := nServiceModuleErrorBits.8;
+			nWarningBits.9 := nServiceModuleErrorBits.9;
+			
+			//ErrorBits
+		END_IF
+		
+	7: //All Disabled
+		nWarningBits := 0;
+		nErrorBits := 0;
+END_CASE
+
+
+
+
+
+
+
+
+		
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doInitialize" Id="{4403f942-d66d-42c5-8c5d-be39c8dad589}">
+      <Declaration><![CDATA[METHOD PRIVATE doInitialize
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bGoToERROR := FALSE;
+bGoToSHUTDOWN := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="getErrBits" Id="{2a3dc626-0f8f-41d2-a9d7-af944ebb0354}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getErrBits : UDINT]]></Declaration>
+      <Get Name="Get" Id="{fc7fd2be-8c65-4a3e-b329-482e4bea3724}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getErrBits := nErrorBits;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getGoToERROR" Id="{e7642a8b-a847-4980-bb82-f34881b2acf3}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getGoToERROR : BOOL]]></Declaration>
+      <Get Name="Get" Id="{61acf6fc-2520-4b63-b5bc-6663c1e18754}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getGoToERROR := bGoToERROR;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getGoToSHUTDOWN" Id="{8a5a75ce-ba72-4d6d-a60e-9908e19978b1}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getGoToSHUTDOWN : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0e35fc0d-4b71-43e0-9fe1-ac69a4dfbf62}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getGoToSHUTDOWN := bGoToSHUTDOWN;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getWarnBits" Id="{ff4200d8-cee8-4356-bd7b-1f1fc2399c7c}">
+      <Declaration><![CDATA[PROPERTY PUBLIC getWarnBits : UDINT]]></Declaration>
+      <Get Name="Get" Id="{9a9662b1-c9bb-429c-b659-cbbf31181a74}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getWarnBits := nWarningBits;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="setForceError" Id="{07b5be14-bf72-4966-93be-5393af2607da}">
+      <Declaration><![CDATA[PROPERTY PUBLIC setForceError : BOOL]]></Declaration>
+      <Set Name="Set" Id="{6ede6734-49b7-42a6-953d-89c2c87b30c7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bForceError := setForceError;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <LineIds Name="FB_ErrorHandling">
-      <LineId Id="237" Count="0" />
-      <LineId Id="59" Count="0" />
-      <LineId Id="64" Count="0" />
-      <LineId Id="352" Count="1" />
-      <LineId Id="154" Count="1" />
-      <LineId Id="216" Count="0" />
-      <LineId Id="266" Count="2" />
-      <LineId Id="280" Count="1" />
-      <LineId Id="299" Count="1" />
-      <LineId Id="290" Count="0" />
-      <LineId Id="301" Count="1" />
-      <LineId Id="282" Count="0" />
-      <LineId Id="270" Count="3" />
-      <LineId Id="295" Count="1" />
-      <LineId Id="303" Count="1" />
-      <LineId Id="298" Count="0" />
-      <LineId Id="305" Count="1" />
-      <LineId Id="315" Count="0" />
-      <LineId Id="297" Count="0" />
-      <LineId Id="275" Count="3" />
-      <LineId Id="307" Count="6" />
-      <LineId Id="316" Count="0" />
-      <LineId Id="279" Count="0" />
-      <LineId Id="258" Count="0" />
-      <LineId Id="317" Count="2" />
-      <LineId Id="321" Count="0" />
-      <LineId Id="323" Count="1" />
-      <LineId Id="320" Count="0" />
-      <LineId Id="252" Count="0" />
-      <LineId Id="152" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="80" Count="0" />
-      <LineId Id="325" Count="0" />
-      <LineId Id="328" Count="1" />
-      <LineId Id="61" Count="0" />
-      <LineId Id="332" Count="0" />
-      <LineId Id="94" Count="0" />
-      <LineId Id="335" Count="2" />
-      <LineId Id="225" Count="0" />
-      <LineId Id="341" Count="2" />
-      <LineId Id="348" Count="1" />
-      <LineId Id="351" Count="0" />
-      <LineId Id="62" Count="0" />
-      <LineId Id="58" Count="0" />
+      <LineId Id="517" Count="0" />
+      <LineId Id="523" Count="10" />
+      <LineId Id="535" Count="2" />
+      <LineId Id="519" Count="1" />
+      <LineId Id="518" Count="0" />
+      <LineId Id="467" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.doCallSubsystems">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="12" Count="2" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="15" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="44" Count="2" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.doCheckSystem">
+      <LineId Id="72" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="227" Count="10" />
+      <LineId Id="245" Count="1" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="239" Count="2" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="250" Count="6" />
+      <LineId Id="259" Count="4" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="118" Count="1" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="279" Count="20" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="131" Count="2" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="135" Count="1" />
+      <LineId Id="301" Count="11" />
+      <LineId Id="316" Count="5" />
+      <LineId Id="331" Count="2" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="149" Count="1" />
+      <LineId Id="334" Count="13" />
+      <LineId Id="353" Count="9" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="159" Count="2" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="163" Count="1" />
+      <LineId Id="365" Count="0" />
+      <LineId Id="380" Count="5" />
+      <LineId Id="394" Count="0" />
+      <LineId Id="396" Count="1" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="176" Count="1" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="181" Count="1" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="410" Count="1" />
+      <LineId Id="417" Count="9" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="191" Count="2" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="195" Count="1" />
+      <LineId Id="427" Count="10" />
+      <LineId Id="446" Count="1" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="205" Count="1" />
+      <LineId Id="450" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.doInitialize">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.getErrBits.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.getGoToERROR.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.getGoToSHUTDOWN.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.getWarnBits.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ErrorHandling.setForceError.Set">
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
