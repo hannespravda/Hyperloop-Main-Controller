@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4018.5">
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{A95422D7-1A59-4C9B-837B-D0BFB0A2FAD5}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6inData22B</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    KL-6xxx data structure used in the
    TwinCAT SystemManager
    (KL-6xxx version using 5 data bytes / 
     non-alternative (standard) output ) 
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>192</BitSize>
 			<SubItem>
 				<Name>Status</Name>
@@ -31,13 +29,11 @@
 		</DataType>
 		<DataType>
 			<Name GUID="{1F9459C3-B201-4C05-81A9-8EBDE100AF30}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6inData</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    KL-6xxx data structure used in the
    TwinCAT SystemManager
    (KL-6xxx version using 3 data bytes / alternative output)
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>40</BitSize>
 			<SubItem>
 				<Name>Status</Name>
@@ -64,14 +60,12 @@
 		</DataType>
 		<DataType>
 			<Name GUID="{B41AECC7-DC2B-4BCD-B703-6F20040607B3}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6outData22B</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    KL-6xxx data structure used in the
    TwinCAT SystemManager
    (KL-6xxx version using 5 data bytes / 
     non-alternative (standard) output ) 
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>192</BitSize>
 			<SubItem>
 				<Name>Ctrl</Name>
@@ -92,13 +86,11 @@
 		</DataType>
 		<DataType>
 			<Name GUID="{EB46C324-46C6-4473-8053-5631A6A6BD52}" Namespace="Tc2_SerialCom" AutoDeleteType="true">KL6outData</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    KL-6xxx data structure used in the
    TwinCAT SystemManager
    (KL-6xxx version using 3 data bytes / alternative output)
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>40</BitSize>
 			<SubItem>
 				<Name>Ctrl</Name>
@@ -125,13 +117,11 @@
 		</DataType>
 		<DataType>
 			<Name GUID="{F1A1C51C-29D9-4ACB-8F06-F16B91849423}" Namespace="Tc2_SerialCom" AutoDeleteType="true">PcComInData</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    PC COM-Port data structure used in
    the TwinCAT SystemManager. 
    (KL-6xxx emulation mode with 64 data bytes)
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>528</BitSize>
 			<SubItem>
 				<Name>SerStatus</Name>
@@ -152,13 +142,11 @@
 		</DataType>
 		<DataType>
 			<Name GUID="{DB4FA43F-EE08-412D-8836-04AA94BEA49F}" Namespace="Tc2_SerialCom" AutoDeleteType="true">PcComOutData</Name>
-			<Comment>
-				<![CDATA[ This data type is corresponding to the
+			<Comment><![CDATA[ This data type is corresponding to the
    PC COM-Port data structure used in
    the TwinCAT SystemManager. 
    (KL-6xxx emulation mode with 64 data bytes)
-]]>
-			</Comment>
+]]></Comment>
 			<BitSize>528</BitSize>
 			<SubItem>
 				<Name>SerCtrl</Name>
@@ -183,8 +171,11 @@
 		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ff000000000000ff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ff000000000000ff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000120b0000120b00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c00000c00000c00000c00000c00000c0ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c6000000c6c6c60000c0c6c6c6000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c600ffffc6c6c60000c0c6c6c600ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c6c6c6c6c6c6c60000c0c6c6c6c6c6c6808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c6000000c6c6c60000c0c6c6c6000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c6ff0000c6c6c60000c0c6c6c6ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6c6c6c6c6c6c6c6c60000c0c6c6c6c6c6c6808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6000000c6c6c60000c0c6c6c6000000808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c60000ffc6c6c60000c0c6c6c60000ff808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6c6c6c6c6c6c60000c0c6c6c6c6c6c6808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6000000c6c6c60000c0c6c6c6000000808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6c6c6c6c6c6c60000c0c6c6c6c6c6c6808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6008400c6c6c60000c0c6c6c6008400808080ff00ffff00ffff00ff007bff007bff007bff007bff007bff007bffc6c6c6c6c6c6c6c6c60000c0c6c6c6c6c6c6808080ff00ffff00ffff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{21677248-0225-4971-8790-7DD82A1E00BA}">
+	<Project ProjectGUID="{21677248-0225-4971-8790-7DD82A1E00BA}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
+			<Settings MaxCpus="12" NonWinCpus="1">
+				<Cpu CpuId="11"/>
+			</Settings>
 			<Tasks>
 				<Task Id="1" Priority="19" CycleTime="20000" AmsPort="350">
 					<Name>PlcTask_Fast</Name>
@@ -196,68 +187,80 @@
 		</System>
 		<Plc>
 			<Project GUID="{06E8E57A-99E8-4AEF-B5F4-B628A65BAC60}" Name="PLC_SerialCom_Sample1" PrjFilePath="PLC_SerialCom_Sample1\PLC_SerialCom_Sample1.plcProj" TmcFilePath="PLC_SerialCom_Sample1\PLC_SerialCom_Sample1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x0002">
-				<Instance Id="#x01010010" TcSmClass="TComPlcObjDef">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="PLC_SerialCom_Sample1\PLC_SerialCom_Sample1.tmc" TmcHash="{1817E671-5610-F4CB-8664-A75C1D8D99B8}">
 					<Name>PLC_SerialCom_Sample1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTask_Fast Inputs</Name>
 						<Var>
 							<Name>BackgroundEL.stIn_EL6001</Name>
-							<Comment>
-								<![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{A95422D7-1A59-4C9B-837B-D0BFB0A2FAD5}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
 						</Var>
 						<Var>
 							<Name>BackgroundKL.stIn_KL6001</Name>
-							<Comment>
-								<![CDATA[ linked to the KL6001 in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the KL6001 in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{1F9459C3-B201-4C05-81A9-8EBDE100AF30}" Namespace="Tc2_SerialCom">KL6inData</Type>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="2">
+					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask_Fast Outputs</Name>
 						<Var>
 							<Name>BackgroundEL.stOut_EL6001</Name>
-							<Comment>
-								<![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{B41AECC7-DC2B-4BCD-B703-6F20040607B3}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
 						</Var>
 						<Var>
 							<Name>BackgroundKL.stOut_KL6001</Name>
-							<Comment>
-								<![CDATA[ linked to the KL6001 in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the KL6001 in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{EB46C324-46C6-4473-8053-5631A6A6BD52}" Namespace="Tc2_SerialCom">KL6outData</Type>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="1">
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask_Standard Inputs</Name>
 						<Var>
 							<Name>BackgroundPcCOM.stIn_PcCom</Name>
-							<Comment>
-								<![CDATA[ linked to the port in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the port in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{F1A1C51C-29D9-4ACB-8F06-F16B91849423}" Namespace="Tc2_SerialCom">PcComInData</Type>
 						</Var>
 					</Vars>
-					<Vars VarGrpType="2">
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask_Standard Outputs</Name>
 						<Var>
 							<Name>BackgroundPcCOM.stOut_PcCom</Name>
-							<Comment>
-								<![CDATA[ linked to the port in the TwinCAT System Manager ]]>
-							</Comment>
+							<Comment><![CDATA[ linked to the port in the TwinCAT System Manager ]]></Comment>
 							<Type GUID="{DB4FA43F-EE08-412D-8836-04AA94BEA49F}" Namespace="Tc2_SerialCom">PcComOutData</Type>
 						</Var>
 					</Vars>
+					<Contexts>
+						<Context>
+							<Id NeedCalleeCall="true">0</Id>
+							<Name>PlcTask_Fast</Name>
+							<ManualConfig>
+								<OTCID>#x02010010</OTCID>
+							</ManualConfig>
+							<Priority>19</Priority>
+							<CycleTime>2000000</CycleTime>
+						</Context>
+						<Context>
+							<Id NeedCalleeCall="true">1</Id>
+							<Name>PlcTask_Standard</Name>
+							<ManualConfig>
+								<OTCID>#x02010020</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="19" OTCID="#x08502001"/>
+						<TaskPouOid Prio="20" OTCID="#x08502002"/>
+					</TaskPouOids>
 				</Instance>
 			</Project>
 		</Plc>
 		<Io>
-			<Device DevType="11" AmsPort="28673" Id="1">
+			<Device Id="1" DevType="11" AmsPort="28673">
 				<Name>Device 1 (COM Port)</Name>
 				<AddressInfo>
 					<Io>
@@ -267,9 +270,9 @@
 				<Image Id="1" AddrType="1" ImageType="3">
 					<Name>Image</Name>
 				</Image>
-				<Serial Baud="19200" Port="1016" StopBit="1" RsType="1" UPSDisableSysShutdown="true" WaitTimeToShutdown="60" DataSize="64" BufSize="4096" DataBit="8" SyncMode="true" FifoSize="16" Timeout="300"/>
+				<Serial Baud="19200" Port="1016" StopBit="1" RsType="1" UPSDisableSysShutdown="true" WaitTimeToShutdown="60" DataSize="64" BufSize="4096" DataBit="8" SyncMode="true" FifoSize="16" ComPortNo="1" Timeout="300"/>
 			</Device>
-			<Device DevType="111" DevFlags="#x0003" AmsPort="28675" AmsNetId="172.17.60.154.4.1" RemoteName="Device 3 (EtherCAT)" Id="3">
+			<Device Id="3" DevType="111" DevFlags="#x0003" AmsPort="28675" AmsNetId="172.17.60.154.4.1" RemoteName="Device 3 (EtherCAT)" InfoImageId="2">
 				<Name>Device 3 (EtherCAT)</Name>
 				<AddressInfo>
 					<Pnp>
@@ -281,11 +284,11 @@
 				<Image Id="3" AddrType="9" ImageType="3">
 					<Name>Image</Name>
 				</Image>
-				<Box BoxType="9099" Id="1">
+				<Box Id="1" BoxType="9099">
 					<Name>Term 1 (EK1100)</Name>
 					<ImageId>1000</ImageId>
 					<EtherCAT SlaveType="1" PdiType="#x0100" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x044c2c52" RevisionNo="#x00010000" PortPhys="305" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1100 EtherCAT Coupler (2A E-Bus)" Desc="EK1100" PortABoxInfo="#x00ffffff"/>
-					<Box BoxType="9101" Id="2">
+					<Box Id="2" BoxType="9101">
 						<Name>Term 2 (EL6001)</Name>
 						<ImageId>1001</ImageId>
 						<EtherCAT SlaveType="7" PdiType="#x0005" CycleMBoxPolling="true" CoeType="15" FoeType="1" VendorId="#x00000002" ProductCode="#x17713052" InfoDataAddr="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6001 Interface (RS232)" Desc="EL6001" PortABoxInfo="#x01000001">
@@ -518,26 +521,23 @@
 									<Type>USINT</Type>
 								</Entry>
 							</Pdo>
-							<EL60xxComPort BaudRate="9600" ByteSize="8" EnableRtsCts="true" LocalComPort="true" RxFifoFullThreshold="864"/>
 						</EtherCAT>
 					</Box>
-					<Box BoxType="9081" AmsPort="28928" Id="3">
+					<Box Id="3" BoxType="9081" AmsPort="28928">
 						<Name>Box 3 (BK1250)</Name>
 						<ImageId>1002</ImageId>
 						<Vars VarGrpType="1">
 							<Name>Inputs</Name>
 							<Var>
 								<Name>CouplerState</Name>
-								<Comment>
-									<![CDATA[0x0000 = No error
+								<Comment><![CDATA[0x0000 = No error
 0x0001 = K-Bus error
 0x0002 = Configuration error
 0x0010 = Outputs disabled
 0x0020 = K-Bus overrun
 0x0040 = Communication error (Inputs)
 0x0080 = Communication error (Outputs)
-]]>
-								</Comment>
+]]></Comment>
 								<Type>UINT</Type>
 								<BitOffs>504</BitOffs>
 							</Var>
@@ -546,11 +546,9 @@
 							<Name>Outputs</Name>
 							<Var>
 								<Name>CouplerCtrl</Name>
-								<Comment>
-									<![CDATA[0x0010 = Disable outputs
+								<Comment><![CDATA[0x0010 = Disable outputs
 0x0020 = Show K-Bus overrun
-]]>
-								</Comment>
+]]></Comment>
 								<Type>UINT</Type>
 								<BitOffs>504</BitOffs>
 							</Var>
@@ -641,13 +639,13 @@
 						</EtherCAT>
 					</Box>
 				</Box>
-				<EtherCAT DeviceDesc="Local Area Connection (Intel(R) 82579LM Gigabit Network Connection - Deterministic Network Enhancer Miniport)" DisplayFrmItState="false" SynUnitObjects="true"/>
+				<EtherCAT DisplayFrmItState="false" SynUnitObjects="true"/>
 			</Device>
 		</Io>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-0011-0101-1000-010110000403}" Id="#x03070020"/>
-		<MappingInfo Identifier="{00000000-0012-0101-1000-010130000403}" Id="#x03070010"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500830000403}" Id="#x02030010"/>
+		<MappingInfo Identifier="{00000000-2002-0850-0120-500810000403}" Id="#x02030020"/>
 		<OwnerA Name="TIPC^PLC_SerialCom_Sample1^PLC_SerialCom_Sample1 Instance">
 			<OwnerB Name="TIID^Device 1 (COM Port)">
 				<Link VarA="PlcTask_Standard Inputs^BackgroundPcCOM.stIn_PcCom^D" VarB="Inputs^Data1"/>

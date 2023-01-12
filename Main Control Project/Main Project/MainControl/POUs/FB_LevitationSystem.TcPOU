@@ -1,59 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="FB_LevitationSystem" Id="{45b5dcec-3c1d-41ef-adf9-89d78336b527}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LevitationSystem
+  <POU Name="FB_LevitationSystem" Id="{62be560f-4773-4be3-a5a8-e6fcaa9fdc5e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LevitationSystem IMPLEMENTS ITF_HighLevelSystem
 VAR_INPUT
+	eState : LevitationSystemSTM;
 END_VAR
 VAR_OUTPUT
-	eCondition : eConditionCheck;
-	nErrorBits : UDINT;
 END_VAR
 VAR
-	fbEqualizingController : FB_EqualizingController;
-	fbTrajectoryGenerator : FB_TrajectoryGenerator;
+	fbEqualizingControl			: FB_EqualizingController;
+	fbTrajectoryGeneratorXMC1	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC2	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC3	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC4	: FB_TrajectoryGenerator;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//High Level State Machine
-fbEqualizingController();
-fbTrajectoryGenerator();
+      <ST><![CDATA[IF eActivationStatus = ActivationStatus.Enabled THEN
+	//High Level State Machine
+	CASE eState OF
+		LevitationSystemSTM.Idling:
+			;
+			
+			
+		LevitationSystemSTM.Stationary:
+			;
+			
+			
+			
+		LevitationSystemSTM.Transitioning:
+			;
+			
+			
+			
+		LevitationSystemSTM.HoldingAirGap:
+			;
+			
+			
+			
+			
+		LevitationSystemSTM.TransitioningToZero:
+			;
+			
+			
+			
 
-//ConditionCheck
-doConditionCheck();
-]]></ST>
+	END_CASE	
+
+END_IF]]></ST>
     </Implementation>
-    <Method Name="doConditionCheck" Id="{210fa747-19ea-4fa8-883d-7c90d0db456a}">
-      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[//Condition
-IF fbEqualizingController.eCondition = eConditionCheck.RUN THEN
-	eCondition := eConditionCheck.RUN;
-ELSE
-	eCondition := eConditionCheck.INIT;
-END_IF
-
-//ErrorBits
-nErrorBits.0 := fbEqualizingController.nErrorID.0;
-nErrorBits.1 := fbEqualizingController.nErrorID.1;]]></ST>
-      </Implementation>
-    </Method>
-    <Property Name="getdzVector" Id="{1a7f0afc-b703-4abd-926e-f96190624287}">
-      <Declaration><![CDATA[PROPERTY PUBLIC getdzVector : ARRAY [0..3] OF LREAL]]></Declaration>
-      <Get Name="Get" Id="{7cf88145-19b8-43d4-83c4-df68b4f5ad29}">
+    <Property Name="bEnableCurrentController" Id="{9f1aa1b4-acf9-45de-99f9-0d549b08e346}">
+      <Declaration><![CDATA[PROPERTY PUBLIC bEnableCurrentController : BOOL]]></Declaration>
+      <Get Name="Get" Id="{6cd44314-8b54-48de-b32c-4689003d9140}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[getdzVector := fbEqualizingController.dzVector;]]></ST>
+          <ST><![CDATA[]]></ST>
         </Implementation>
       </Get>
-    </Property>
-    <Property Name="setActive" Id="{d2bab78f-8113-4a06-8a79-899114d0cad6}">
-      <Declaration><![CDATA[PROPERTY PUBLIC setActive : BOOL]]></Declaration>
-      <Set Name="Set" Id="{9a01e2bc-4e34-488e-8cf0-aee0a9e75fe6}">
+      <Set Name="Set" Id="{c9f5c3eb-1309-489a-a544-a1bb9f94793b}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -62,35 +68,400 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="setActualDeltaFmag" Id="{7c3fc475-00e7-479a-8227-796070da04eb}">
-      <Declaration><![CDATA[PROPERTY PUBLIC setActualDeltaFmag : LREAL]]></Declaration>
-      <Set Name="Set" Id="{a3707c73-798c-4ec7-b67a-6864abb8ae99}">
+    <Property Name="bEnableIControl" Id="{7af65fb1-c07f-4b3e-8659-19f239d6e8d6}">
+      <Declaration><![CDATA[PROPERTY PUBLIC bEnableIControl : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5e558d24-c22d-4c54-8de6-d2c7b28c6138}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[fbEqualizingController.ActualDeltaFmag := setActualDeltaFmag;]]></ST>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e4f3bc61-aaaf-4510-9ef2-266b9fe89579}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bEnablePControl" Id="{4b04a149-2953-451a-89bc-98591d8ccf89}">
+      <Declaration><![CDATA[PROPERTY PUBLIC bEnablePControl : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0ac5bc49-f5f5-4285-b56e-2b629642e248}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bbb9890f-3eed-4d57-9b82-fb6aa8056775}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="bTrajectoryCompleted" Id="{9ef7b94f-3f1b-49c8-a2d6-5d9ceff37f18}">
+      <Declaration><![CDATA[PROPERTY PUBLIC bTrajectoryCompleted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5f45c12e-ba03-4b17-a7ef-cf1d1da31a42}">
+        <Declaration><![CDATA[VAR
+	bTrajectoryCompletedXMC1 : BOOL;
+	bTrajectoryCompletedXMC2 : BOOL;
+	bTrajectoryCompletedXMC3 : BOOL;
+	bTrajectoryCompletedXMC4 : BOOL;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTrajectoryCompletedXMC1 := fbTrajectoryGeneratorXMC1.bTrajectoryCompleted;
+bTrajectoryCompletedXMC2 := fbTrajectoryGeneratorXMC2.bTrajectoryCompleted;
+bTrajectoryCompletedXMC3 := fbTrajectoryGeneratorXMC3.bTrajectoryCompleted;
+bTrajectoryCompletedXMC4 := fbTrajectoryGeneratorXMC4.bTrajectoryCompleted;
+
+IF bTrajectoryCompletedXMC1 AND bTrajectoryCompletedXMC2 AND bTrajectoryCompletedXMC3 AND bTrajectoryCompletedXMC4 THEN
+	bTrajectoryCompleted := TRUE;
+ELSE
+	bTrajectoryCompleted := FALSE;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{5d4fde02-7326-40bb-a5d9-c86bedd74173}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="eActivationStatus" Id="{674abe26-7281-4b44-b985-dd704144648e}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY eActivationStatus : ActivationStatus
+]]></Declaration>
+      <Get Name="Get" Id="{917609e5-6c3a-4cdd-95e2-24e5587e69fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{295b88d4-7d1e-4ac7-a92e-4e1903ef9d6b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="eCondition" Id="{01bd39e6-00b0-4a87-b944-8315fa4050a7}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY eCondition : HighLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{eabfe548-b26e-444c-9a2c-8dd71b94c621}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fECOutputZVector" Id="{e8532ec2-c741-4b7b-8b34-a86b44b03236}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fECOutputZVector : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{2886c540-a581-41eb-8c41-547e16ec48e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGActualLevAcceleration" Id="{223323b8-5081-4179-94ac-03d2f14d212b}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGActualLevAcceleration : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{ece6a36d-84a6-4ff1-aa70-63b73e8ab876}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGActualLevCurrent" Id="{0be7462b-6573-4a02-be7b-93c70a347544}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGActualLevCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{da55b11a-9cf7-456f-b1b0-48bc8d53217e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGActualLevDistance" Id="{5046c194-c4c2-41f8-a8a8-e78e72a7ded7}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGActualLevDistance : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{8dfab76a-1c56-428b-89e6-15edcc97aa13}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGActualLevVelocity" Id="{99a5e28f-d915-4b7f-a983-09fd068b463c}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGActualLevVelocity : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{504955ba-03d3-41b6-aa62-8f696fe31b5d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGDesiredLevAcceleration" Id="{c6c0ecad-e32b-4ac9-b8a8-a8279cf4720d}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevAcceleration : REAL]]></Declaration>
+      <Set Name="Set" Id="{b95cf893-e7a9-4b53-967d-79cdcb7aebb0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevDistance" Id="{a6febd5f-3b05-4eb1-9d9d-5e4337d07380}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevDistance : REAL]]></Declaration>
+      <Set Name="Set" Id="{fc744593-7ca5-461c-a06d-5180702e0bb4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevTime" Id="{6d90bcae-d970-4748-8bfb-dfd813e9b1d1}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevTime : REAL]]></Declaration>
+      <Set Name="Set" Id="{b09ee043-50b8-42f4-91a1-a1ca1123d64b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevVelocity" Id="{8c6cc0bf-9f9b-48ea-a429-1827f8b47d30}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevVelocity : REAL]]></Declaration>
+      <Set Name="Set" Id="{86213a2a-051b-4fe4-a239-c088a9b8c020}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGOutputLevAcceleration" Id="{9ff96936-9d92-4742-abdd-c6e2b715dfde}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevAcceleration : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{536765c8-6121-44b0-a510-401020398dfa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGOutputLevCurrent" Id="{749215b4-0f25-4f3a-a13e-6b0f9e0bc0db}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{3926eec6-ff0d-4850-9e8b-8f4721874900}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGOutputLevDistance" Id="{a525620f-a95c-4310-9ef4-b0706473d2dd}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevDistance : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{3f50377b-baf2-4b15-a593-ac09cb9accd1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGOutputLevForce" Id="{2edc9ced-0973-4a0f-b84f-0f8c31152fde}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevForce : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{98ec0235-6da3-4c91-a90d-c02da730a3da}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGOutputLevVelocity" Id="{3c1275c5-baab-44c5-80b7-7cd712ea869d}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevVelocity : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{b99a3ab7-405d-46c8-9f7d-bd439061c6ee}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGOutputLevVoltage" Id="{b58819ab-83fe-4f1f-80fa-54ccace675d6}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGOutputLevVoltage : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{b1fb6c7c-e8ca-41d6-96e3-9cd73edc1693}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{139cbef2-6b76-4dea-9e3e-a0544066e7ca}">
+      <Declaration><![CDATA[{warning 'Eigenschaftenimplementierung hinzufügen'}
+PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{551a494a-7956-4b5e-8fe2-d72ed847ef0c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nTGControlOption" Id="{ae1b5964-c622-40d0-a13a-10de54cbcba8}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nTGControlOption : USINT]]></Declaration>
+      <Set Name="Set" Id="{8b22dc59-4804-43dc-884d-05b1e711f3b4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
         </Implementation>
       </Set>
     </Property>
     <LineIds Name="FB_LevitationSystem">
-      <LineId Id="58" Count="0" />
-      <LineId Id="61" Count="1" />
-      <LineId Id="59" Count="1" />
-      <LineId Id="71" Count="0" />
       <LineId Id="9" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="38" Count="8" />
+      <LineId Id="51" Count="11" />
+      <LineId Id="64" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
     </LineIds>
-    <LineIds Name="FB_LevitationSystem.doConditionCheck">
-      <LineId Id="6" Count="8" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_LevitationSystem.getdzVector.Get">
+    <LineIds Name="FB_LevitationSystem.bEnableCurrentController.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_LevitationSystem.setActive.Set">
+    <LineIds Name="FB_LevitationSystem.bEnableCurrentController.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
-    <LineIds Name="FB_LevitationSystem.setActualDeltaFmag.Set">
+    <LineIds Name="FB_LevitationSystem.bEnableIControl.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bEnableIControl.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bEnablePControl.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bEnablePControl.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bTrajectoryCompleted.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bTrajectoryCompleted.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.eActivationStatus.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.eActivationStatus.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.eCondition.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fECOutputZVector.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGActualLevAcceleration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGActualLevCurrent.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGActualLevDistance.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGActualLevVelocity.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevAcceleration.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevDistance.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevTime.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevVelocity.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevAcceleration.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevCurrent.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevDistance.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevForce.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevVelocity.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGOutputLevVoltage.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.nErrorID.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.nTGControlOption.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

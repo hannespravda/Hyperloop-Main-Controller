@@ -77,7 +77,7 @@
 		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ff000000000000ff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ff000000000000ff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{21677248-0225-4971-8790-7DD82A1E00BA}" TargetNetId="5.93.125.76.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{21677248-0225-4971-8790-7DD82A1E00BA}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings MaxCpus="4" NonWinCpus="1">
 				<Cpu CpuId="3"/>
@@ -85,8 +85,8 @@
 			<Licenses IgnoreProjectLicenses="true">
 				<Target>
 					<ManualSelect>{3FF18E97-7754-401B-93FB-70544DE28A13}</ManualSelect>
-					<ManualSelect>{BCA6EE0A-9CE1-4D3F-98CA-413ABC0D94FD}</ManualSelect>
 					<ManualSelect>{66689887-CCBD-452C-AC9A-039D997C6E66}</ManualSelect>
+					<ManualSelect>{BCA6EE0A-9CE1-4D3F-98CA-413ABC0D94FD}</ManualSelect>
 					<ManualSelect>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</ManualSelect>
 				</Target>
 			</Licenses>
@@ -101,7 +101,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{06E8E57A-99E8-4AEF-B5F4-B628A65BAC60}" Name="AccelerationSensor" PrjFilePath="AccelerationSensor\AccelerationSensor.plcproj" TmcFilePath="AccelerationSensor\AccelerationSensor.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x0002">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="AccelerationSensor\AccelerationSensor.tmc" TmcHash="{C5AB26AF-7464-A4B9-50AD-B2B7824D5F73}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="AccelerationSensor\AccelerationSensor.tmc" TmcHash="{F22DD080-58A9-B698-2B5C-7CFEE9512971}">
 					<Name>AccelerationSensor Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -117,6 +117,22 @@
 						<Var>
 							<Name>BackgroundEL.stOut_EL6001</Name>
 							<Comment><![CDATA[ linked to the EL6001 in the TwinCAT System Manager ]]></Comment>
+							<Type GUID="{B41AECC7-DC2B-4BCD-B703-6F20040607B3}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
+						<Name>PlcTask_Standard Inputs</Name>
+						<Var>
+							<Name>AccelerationSensor.stEL6001In</Name>
+							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
+							<Type GUID="{A95422D7-1A59-4C9B-837B-D0BFB0A2FAD5}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
+						<Name>PlcTask_Standard Outputs</Name>
+						<Var>
+							<Name>AccelerationSensor.stEL6001Out</Name>
+							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{B41AECC7-DC2B-4BCD-B703-6F20040607B3}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
 						</Var>
 					</Vars>
@@ -148,13 +164,13 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="5.93.125.76.2.1" RemoteName="Gerät 1 (EtherCAT)" InfoImageId="2">
+			<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="10.183.66.136.2.1" RemoteName="Gerät 1 (EtherCAT)" InfoImageId="2">
 				<Name>Gerät 1 (EtherCAT)</Name>
 				<AddressInfo>
 					<Pnp>
-						<DeviceDesc>X000 (X000)</DeviceDesc>
-						<DeviceName>\DEVICE\{16F1A4AF-1187-4E5C-819B-C37AF916BA5C}</DeviceName>
-						<DeviceData>0001055d7d4d</DeviceData>
+						<DeviceDesc>Ethernet 2 (Intel(R) Ethernet Connection (16) I219-</DeviceDesc>
+						<DeviceName>\DEVICE\{EDB4A0A2-F087-4C11-A458-C1F80493A5CD}</DeviceName>
+						<DeviceData>f4a80df6803f</DeviceData>
 					</Pnp>
 				</AddressInfo>
 				<Image Id="1" AddrType="9" ImageType="3">
@@ -970,55 +986,54 @@
 		</Io>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^AccelerationSensor^AccelerationSensor Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6001)">
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 0" Size="8" OffsA="16"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 1" Size="8" OffsA="24"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 10" Size="8" OffsA="96"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 11" Size="8" OffsA="104"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 12" Size="8" OffsA="112"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 13" Size="8" OffsA="120"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 14" Size="8" OffsA="128"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 15" Size="8" OffsA="136"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 16" Size="8" OffsA="144"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 17" Size="8" OffsA="152"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 18" Size="8" OffsA="160"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 19" Size="8" OffsA="168"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 2" Size="8" OffsA="32"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 20" Size="8" OffsA="176"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 21" Size="8" OffsA="184"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 3" Size="8" OffsA="40"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 4" Size="8" OffsA="48"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 5" Size="8" OffsA="56"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 6" Size="8" OffsA="64"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 7" Size="8" OffsA="72"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 8" Size="8" OffsA="80"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Data In 9" Size="8" OffsA="88"/>
-				<Link VarA="PlcTask_Fast Inputs^BackgroundEL.stIn_EL6001" VarB="COM Inputs^Status"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Ctrl"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 0" Size="8" OffsA="16"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 1" Size="8" OffsA="24"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 10" Size="8" OffsA="96"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 11" Size="8" OffsA="104"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 12" Size="8" OffsA="112"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 13" Size="8" OffsA="120"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 14" Size="8" OffsA="128"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 15" Size="8" OffsA="136"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 16" Size="8" OffsA="144"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 17" Size="8" OffsA="152"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 18" Size="8" OffsA="160"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 19" Size="8" OffsA="168"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 2" Size="8" OffsA="32"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 20" Size="8" OffsA="176"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 21" Size="8" OffsA="184"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 3" Size="8" OffsA="40"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 4" Size="8" OffsA="48"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 5" Size="8" OffsA="56"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 6" Size="8" OffsA="64"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 7" Size="8" OffsA="72"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 8" Size="8" OffsA="80"/>
-				<Link VarA="PlcTask_Fast Outputs^BackgroundEL.stOut_EL6001" VarB="COM Outputs^Data Out 9" Size="8" OffsA="88"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 0" Size="8" OffsA="16"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 1" Size="8" OffsA="24"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 10" Size="8" OffsA="96"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 11" Size="8" OffsA="104"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 12" Size="8" OffsA="112"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 13" Size="8" OffsA="120"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 14" Size="8" OffsA="128"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 15" Size="8" OffsA="136"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 16" Size="8" OffsA="144"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 17" Size="8" OffsA="152"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 18" Size="8" OffsA="160"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 19" Size="8" OffsA="168"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 2" Size="8" OffsA="32"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 20" Size="8" OffsA="176"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 21" Size="8" OffsA="184"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 3" Size="8" OffsA="40"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 4" Size="8" OffsA="48"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 5" Size="8" OffsA="56"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 6" Size="8" OffsA="64"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 7" Size="8" OffsA="72"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 8" Size="8" OffsA="80"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 9" Size="8" OffsA="88"/>
+				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Status"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Ctrl"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 0" Size="8" OffsA="16"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 1" Size="8" OffsA="24"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 10" Size="8" OffsA="96"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 11" Size="8" OffsA="104"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 12" Size="8" OffsA="112"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 13" Size="8" OffsA="120"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 14" Size="8" OffsA="128"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 15" Size="8" OffsA="136"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 16" Size="8" OffsA="144"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 17" Size="8" OffsA="152"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 18" Size="8" OffsA="160"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 19" Size="8" OffsA="168"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 2" Size="8" OffsA="32"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 20" Size="8" OffsA="176"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 21" Size="8" OffsA="184"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 3" Size="8" OffsA="40"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 4" Size="8" OffsA="48"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 5" Size="8" OffsA="56"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 6" Size="8" OffsA="64"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 7" Size="8" OffsA="72"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 8" Size="8" OffsA="80"/>
+				<Link VarA="PlcTask_Standard Outputs^AccelerationSensor.stEL6001Out" VarB="COM Outputs^Data Out 9" Size="8" OffsA="88"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Test" Id="{0d004d85-cf62-4d44-ab7f-7558084e159f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
+VAR_INPUT
+
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	j : INT;
+	fbTest2 : FB_Test2;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Prop" Id="{cc5b34cf-ed59-4797-9329-a4ac54e5d15d}">
+      <Declaration><![CDATA[PROPERTY PUBLIC Prop : INT]]></Declaration>
+      <Get Name="Get" Id="{8e6dc78c-b80a-4229-bec9-d09633b3d81f}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Prop := j;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_Test">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Test.Prop.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

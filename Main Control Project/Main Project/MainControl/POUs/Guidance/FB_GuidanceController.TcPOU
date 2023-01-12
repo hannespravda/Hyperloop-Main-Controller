@@ -1,61 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_GuidanceController" Id="{b762347b-0b73-4a03-97c5-dc8d2cb401ab}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceController
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceController IMPLEMENTS ITF_SubSystem
 VAR_INPUT
+	eOperationMode : GuidanceControllerOperationMode;
+	bActive : BOOL;
+	
+	fDesiredDeviationFromCenterLine : REAL;
+	
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
 END_VAR
 VAR_OUTPUT
-END_VAR
-VAR
-	eCondition : eConditionCheck;
-	
-	//ErrorBits
-	bNoConnectionToXMC1 : BIT;
-	bNoConnectionToXMC2 : BIT;
-	bNoConnectionToXMC3 : BIT;
-	bNoConnectionToXMC4 : BIT;
+	fNewReferenceValueForCurrent : LREAL;
+	fNewRefrenceValueForForce : LREAL;
+	fNewreferenceValueForVoltage : LREAL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[CASE eOperationMode OF
+	GuidanceControllerOperationMode.CurrentControlled:
+		IF bActive THEN
+			doCalculateNewReferenceValueForCurrent(	fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,			//BlackBox: *Insert Guidance Controller Here and connect Output to fNewReferenceValueForCurrent*
+													fDistanceLeft1 := fDistanceLeft1,
+													fDistanceLeft2 := fDistanceLeft2,
+													fDistanceRight1 := fDistanceRight1,
+													fDistanceRight2 := fDistanceRight2,
+													fAccelerationY := fAccelerationY,
+													fCurrentLeft := fCurrentLeft,
+													fCurrentRight := fCurrentRight);
+		ELSE
+			fNewReferenceValueForCurrent := 0;
+			fNewRefrenceValueForForce := 0;
+			fNewreferenceValueForVoltage := 0;
+		END_IF
+
+	GuidanceControllerOperationMode.ForceControlled:
+		IF bActive THEN
+			doCalculateNewReferenceValueForCurrentandForce(	fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,	//BlackBox: *Insert Guidance Controller Here and connect Output to fNewReferenceValueForCurrent and fNewRefrenceValueForForce*
+															fDistanceLeft1 := fDistanceLeft1,
+															fDistanceLeft2 := fDistanceLeft2,
+															fDistanceRight1 := fDistanceRight1,
+															fDistanceRight2 := fDistanceRight2,
+															fAccelerationY := fAccelerationY,
+															fCurrentLeft := fCurrentLeft,
+															fCurrentRight := fCurrentRight,
+															fEstimatedForce := fEstimatedForce);
+		ELSE
+			fNewReferenceValueForCurrent := 0;
+			fNewRefrenceValueForForce := 0;	
+			fNewreferenceValueForVoltage := 0;														
+		END_IF
+END_CASE]]></ST>
     </Implementation>
-    <Property Name="getErrorBits" Id="{d4fcf835-b458-46eb-981e-25fdd3e9b530}">
-      <Declaration><![CDATA[PROPERTY PUBLIC getErrorBits : UDINT]]></Declaration>
-      <Get Name="Get" Id="{93cb6893-f33f-44b3-a6c1-fdd7cc87a2c7}">
+    <Method Name="doCalculateNewReferenceValueForCurrent" Id="{0266ba02-b1c4-4402-b0b0-9dcacc0680af}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrent
+VAR_INPUT
+	fDesiredDeviationFromCenterLine : LREAL;
+	fDistanceLeft1 : LREAL;
+	fDistanceLeft2 : LREAL;
+	fDistanceRight1 : LREAL;
+	fDistanceRight2 : LREAL;
+	fAccelerationY : LREAL;
+	fCurrentLeft : LREAL;
+	fCurrentRight : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCalculateNewReferenceValueForCurrentandForce" Id="{0a2a5b17-8f04-42d3-8d30-42ae6c7495e1}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrentandForce
+VAR_INPUT
+	fDesiredDeviationFromCenterLine : LREAL;
+	fDistanceLeft1 : LREAL;
+	fDistanceLeft2 : LREAL;
+	fDistanceRight1 : LREAL;
+	fDistanceRight2 : LREAL;
+	fAccelerationY : LREAL;
+	fCurrentLeft : LREAL;
+	fCurrentRight : LREAL;
+	fEstimatedForce : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{42ce8d76-2444-4e2e-9c2b-69dafda1c213}">
+      <Declaration><![CDATA[PROPERTY PUBLIC eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{5f6e61b5-784b-4549-bf76-84d3b26a008c}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[
-
-
-getErrorBits.0 := bNoConnectionToXMC1;
-getErrorBits.1 := bNoConnectionToXMC2;
-getErrorBits.2 := bNoConnectionToXMC3;
-getErrorBits.3 := bNoConnectionToXMC4;]]></ST>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="setOperationMode" Id="{55ec2b6b-3216-4db4-8f9f-e85f6c9fd494}">
-      <Declaration><![CDATA[PROPERTY PUBLIC setOperationMode : eOperationMode]]></Declaration>
-      <Set Name="Set" Id="{83ecf48f-df13-45b8-b986-d9d5f53a92bf}">
+    <Property Name="nErrorID" Id="{d5c14b2e-f433-4c47-aa2a-9638e3371bc7}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{e3894b7e-9e1b-4973-a434-6fa91e4d3314}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[nErrorID := 0;]]></ST>
         </Implementation>
-      </Set>
+      </Get>
     </Property>
     <LineIds Name="FB_GuidanceController">
       <LineId Id="9" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="74" Count="7" />
+      <LineId Id="130" Count="2" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="90" Count="6" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="44" Count="0" />
     </LineIds>
-    <LineIds Name="FB_GuidanceController.getErrorBits.Get">
-      <LineId Id="5" Count="2" />
+    <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrent">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrentandForce">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.eCondition.Get">
+      <LineId Id="5" Count="3" />
       <LineId Id="2" Count="0" />
-      <LineId Id="8" Count="2" />
     </LineIds>
-    <LineIds Name="FB_GuidanceController.setOperationMode.Set">
+    <LineIds Name="FB_GuidanceController.nErrorID.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

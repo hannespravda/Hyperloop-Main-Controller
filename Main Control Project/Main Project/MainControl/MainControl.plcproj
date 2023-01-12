@@ -17,44 +17,91 @@
     <LibraryReferences>{5244a443-ac85-4dec-8b83-2c54b66fa8b8}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\eConditionCheck.TcDUT">
+    <Compile Include="DUTs\ActivationStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eGuidanceSystemSTM.TcDUT">
+    <Compile Include="DUTs\EventCategory.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eLEDColor.TcDUT">
+    <Compile Include="DUTs\GuidanceControllerOperationMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eLEDMode.TcDUT">
+    <Compile Include="DUTs\GuidanceSystemSTM.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eErrorHandlingSTM.TcDUT">
+    <Compile Include="DUTs\HighLevelCondition.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eHighLevelState.TcDUT">
+    <Compile Include="DUTs\LEDColor.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eMainStateMachine.TcDUT">
+    <Compile Include="DUTs\LEDMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eOperationMode.TcDUT">
+    <Compile Include="DUTs\LevitationSystemSTM.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eServiceModuleSTM.TcDUT">
+    <Compile Include="DUTs\OperationControlCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Schnittstelle\eControlArchitectures.TcDUT">
+    <Compile Include="DUTs\Schnittstelle\ForwardXMC1ToOperationControl.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Schnittstelle\eXMCStateMachine.TcDUT">
+    <Compile Include="DUTs\Schnittstelle\ForwardXMC2ToOperationControl.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GVLs\MyGVLData.TcGVL">
+    <Compile Include="DUTs\Schnittstelle\ForwardXMC3ToOperationControl.TcDUT">
       <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="GVLs\OperationControl.TcGVL">
+    <Compile Include="DUTs\Schnittstelle\ForwardXMC4ToOperationControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromMainControlToOperationControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromMainControlToXMC1.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromMainControlToXMC2.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromMainControlToXMC3.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromMainControlToXMC4.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromOperationControlToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromXMC1ToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromXMC2ToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromXMC3ToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Schnittstelle\FromXMC4ToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\TGControllerMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\TopLevelSTM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ServiceModuleSTM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\SubLevelCondition.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\XMCCommands.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\OperationControlData.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -62,50 +109,29 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="GVLs\XMC.TcGVL">
+    <Compile Include="GVLs\XMCData.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="Interfaces\ForwardXMC1ToOperationControl.TcDUT">
+    <Compile Include="OOPs\ITF_HighLevelSystem.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\ForwardXMC2ToOperationControl.TcDUT">
+    <Compile Include="OOPs\ITF_SubSystem.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\ForwardXMC3ToOperationControl.TcDUT">
+    <Compile Include="POUs\ErrorHandling\FB_SafetyCounter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\ForwardXMC4ToOperationControl.TcDUT">
+    <Compile Include="POUs\ErrorHandling\FB_EventLogging.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\FromMainControlToOperationControl.TcDUT">
+    <Compile Include="POUs\FB_LevitationSystem.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\FromMainControlToXMC1.TcDUT">
+    <Compile Include="POUs\PRG_ErrorHandling.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\FromMainControlToXMC2.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromMainControlToXMC3.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromMainControlToXMC4.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromOperationControlToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromXMC1ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromXMC2ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromXMC3ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\FromXMC4ToMainControl.TcDUT">
+    <Compile Include="POUs\PRG_MainController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
@@ -114,19 +140,7 @@
     <Compile Include="PlcTask_Fast.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\ErrorHandling\FB_ErrorBuffer.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\ErrorHandling\FB_MessageBuffer.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_ErrorHandling.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\FB_GuidanceSystem.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_LevitationSystem.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_ServiceModule.TcPOU">
@@ -144,43 +158,10 @@
     <Compile Include="POUs\Guidance\FB_GuidanceController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Levitation\DUTs\E_FsmError.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\DUTs\E_FsmState.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\DUTs\mag_bus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\DUTs\ST_Event.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\DUTs\sus_bus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\Levitation\FB_EqualizingController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Levitation\FB_TrajectoryGenerator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\outdated\getFmagnetic.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\outdated\getTrajectory.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\outdated\LevitationEqualizingController.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\outdated\MAIN.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Levitation\outdated\runIpcFsm.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MainControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\ServiceModule\BoxLED\BoxLED.TcGVL">
@@ -211,13 +192,11 @@
     <Folder Include="DUTs" />
     <Folder Include="DUTs\Schnittstelle" />
     <Folder Include="GVLs" />
-    <Folder Include="Interfaces" />
+    <Folder Include="OOPs" />
     <Folder Include="POUs\ErrorHandling" />
     <Folder Include="POUs\Guidance\AccelerationSensor" />
     <Folder Include="POUs\Levitation" />
     <Folder Include="POUs\Guidance" />
-    <Folder Include="POUs\Levitation\DUTs" />
-    <Folder Include="POUs\Levitation\outdated" />
     <Folder Include="POUs\ServiceModule" />
     <Folder Include="POUs\ServiceModule\DistanceSensor" />
     <Folder Include="POUs\ServiceModule\BoxLED" />
@@ -226,6 +205,10 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="Tc2_EtherCAT">
+      <DefaultResolution>Tc2_EtherCAT, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_EtherCAT</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_SerialCom">
       <DefaultResolution>Tc2_SerialCom, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_SerialCom</Namespace>

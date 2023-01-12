@@ -3,45 +3,63 @@
   <POU Name="MAIN" Id="{aef089b1-c7c5-479f-8336-a7bf9b8b2785}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbEL6001	: FB_SerialCom;
+	fbIMU : FB_AccelerationSensor;
 	
-	(* exchange buffers with background communication with the PC COM port device *)
-	RxBufferPcCom	: ComBuffer;	(* Receive data buffer; used with all receive function blocks *)
-	TxBufferPcCom	: ComBuffer;	(* Transmit data buffer; used with all receive function blocks *)
+	x : REAL;
+	y : REAL;
+	z : REAL;
 	
-	acc_x : REAL;
-	acc_y : REAL;	
-	acc_z : REAL;
-//	acc_x2 : REAL;
-//	acc_y2 : REAL;	
-//	acc_z2 : REAL;
-//	acc_x3 : REAL;
-//	acc_y3 : REAL;	
-//	acc_z3 : REAL;
-//	acc_x4 : REAL;
-//	acc_y4 : REAL;	
-//	acc_z4 : REAL;
+	acc : ARRAY [0..2] OF REAL;
 
-	fbTimer : TON;
-	fbReset : TON;
-	fbTrigger : R_TRIG;
-	iCounter1 : UDINT;
-	iCounter2 : UDINT;
-	a_iPackets : ARRAY [0..9] OF UDINT;
-	i : UDINT := 0;
-	iSum : UDINT := 0;
-	rPacketRate : REAL := 0;
-	bTrigger : BOOL := FALSE;
-	bCount : BOOL;
+//	fbEL6001	: FB_SerialCom;
+	
+//	(* exchange buffers with background communication with the PC COM port device *)
+//	RxBufferPcCom	: ComBuffer;	(* Receive data buffer; used with all receive function blocks *)
+//	TxBufferPcCom	: ComBuffer;	(* Transmit data buffer; used with all receive function blocks *)
+	
+//	acc_x : REAL;
+//	acc_y : REAL;	
+//	acc_z : REAL;
+////	acc_x2 : REAL;
+////	acc_y2 : REAL;	
+////	acc_z2 : REAL;
+////	acc_x3 : REAL;
+////	acc_y3 : REAL;	
+////	acc_z3 : REAL;
+////	acc_x4 : REAL;
+////	acc_y4 : REAL;	
+////	acc_z4 : REAL;
+
+//	fbTimer : TON;
+//	fbReset : TON;
+//	fbTrigger : R_TRIG;
+//	iCounter1 : UDINT;
+//	iCounter2 : UDINT;
+//	a_iPackets : ARRAY [0..9] OF UDINT;
+//	i : UDINT := 0;
+//	iSum : UDINT := 0;
+//	rPacketRate : REAL := 0;
+//	bTrigger : BOOL := FALSE;
+//	bCount : BOOL;
 
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbEL6001(TxBuffer:=TxBufferEL, RxBuffer:=RxBufferEL);
+      <ST><![CDATA[fbIMU();
 
-acc_x := fbEL6001.getAccelerationValueX;
-acc_y := fbEL6001.getAccelerationValueY;
-acc_z := fbEL6001.getAccelerationValueZ;
+acc := fbIMU.aAccelerationValues;
+
+x := acc[0];
+y := acc[1];
+z := acc[2];
+
+
+
+//fbEL6001(TxBuffer:=TxBufferEL, RxBuffer:=RxBufferEL);
+
+//acc_x := fbEL6001.getAccelerationValueX;
+//acc_y := fbEL6001.getAccelerationValueY;
+//acc_z := fbEL6001.getAccelerationValueZ;
 
 //acc_x2 := fbEL6001.getAccelerationValueX2;
 //acc_y2 := fbEL6001.getAccelerationValueY2;
@@ -65,37 +83,39 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[fbTimer(IN := bCount, PT := T#1S);
-fbTrigger(CLK := fbTimer.IN);
+        <ST><![CDATA[//fbTimer(IN := bCount, PT := T#1S);
+//fbTrigger(CLK := fbTimer.IN);
 
-IF fbTrigger.Q THEN
-	iCounter1 := fbEL6001.nReceiveCounter;
-END_IF
+//IF fbTrigger.Q THEN
+//	iCounter1 := fbEL6001.nReceiveCounter;
+//END_IF
 
-IF fbTimer.Q THEN
-	iCounter2 := fbEL6001.nReceiveCounter;
-	a_iPackets[i] := iCounter2 - iCounter1;
-	iSum := iSum + a_iPackets[i];
-	i := i + 1;
-	bTrigger := TRUE;
-	bCount := FALSE;
-END_IF
+//IF fbTimer.Q THEN
+//	iCounter2 := fbEL6001.nReceiveCounter;
+//	a_iPackets[i] := iCounter2 - iCounter1;
+//	iSum := iSum + a_iPackets[i];
+//	i := i + 1;
+//	bTrigger := TRUE;
+//	bCount := FALSE;
+//END_IF
 
-IF i = 10 THEN
-	bTrigger := FALSE;
-	rPacketRate := (UDINT_TO_REAL(iSum) / UDINT_TO_REAL(i));			//times amount of packets
-	i := 0;
-	iSum := 0;
-END_IF
+//IF i = 10 THEN
+//	bTrigger := FALSE;
+//	rPacketRate := (UDINT_TO_REAL(iSum) / UDINT_TO_REAL(i));			//times amount of packets
+//	i := 0;
+//	iSum := 0;
+//END_IF
 
-fbReset(IN := bTrigger, PT := T#3S);
-IF fbReset.Q THEN
-	bCount := TRUE;
-	bTrigger := FALSE;
-END_IF]]></ST>
+//fbReset(IN := bTrigger, PT := T#3S);
+//IF fbReset.Q THEN
+//	bCount := TRUE;
+//	bTrigger := FALSE;
+//END_IF]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="MAIN">
+      <LineId Id="661" Count="5" />
+      <LineId Id="649" Count="3" />
       <LineId Id="11" Count="0" />
       <LineId Id="216" Count="1" />
       <LineId Id="221" Count="1" />

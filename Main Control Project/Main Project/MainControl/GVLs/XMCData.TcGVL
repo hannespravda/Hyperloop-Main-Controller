@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="XMCData" Id="{1c119e14-0ca5-456d-9182-55fcd518a368}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stFromXMC1ToMC 			AT %I* : FromXMC1ToMainControl;
+	stFromXMC2ToMC 			AT %I* : FromXMC2ToMainControl;
+	stFromXMC3ToMC 			AT %I* : FromXMC3ToMainControl;
+	stFromXMC4ToMC 			AT %I* : FromXMC4ToMainControl;
+	
+	stFromMCToXMC1			AT %Q* : FromMainControlToXMC1;
+	stFromMCToXMC2			AT %Q* : FromMainControlToXMC2;
+	stFromMCToXMC3			AT %Q* : FromMainControlToXMC3;
+	stFromMCToXMC4			AT %Q* : FromMainControlToXMC4;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

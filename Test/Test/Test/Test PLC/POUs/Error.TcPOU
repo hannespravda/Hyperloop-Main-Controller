@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Error" Id="{f73ef651-fb7d-41c1-b24f-41db580b875c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Error
+VAR_INPUT
+
+END_VAR
+VAR
+		i : INT;
+	fbTest : FB_Test;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[i := fbTest.Prop;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Error">
+      <LineId Id="5" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

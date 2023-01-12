@@ -22,10 +22,59 @@
   <ItemGroup>
     <Folder Include="GVLs" />
     <Folder Include="POUs" />
+    <Folder Include="POUs\Mit Background" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GVLs\AccelerationSensor.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\ActivationStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\DUT.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GuidanceSystemSTM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
       <ObjectGuid>{3e4349e6-a99a-4aa8-b94a-96e30307ccae}</ObjectGuid>
+    </Compile>
+    <Compile Include="GVLs\HighLevelCondition.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\HLSInputData.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\HLSInputData_1.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\HLSInputs.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\HLSOutputs.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\LEDColor.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\LEDMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\LevitationSystemSTM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\OperationControlCommands.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\ServiceModuleSTM.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\SubLevelCondition.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\TopLevelSTM.TcDUT">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask_Fast.TcTTO">
       <SubType>Code</SubType>
@@ -35,19 +84,29 @@
       <SubType>Code</SubType>
       <ObjectGuid>{a2abed77-3bc4-4966-9dac-c1eb2c24d9ca}</ObjectGuid>
     </Compile>
-    <Compile Include="POUs\Background.TcPOU">
-      <ObjectGuid>{a474ab24-92b2-4faa-ab36-f1eb12602ab9}</ObjectGuid>
-    </Compile>
-    <Compile Include="POUs\BackgroundEL.TcPOU">
+    <Compile Include="POUs\FB_AccelerationSensor.TcPOU">
       <SubType>Code</SubType>
-      <ObjectProtection>00000000-0000-0000-0000-000000000000</ObjectProtection>
     </Compile>
-    <Compile Include="POUs\FB_SerialCom.TcPOU">
+    <Compile Include="POUs\FB_SerialComRS232.TcPOU">
       <SubType>Code</SubType>
-      <ObjectGuid>{181e7c70-138b-446a-a6f5-34e588388885}</ObjectGuid>
+    </Compile>
+    <Compile Include="POUs\ITF_HighLevelSystem.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\ITF_SubSystem.TcIO">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <ObjectGuid>{aef089b1-c7c5-479f-8336-a7bf9b8b2785}</ObjectGuid>
+    </Compile>
+    <Compile Include="POUs\Mit Background\Background.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Mit Background\BackgroundEL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Mit Background\FB_SerialCom.TcPOU">
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

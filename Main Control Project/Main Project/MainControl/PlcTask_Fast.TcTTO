@@ -4,6 +4,9 @@
     <!--CycleTime in micro seconds.-->
     <CycleTime>1000</CycleTime>
     <Priority>19</Priority>
+    <PouCall>
+      <Name>PRG_ErrorHandling</Name>
+    </PouCall>
     <TaskFBGuid>{d6a1d7f3-c836-4de3-a82a-4b7e730766d5}</TaskFBGuid>
     <Fb_init>{52963121-19ad-4f59-b45f-68a67c6c28db}</Fb_init>
     <Fb_exit>{2ceaa832-c53f-46ec-a3ae-6dc0d7db90a8}</Fb_exit>

@@ -1,13 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_BoxLED" Id="{7417f049-9846-439d-bd3a-1b6848121830}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED IMPLEMENTS ITF_SubSystem
 VAR_INPUT
-	eMode : eLEDMode;
-END_VAR
-VAR_OUTPUT
-	eCondition : eConditionCheck;
-	nErrorID : UDINT;
+	eMode : LEDMode;
 END_VAR
 VAR
 	//Local
@@ -28,13 +24,15 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE eMode OF
-	eLEDMode.On:
+	LEDMode.Off:
+			doTurnOn(iBrightness := 0);
+	LEDMode.On:
 			doTurnOn(iBrightness := iIntensity);
-	eLEDMode.Dimmed:
+	LEDMode.Dimmed:
 			doDimming(rDimmingFactor:=rDimFactor);
-	eLEDMode.SlowFlashing:
+	LEDMode.SlowFlashing:
 			doFlashing(FlashingTime:=tSlowFlashingTime);
-	eLEDMode.FastFlashing:
+	LEDMode.FastFlashing:
 			doFlashing(FlashingTime:=tFastFlashingTime);
 END_CASE
 
@@ -42,33 +40,11 @@ doSetClampValues();
 doGetClampValues();
 
 
-//ConditionCheck
-doConditionCheck();
-
-
 
 
 
 ]]></ST>
     </Implementation>
-    <Method Name="doConditionCheck" Id="{90bb4804-9d30-4346-8a65-6bd3f31ac8fe}">
-      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[//ErrorBits
-nErrorID.0 := bTemperatureTooHigh;
-nErrorID.1 := bNoSupplyVoltage;
-
-//Condition
-IF nErrorID <> 0 THEN
-	eCondition := eConditionCheck.INIT;
-ELSE
-	eCondition := eConditionCheck.RUN;
-END_IF]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="doDimming" Id="{ef13b277-d6e0-4180-8bd3-5ca9a77d8ba4}">
       <Declaration><![CDATA[METHOD PRIVATE doDimming
 VAR_INPUT
@@ -122,22 +98,42 @@ END_VAR
         <ST><![CDATA[iBoxLED := iBrightness;]]></ST>
       </Implementation>
     </Method>
+    <Property Name="eCondition" Id="{4e482d49-3544-41a4-af6c-918dcc95d53c}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{79825f0a-16ce-4375-9182-20617a9508fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{5e4b59cd-ff12-43ce-a556-f3f12e731d20}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{3a0b74a6-2860-46c3-baf9-490027dc347b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorID.0 := bTemperatureTooHigh;
+nErrorID.1 := bNoSupplyVoltage;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <LineIds Name="FB_BoxLED">
-      <LineId Id="293" Count="12" />
-      <LineId Id="336" Count="1" />
-      <LineId Id="335" Count="0" />
-      <LineId Id="338" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="294" Count="11" />
       <LineId Id="334" Count="0" />
       <LineId Id="306" Count="3" />
       <LineId Id="226" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_BoxLED.doConditionCheck">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="4" />
     </LineIds>
     <LineIds Name="FB_BoxLED.doDimming">
       <LineId Id="5" Count="0" />
@@ -158,6 +154,14 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_BoxLED.doTurnOn">
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.nErrorID.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

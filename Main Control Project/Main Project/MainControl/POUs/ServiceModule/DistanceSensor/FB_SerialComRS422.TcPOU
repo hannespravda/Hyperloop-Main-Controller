@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_SerialComRS422" Id="{8c4f0a94-3b42-4b95-a0bb-7a0189ed27a7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialComRS422
-VAR_INPUT
+VAR_IN_OUT
 	stReceiveData 	: EL6inData22B;
 	stTransmitData 	: EL6outData22B;
 END_VAR

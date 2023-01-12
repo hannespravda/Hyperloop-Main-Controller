@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="GuidanceControllerOperationMode" Id="{46af96ec-5c12-4b2a-be60-8306c3b7817f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE GuidanceControllerOperationMode :
+(
+	CurrentControlled,
+	ForceControlled
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

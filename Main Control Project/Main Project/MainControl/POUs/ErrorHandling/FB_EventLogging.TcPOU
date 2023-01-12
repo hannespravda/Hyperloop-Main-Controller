@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EventLogging" Id="{1d6c9a0f-e224-46e5-8e17-afe0ce918b9d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EventLogging
+VAR
+	fbEventMessage : FB_TcMessage;
+	fbEventLogger : FB_TcEventLogger;
+	fbCsvExport : FB_TcEventCsvExportSettings;
+	fbCsvClear : FB_TcClearLoggedEventsSettings;
+	
+	n : USINT;
+	aCounterID : ARRAY [0..PRG_ErrorHandling.iNumberOfMessages-1] OF USINT;
+	aWarningArray : ARRAY [0..PRG_ErrorHandling.iNumberOfWarnings-1] OF BOOL;
+	aWarningMessagesAsStrings : ARRAY [0..PRG_ErrorHandling.iNumberOfWarnings-1] OF STRING;
+	aErrorArray : ARRAY [PRG_ErrorHandling.iNumberOfWarnings..PRG_ErrorHandling.iNumberOfWarnings+PRG_ErrorHandling.iNumberOfErrors-1] OF BOOL;
+	aErrorMessagesAsStrings : ARRAY [PRG_ErrorHandling.iNumberOfWarnings..PRG_ErrorHandling.iNumberOfWarnings+PRG_ErrorHandling.iNumberOfErrors-1] OF STRING;
+	eMainControllerState : TopLevelSTM;
+	sMainControllerStateAsString : STRING;
+	
+	bClearLoggedEvents : BOOL;
+END_VAR
+VAR CONSTANT
+	iCounterMax : USINT := 255; //max value for USINT data type
+	iCounterReset : USINT := 2;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//AckErrorLogging
+IF PRG_MainController.stOperationControlCommands.bAckError THEN
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] + 1;
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] = iCounterMax THEN
+		aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := iCounterReset;
+	END_IF
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.AckErr, 0);
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] = 1 THEN
+		fbEventMessage.Send(0);
+	END_IF
+ELSE
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := 0;
+END_IF
+
+
+//TransitionLogging
+IF eMainControllerState <> PRG_MainController.eState THEN
+	eMainControllerState := PRG_MainController.eState;
+	sMainControllerStateAsString := TO_STRING(PRG_MainController.eState); 
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.STMTransition, 0);
+	fbEventMessage.ipArguments.AddString('MainController').AddString(sMainControllerStateAsString);
+	fbEventMessage.Send(0);
+END_IF
+
+
+//WarningMessages
+//*Add New Warning Messages Here*
+aWarningArray[0] := PRG_ErrorHandling.nWarningBits.0;
+aWarningArray[1] := PRG_ErrorHandling.nWarningBits.1;
+aWarningArray[2] := PRG_ErrorHandling.nWarningBits.2;
+aWarningArray[3] := PRG_ErrorHandling.nWarningBits.3;
+aWarningArray[4] := PRG_ErrorHandling.nWarningBits.4;
+aWarningArray[5] := PRG_ErrorHandling.nWarningBits.5;
+aWarningArray[6] := PRG_ErrorHandling.nWarningBits.6;
+aWarningArray[7] := PRG_ErrorHandling.nWarningBits.7;
+aWarningArray[8] := PRG_ErrorHandling.nWarningBits.8;
+aWarningArray[9] := PRG_ErrorHandling.nWarningBits.9;
+aWarningArray[10] := PRG_ErrorHandling.nWarningBits.10;
+aWarningArray[11] := PRG_ErrorHandling.nWarningBits.11;
+aWarningArray[12] := PRG_ErrorHandling.nWarningBits.12;
+aWarningArray[13] := PRG_ErrorHandling.nWarningBits.13;
+aWarningArray[14] := PRG_ErrorHandling.nWarningBits.14;
+aWarningArray[15] := PRG_ErrorHandling.nWarningBits.15;
+
+aWarningMessagesAsStrings[0] := 'DistanceSensor Communication Error';
+aWarningMessagesAsStrings[1] := 'DistanceSensor out of Range';
+aWarningMessagesAsStrings[2] := 'BoxLED Temperature too high';
+aWarningMessagesAsStrings[3] := 'BoxLED No Supply Voltage';
+aWarningMessagesAsStrings[4] := 'RedLED Temperature too high';
+aWarningMessagesAsStrings[5] := 'RedLED No Supply Voltage';
+aWarningMessagesAsStrings[6] := 'GreenLED Temperature too high';
+aWarningMessagesAsStrings[7] := 'GreenLED No Supply Voltage';
+aWarningMessagesAsStrings[8] := 'BlueLED Temperature too high';
+aWarningMessagesAsStrings[9] := 'BlueLED No Supply Voltage';
+aWarningMessagesAsStrings[10] := 'EqualizingController Invalid Paramaters';
+aWarningMessagesAsStrings[11] := 'EqualizingController Invalid CycleTime';
+aWarningMessagesAsStrings[12] := 'IMU1 Communication Error';
+aWarningMessagesAsStrings[13] := 'IMU1 out of Range';
+aWarningMessagesAsStrings[14] := 'IMU2 Communication Error';
+aWarningMessagesAsStrings[15] := 'IMU2 out of Range';
+
+
+FOR n := 0 TO PRG_ErrorHandling.iNumberOfWarnings-1 DO
+	IF aWarningArray[n] THEN
+		aCounterID[n] := aCounterID[n] + 1;
+		IF aCounterID[n] = iCounterMax THEN
+			aCounterID[n] := iCounterReset;
+		END_IF
+		fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.Warning, 0);
+		IF aCounterID[n] = 1 THEN
+			fbEventMessage.ipArguments.Clear().AddString(aWarningMessagesAsStrings[n]);
+			fbEventMessage.Send(0);
+		END_IF
+	ELSE
+		aCounterID[n] := 0;
+	END_IF	
+END_FOR
+
+
+//ErrorMessages
+//*Add New ErrorMessages here*
+aErrorArray[16] := PRG_ErrorHandling.nErrorBits.0;
+aErrorArray[17] := PRG_ErrorHandling.nErrorBits.1;
+aErrorArray[18] := PRG_ErrorHandling.nErrorBits.2;
+aErrorArray[19] := PRG_ErrorHandling.nErrorBits.3;
+aErrorArray[20] := PRG_ErrorHandling.nErrorBits.4;
+aErrorArray[21] := PRG_ErrorHandling.nErrorBits.5;
+
+aErrorMessagesAsStrings[16] := 'Connection Timeout to Operation Control';
+aErrorMessagesAsStrings[17] := 'Connection Timeout to XMC1';
+aErrorMessagesAsStrings[18] := 'Connection Timeout to XMC2';
+aErrorMessagesAsStrings[19] := 'Connection Timeout to XMC3';
+aErrorMessagesAsStrings[20] := 'Connection Timeout to XMC4';
+aErrorMessagesAsStrings[21] := 'EtherCAT Master Missing Ethernet Connection';
+
+FOR n := PRG_ErrorHandling.iNumberOfWarnings TO PRG_ErrorHandling.iNumberOfWarnings+PRG_ErrorHandling.iNumberOfErrors-1 DO
+	IF aErrorArray[n] THEN
+		aCounterID[n] := aCounterID[n] + 1;
+		IF aCounterID[n] = iCounterMax THEN
+			aCounterID[n] := iCounterReset;
+		END_IF
+		fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.Error, 0);
+		IF aCounterID[n] = 1 THEN
+			fbEventMessage.ipArguments.Clear().AddString(sMainControllerStateAsString).AddString(aErrorMessagesAsStrings[n]);
+			fbEventMessage.Send(0);
+		END_IF
+	ELSE
+		aCounterID[n] := 0;
+	END_IF
+END_FOR
+
+//CSV-Export
+//fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\hanne\Hannes\Studium\Bachelorarbeit\TwinCAT Projekte\Main Control Project\Log.csv', ipExportSettings := fbCsvExport);
+//CSV-Clear
+IF bClearLoggedEvents THEN
+	fbEventLogger.ClearLoggedEvents(ipClearSettings:=fbCsvClear);	
+END_IF
+]]></ST>
+    </Implementation>
+    <Property Name="aEventCounter" Id="{8e03e36f-3da1-4b82-a440-56fb433eb286}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aEventCounter : ARRAY [0..PRG_ErrorHandling.iNumberOfMessages-1] OF USINT]]></Declaration>
+      <Get Name="Get" Id="{dc0aecaf-b58c-4774-b0f3-3c0f106a0f8e}">
+        <Declaration><![CDATA[VAR
+	k : INT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FOR k := 0 TO 24 DO
+	aEventCounter[k] := aCounterID[k];
+END_FOR]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0a212a7b-d31e-47b2-a4c3-9d474156c20a}">
+        <Declaration><![CDATA[VAR
+	k : INT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FOR k := 0 TO 24 DO
+	aCounterID[k] := aEventCounter[k];
+END_FOR]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_EventLogging">
+      <LineId Id="129" Count="2" />
+      <LineId Id="434" Count="2" />
+      <LineId Id="132" Count="5" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="219" Count="1" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="469" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="271" Count="14" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="319" Count="0" />
+      <LineId Id="290" Count="13" />
+      <LineId Id="424" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="253" Count="1" />
+      <LineId Id="438" Count="1" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="255" Count="6" />
+      <LineId Id="251" Count="1" />
+      <LineId Id="352" Count="1" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="468" Count="0" />
+      <LineId Id="358" Count="5" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="368" Count="4" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="375" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="441" Count="1" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="381" Count="5" />
+      <LineId Id="380" Count="0" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="428" Count="0" />
+      <LineId Id="431" Count="2" />
+      <LineId Id="430" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventLogging.aEventCounter.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_EventLogging.aEventCounter.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_SerialComRS232" Id="{181e7c70-138b-446a-a6f5-34e588388885}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialComRS232
-VAR_INPUT
+VAR_IN_OUT
 	stEL6001In : EL6inData22B;
 	stEL6001Out : EL6outData22B;
 END_VAR

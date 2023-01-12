@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="AccelerationSensor" Id="{e6db46d0-01b7-40db-93e8-8bcf03c63ae7}">
+    <Declaration><![CDATA[VAR_GLOBAL
+	stEL6001In AT %I*	: EL6inData22B;		//**To EL6021 Inputs**
+	stEL6001Out AT %Q*	: EL6outData22B;	//**To EL6021 Outputs**
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="EventCategory" Id="{27aff3ba-b6f5-4279-a9f4-15034239d504}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE EventCategory :
+(
+	Warning,
+	Error,
+	Transition,
+	AckErr
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

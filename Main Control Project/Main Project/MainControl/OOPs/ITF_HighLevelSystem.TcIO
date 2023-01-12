@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="ITF_HighLevelSystem" Id="{eca1f5f6-610b-45f5-b8b6-029235b687d2}">
+    <Declaration><![CDATA[INTERFACE ITF_HighLevelSystem
+]]></Declaration>
+    <Property Name="eActivationStatus" Id="{02c2974d-ea15-4b9b-b044-3477c47f2a68}">
+      <Declaration><![CDATA[PROPERTY eActivationStatus : ActivationStatus]]></Declaration>
+      <Get Name="Get" Id="{deefed80-5355-44b5-a884-a08dd5eab10f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{b9b41fd3-b9d0-4192-8102-2e6b553d5626}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="eCondition" Id="{453906dd-cfca-4c2c-8fdd-7d983db9a8a0}">
+      <Declaration><![CDATA[PROPERTY PUBLIC eCondition : HighLevelCondition]]></Declaration>
+      <Get Name="Get" Id="{ad14d373-2368-435d-81c1-88581710b5f2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{83326f54-283a-4ba6-a07d-7c14cde945ea}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT]]></Declaration>
+      <Get Name="Get" Id="{d92db387-7938-4179-8e21-f5e67a3bc76f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

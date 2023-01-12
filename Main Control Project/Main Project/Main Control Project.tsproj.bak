@@ -2,149 +2,745 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
 	<DataTypes>
 		<DataType>
-			<Name GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF BOOL</Name>
-			<BitSize>32</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
+			<Name GUID="{B0973B34-DCFE-506A-93BA-A4C5167440B1}" AutoDeleteType="true">FromOperationControlToMainControl</Name>
+			<BitSize>96</BitSize>
+			<SubItem>
+				<Name>OM_origO_AckError</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_GoToError</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_GuidanceDisable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+				<Default>
+					<Bool>0</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_LevitationDisable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+				<Default>
+					<Bool>0</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_ServiceModuleDisable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+				<Default>
+					<Bool>0</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_StartOperational</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OM_origO_StopOperational</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>65</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{7D7B82AF-F3BC-671D-4B50-A15F02780299}" AutoDeleteType="true">eControlArchitectures</Name>
-			<BitSize>16</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
-			<EnumInfo>
-				<Text><![CDATA[AggregatedLinear]]></Text>
-				<Enum>0</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[CascadedWithElectricalCompensation]]></Text>
-				<Enum>1</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[CascadedWithFullDecoupling]]></Text>
-				<Enum>2</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[YET_TO_DEFINE]]></Text>
-				<Enum>3</Enum>
-			</EnumInfo>
-			<Properties>
-				<Property>
-					<Name>qualified_only</Name>
-				</Property>
-				<Property>
-					<Name>strict</Name>
-				</Property>
-				<Property>
-					<Name>generate_implicit_init_function</Name>
-				</Property>
-			</Properties>
+			<Name GUID="{707313F1-FCC9-F75B-AD15-245A27D0FB13}" AutoDeleteType="true">FromXMC1ToMainControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>EM_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF eControlArchitectures</Name>
-			<BitSize>64</BitSize>
-			<BaseType GUID="{7D7B82AF-F3BC-671D-4B50-A15F02780299}">eControlArchitectures</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
+			<Name GUID="{FBEBF9AE-8278-47B1-21E4-BA58D87E7815}" AutoDeleteType="true">FromXMC2ToMainControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>EM_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Name>
-			<BitSize>1024</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-			<ArrayInfo Level="1">
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
+			<Name GUID="{58E535C7-9DD6-B727-D515-66E5A2ECFAF9}" AutoDeleteType="true">FromXMC3ToMainControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>EM_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF LREAL</Name>
-			<BitSize>256</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{86AC9828-A863-F681-42E8-BC8848EF1B59}" AutoDeleteType="true">eXMCStateMachine</Name>
-			<BitSize>16</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
-			<EnumInfo>
-				<Text><![CDATA[INIT]]></Text>
-				<Enum>0</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[STOP]]></Text>
-				<Enum>1</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[OP]]></Text>
-				<Enum>2</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[ERROR]]></Text>
-				<Enum>3</Enum>
-			</EnumInfo>
-			<Properties>
-				<Property>
-					<Name>qualified_only</Name>
-				</Property>
-				<Property>
-					<Name>strict</Name>
-				</Property>
-				<Property>
-					<Name>generate_implicit_init_function</Name>
-				</Property>
-			</Properties>
-		</DataType>
-		<DataType>
-			<Name GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF eXMCStateMachine</Name>
-			<Comment><![CDATA[Inputs]]></Comment>
-			<BitSize>64</BitSize>
-			<BaseType GUID="{86AC9828-A863-F681-42E8-BC8848EF1B59}">eXMCStateMachine</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF DINT</Name>
-			<BitSize>128</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000009}">DINT</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{65F2794F-3C5B-7F56-B674-27D1245CF5BE}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..1] OF LREAL</Name>
-			<BitSize>512</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-			<ArrayInfo Level="1">
-				<LBound>0</LBound>
-				<Elements>2</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{EF17D0C5-AC9D-3286-F0D8-64983B1C81F8}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..12] OF BOOL</Name>
-			<BitSize>104</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>13</Elements>
-			</ArrayInfo>
+			<Name GUID="{24E406EB-B6FA-E151-F81B-ED91ABB81E5F}" AutoDeleteType="true">FromXMC4ToMainControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>EM_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>EM_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6inData22B</Name>
@@ -172,71 +768,1227 @@
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{2B11C313-E1ED-D4F3-7DB2-553E489037BB}" AutoDeleteType="true">eMainStateMachine</Name>
-			<BitSize>16</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
-			<EnumInfo>
-				<Text><![CDATA[STARTUP]]></Text>
-				<Enum>0</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[READY]]></Text>
-				<Enum>1</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[OPERATIONAL]]></Text>
-				<Enum>2</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[SHUTDOWN]]></Text>
-				<Enum>3</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[ERROR]]></Text>
-				<Enum>4</Enum>
-			</EnumInfo>
-			<Properties>
-				<Property>
-					<Name>qualified_only</Name>
-				</Property>
-				<Property>
-					<Name>strict</Name>
-				</Property>
-				<Property>
-					<Name>generate_implicit_init_function</Name>
-				</Property>
-			</Properties>
+			<Name GUID="{9FD77244-9364-A421-BE53-79E7F7A512FF}" AutoDeleteType="true">FromMainControlToOperationControl</Name>
+			<BitSize>1504</BitSize>
+			<SubItem>
+				<Name>MO_origM_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DistanceServiceModule</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUX0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUX1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUY0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUY1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUZ0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_GuidanceIMUZ1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidCurrentXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[/]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidForceXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidVoltageXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevDistanceXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVelocityXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevAccelerationXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevForceXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevCurrentXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVoltageXMC1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidCurrentXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidForceXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidVoltageXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevDistanceXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVelocityXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevAccelerationXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>800</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevForceXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevCurrentXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>864</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVoltageXMC2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>896</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidCurrentXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>928</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidForceXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>960</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidVoltageXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>992</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevDistanceXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1024</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVelocityXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1056</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevAccelerationXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1088</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevForceXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1120</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevCurrentXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1152</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVoltageXMC3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1184</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidCurrentXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1216</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidForceXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredGuidVoltageXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1280</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevDistanceXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1312</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVelocityXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1344</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevAccelerationXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1376</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevForceXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1408</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevCurrentXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1440</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origM_DesiredLevVoltageXMC4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1472</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..9] OF STRING(80)</Name>
-			<BitSize>6480</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>10</Elements>
-			</ArrayInfo>
+			<Name GUID="{BA21663F-5F14-7C68-D504-061FEC73FC63}" AutoDeleteType="true">ForwardXMC1ToOperationControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>MO_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{C9CE49FC-2677-D9E5-3935-C4CE57574B94}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF ARRAY [0..12] OF BOOL</Name>
-			<BitSize>416</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-			<ArrayInfo Level="1">
-				<LBound>0</LBound>
-				<Elements>13</Elements>
-			</ArrayInfo>
+			<Name GUID="{81021B1A-BED0-10F9-9995-45CFDD466802}" AutoDeleteType="true">ForwardXMC2ToOperationControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>MO_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{6644EF2B-B70B-B0BD-5217-732A7A5D6190}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..5] OF BOOL</Name>
-			<BitSize>48</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>6</Elements>
-			</ArrayInfo>
+			<Name GUID="{69B3AB2D-1A77-90AA-9622-605AEF3EE78E}" AutoDeleteType="true">ForwardXMC3ToOperationControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>MO_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{13D47C1A-4580-53B7-8FD3-78FA9E358B0C}" AutoDeleteType="true">ForwardXMC4ToOperationControl</Name>
+			<BitSize>864</BitSize>
+			<SubItem>
+				<Name>MO_origE_DistanceLevitationFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceGuidanceFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev21</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawLev22</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid11</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_DistanceRawGuid12</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUX</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUY</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_IMUZ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_VelocityZFiltered</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev0</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureLev1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_TemperatureGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_PressureBox</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentLev</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_CurrentGuid</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>608</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_WarnBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_ErrBits</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_Timestamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>736</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterIn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterSize</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>776</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MO_origE_LoggingCounterBuf</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>10</Elements>
+				</ArrayInfo>
+				<BitSize>80</BitSize>
+				<BitOffs>784</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{C1216E13-2D93-DEF8-CA61-CEDA02A5C457}" AutoDeleteType="true">FromMainControlToXMC1</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevDistance</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevAcceleration</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{C2A62EC9-8385-952D-A1FC-FB9AF3761E49}" AutoDeleteType="true">FromMainControlToXMC2</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevDistance</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevAcceleration</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{C12AE40A-25E7-9720-CCD8-50E7D4B0800C}" AutoDeleteType="true">FromMainControlToXMC3</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevDistance</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevAcceleration</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{78E31CA3-B0EC-271B-4DDD-1DCF8194B7B0}" AutoDeleteType="true">FromMainControlToXMC4</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredGuidVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevDistance</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevAcceleration</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevForce</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevCurrent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_DesiredLevVoltage</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ME_origM_SafetyCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom" AutoDeleteType="true">EL6outData22B</Name>
@@ -263,6 +2015,34 @@
 				<BitOffs>16</BitOffs>
 			</SubItem>
 		</DataType>
+		<DataType>
+			<Name GUID="{BF1D14F9-BB67-4B9C-994C-0D784E537C59}" PersistentType="true">MainControlEventClass</Name>
+			<DisplayName TxtId=""><![CDATA[Main Control Events]]></DisplayName>
+			<EventId>
+				<Name Id="1">Error</Name>
+				<DisplayName TxtId=""><![CDATA[Error occured in {0} state. Error Message: {1}]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="2">Warning</Name>
+				<DisplayName TxtId=""><![CDATA[Warning Message: {0}]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="4">STMTransition</Name>
+				<DisplayName TxtId=""><![CDATA[{0} STM changed to {1} state]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="5">AckErr</Name>
+				<DisplayName TxtId=""><![CDATA[All Errors acknowledged and cleared by Operation Control]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{53BBCEF5-A2E4-4539-AE3C-A6749215CE6B}"/>
+				<Hide GUID="{874E9EF6-9BB7-41E1-9D01-89D5F5675370}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
 	<Project ProjectGUID="{EA771B35-EEFD-4EAE-8B25-D71A080FEDBF}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
@@ -281,138 +2061,34 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{DBE087A2-40CA-3556-4FE9-9280A54B8030}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{7A124972-5E70-09DA-B96D-46EC62B4B76E}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>OperationControl.OC_F_start_ms</Name>
-							<Comment><![CDATA[Inputs]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_F_stop_ms</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_F_error_res</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_F_trans_trig</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_F_trans_time</Name>
-							<Type>INT</Type>
+							<Name>OperationControlData.stFromOCToMC</Name>
+							<Type GUID="{B0973B34-DCFE-506A-93BA-A4C5167440B1}">FromOperationControlToMainControl</Type>
 						</Var>
 						<Var>
 							<Name>TEST.iTest</Name>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>OperationControl.OC_F_trans_dist_LEV</Name>
-							<Type>LREAL</Type>
+							<Name>XMCData.stFromXMC1ToMC</Name>
+							<Type GUID="{707313F1-FCC9-F75B-AD15-245A27D0FB13}">FromXMC1ToMainControl</Type>
 						</Var>
 						<Var>
-							<Name>OperationControl.OC_C_enable_out</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
+							<Name>XMCData.stFromXMC2ToMC</Name>
+							<Type GUID="{FBEBF9AE-8278-47B1-21E4-BA58D87E7815}">FromXMC2ToMainControl</Type>
 						</Var>
 						<Var>
-							<Name>OperationControl.OC_C_act_arch_LEV</Name>
-							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
+							<Name>XMCData.stFromXMC3ToMC</Name>
+							<Type GUID="{58E535C7-9DD6-B727-D515-66E5A2ECFAF9}">FromXMC3ToMainControl</Type>
 						</Var>
 						<Var>
-							<Name>OperationControl.OC_C_int_active_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_C_int_res_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_C_Kmat_arch1_LEV</Name>
-							<Comment><![CDATA[Sollte das nicht ENUM sein???]]></Comment>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_C_Kmat_arch2_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_C_Kmat_arch3_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.OC_C_Kcurr_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.G_state_FSM_LLCB</Name>
-							<Comment><![CDATA[Inputs]]></Comment>
-							<Type GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}">ARRAY [0..3] OF eXMCStateMachine</Type>
-						</Var>
-						<Var>
-							<Name>XMC.G_tstamp_LLCB</Name>
-							<Type GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}">ARRAY [0..3] OF DINT</Type>
-						</Var>
-						<Var>
-							<Name>XMC.M_dist_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.M_dist_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.M_curr_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.M_curr_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.M_sens_dist_GUI_filt</Name>
-							<Type GUID="{65F2794F-3C5B-7F56-B674-27D1245CF5BE}">ARRAY [0..3] OF ARRAY [0..1] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.E_array_LLCB</Name>
-							<Type GUID="{EF17D0C5-AC9D-3286-F0D8-64983B1C81F8}">ARRAY [0..12] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bWhiteError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_act_arch_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_int_active_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_int_saturated_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_Kmat_arch1_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_Kmat_arch2_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_Kmat_arch3_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.C_Duty_cycle_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
+							<Name>XMCData.stFromXMC4ToMC</Name>
+							<Type GUID="{24E406EB-B6FA-E151-F81B-ED91ABB81E5F}">FromXMC4ToMainControl</Type>
 						</Var>
 						<Var>
 							<Name>AccelerationSensor.stEL6001In</Name>
@@ -420,19 +2096,24 @@
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
 						</Var>
 						<Var>
-							<Name>BoxLED.bWhiteWarning</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
+							<Name>BoxLED.bWhiteError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Name>BoxLED.bWhiteWarning</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>DistanceSensor.stEL6021In</Name>
 							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.bRedWarning</Name>
@@ -463,160 +2144,45 @@
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>OperationControl.G_state_FSM_IPC</Name>
-							<Comment><![CDATA[Outputs]]></Comment>
-							<Type GUID="{2B11C313-E1ED-D4F3-7DB2-553E489037BB}">eMainStateMachine</Type>
+							<Name>OperationControlData.stFromMCToOC</Name>
+							<Type GUID="{9FD77244-9364-A421-BE53-79E7F7A512FF}">FromMainControlToOperationControl</Type>
 						</Var>
 						<Var>
-							<Name>OperationControl.G_tstamp_IPC</Name>
-							<Type>DINT</Type>
+							<Name>OperationControlData.stForwardXMC1ToOC</Name>
+							<Type GUID="{BA21663F-5F14-7C68-D504-061FEC73FC63}">ForwardXMC1ToOperationControl</Type>
 						</Var>
 						<Var>
-							<Name>MyGVLData.lrDistanceSensorServiceModule</Name>
-							<Type>LREAL</Type>
+							<Name>OperationControlData.stForwardXMC2ToOC</Name>
+							<Type GUID="{81021B1A-BED0-10F9-9995-45CFDD466802}">ForwardXMC2ToOperationControl</Type>
 						</Var>
 						<Var>
-							<Name>MyGVLData.sWarningMessage</Name>
-							<Type GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}">ARRAY [0..9] OF STRING(80)</Type>
+							<Name>OperationControlData.stForwardXMC3ToOC</Name>
+							<Type GUID="{69B3AB2D-1A77-90AA-9622-605AEF3EE78E}">ForwardXMC3ToOperationControl</Type>
 						</Var>
 						<Var>
-							<Name>MyGVLData.sErrorMessage</Name>
-							<Type GUID="{3BF95770-DE6B-0826-0536-096F051CEEF8}">ARRAY [0..9] OF STRING(80)</Type>
-						</Var>
-						<Var>
-							<Name>MyGVLData.sErrorMessageServiceModule</Name>
-							<Type>STRING(80)</Type>
-						</Var>
-						<Var>
-							<Name>MyGVLData.sErrorMessageLevitationSystem</Name>
-							<Type>STRING(80)</Type>
-						</Var>
-						<Var>
-							<Name>MyGVLData.sErrorMessageGuidanceSystem</Name>
-							<Type>STRING(80)</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.G_state_FSM_LLCB</Name>
-							<Type GUID="{F41ACB5A-F602-3030-D1F5-F590BE3360B5}">ARRAY [0..3] OF eXMCStateMachine</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.G_tstamp_LLCB</Name>
-							<Type GUID="{9BE1C298-465A-5B1C-50FF-C924F60C4E32}">ARRAY [0..3] OF DINT</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.M_dist_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.M_dist_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.M_curr_LEV</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.M_curr_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.E_array_LLCB</Name>
-							<Type GUID="{C9CE49FC-2677-D9E5-3935-C4CE57574B94}">ARRAY [0..3] OF ARRAY [0..12] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.E_array_IPC</Name>
-							<Type GUID="{6644EF2B-B70B-B0BD-5217-732A7A5D6190}">ARRAY [0..5] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_act_arch_LEV</Name>
-							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_int_active_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_int_saturated_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_Kmat_arch1_LEV</Name>
-							<Comment><![CDATA[Sind das nicht Enums???]]></Comment>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_Kmat_arch2_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_Kmat_arch3_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>OperationControl.C_Kcurr_GUI</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_enable_out</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.TG_dist_des</Name>
-							<Comment><![CDATA[0=XMC1, 1=XMC2, 2=XMC3, 3=XMC4]]></Comment>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.TG_velo_des</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.TG_curr_des</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.TG_volt_des</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_Kmat_arch1_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_Kmat_arch2_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_Kmat_arch3_LEV</Name>
-							<Type GUID="{9C58ECD3-1BE3-25E5-BC7A-C86378246164}">ARRAY [0..3] OF ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_act_arch_LEV</Name>
-							<Type GUID="{68DB78DA-5771-5892-34E7-63EA20EA0726}">ARRAY [0..3] OF eControlArchitectures</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_int_active_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.OC_C_int_res_LEV</Name>
-							<Type GUID="{ACB00D92-8A3C-90A7-DB92-3AB4C0604945}">ARRAY [0..3] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.LEC_dist_incr</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.GPC_curr_des</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
-						</Var>
-						<Var>
-							<Name>XMC.GPC_volt_des</Name>
-							<Type GUID="{4D3DC7C8-81AE-A753-B20D-E9008BBCE70B}">ARRAY [0..3] OF LREAL</Type>
+							<Name>OperationControlData.stForwardXMC4ToOC</Name>
+							<Type GUID="{13D47C1A-4580-53B7-8FD3-78FA9E358B0C}">ForwardXMC4ToOperationControl</Type>
 						</Var>
 						<Var>
 							<Name>BoxLED.iWhite</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
 							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>XMCData.stFromMCToXMC1</Name>
+							<Type GUID="{C1216E13-2D93-DEF8-CA61-CEDA02A5C457}">FromMainControlToXMC1</Type>
+						</Var>
+						<Var>
+							<Name>XMCData.stFromMCToXMC2</Name>
+							<Type GUID="{C2A62EC9-8385-952D-A1FC-FB9AF3761E49}">FromMainControlToXMC2</Type>
+						</Var>
+						<Var>
+							<Name>XMCData.stFromMCToXMC3</Name>
+							<Type GUID="{C12AE40A-25E7-9720-CCD8-50E7D4B0800C}">FromMainControlToXMC3</Type>
+						</Var>
+						<Var>
+							<Name>XMCData.stFromMCToXMC4</Name>
+							<Type GUID="{78E31CA3-B0EC-271B-4DDD-1DCF8194B7B0}">FromMainControlToXMC4</Type>
 						</Var>
 						<Var>
 							<Name>AccelerationSensor.stEL6001Out</Name>

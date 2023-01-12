@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_DistanceSensor" Id="{f4605cef-c88d-437c-8e3e-a6c190169adb}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_DistanceSensor
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_DistanceSensor IMPLEMENTS ITF_SubSystem
 VAR_OUTPUT
-	eCondition : eConditionCheck;
-	nErrorID : UDINT;
+	fDistance 			: LREAL;
 END_VAR
 VAR
 	//Local
 	fbEL6021			: FB_SerialComRS422;
-	fDistance 			: LREAL;
 
 	//ErrorBits
 	bCommunicationError : BIT;
@@ -22,24 +20,12 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbEL6021(stReceiveData:=DistanceSensor.stEL6021In, stTransmitData:=DistanceSensor.stEL6021Out);
 
-
 fDistance := fbEL6021.fDistance;
 
 
 
 ]]></ST>
     </Implementation>
-    <Property Name="Distance" Id="{2dac0432-7578-4835-aa09-e9c0e1e997c3}">
-      <Declaration><![CDATA[PROPERTY Distance : LREAL]]></Declaration>
-      <Get Name="Get" Id="{e8d81e18-590b-47c5-b9de-42c089313ca6}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[Distance := fDistance;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
     <Method Name="doCheckRange" Id="{f0fc130c-4d4c-401a-8605-074ef0591044}">
       <Declaration><![CDATA[METHOD PRIVATE doCheckRange : BOOL
 VAR_INPUT
@@ -49,66 +35,64 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF fDistanceValue < fMin OR fDistance > fMax THEN
+        <ST><![CDATA[IF fDistanceValue < fMin OR fDistanceValue > fMax THEN
 	doCheckRange := FALSE;
 ELSE
 	doCheckRange := TRUE;
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="doConditionCheck" Id="{3f901bb2-22be-4d1e-a272-7b937cbafcaf}">
-      <Declaration><![CDATA[METHOD PRIVATE doConditionCheck
-VAR_INPUT
+    <Property Name="eCondition" Id="{dec3797b-3659-4283-97b1-3349172eac00}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{a432a058-d6e8-46c9-ab20-17a501839623}">
+        <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[//ErrorBits
-IF fbEL6021.eReceiveErrorID <> COMERROR_NOERROR THEN
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{802f66c6-09e3-4b76-b004-cc262d9b1836}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{afc3c74c-8e96-49c4-b480-aa4a6067a1e9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF fbEL6021.eReceiveErrorID <> COMERROR_NOERROR THEN
 	bCommunicationError := TRUE;
 ELSE
 	bCommunicationError := FALSE;
 END_IF
 
-bOutOfRange := NOT doCheckRange(fDistanceValue:=fDistance, fMax:=fEMR, fMin:=fSMR);
+bOutOfRange := NOT doCheckRange(fDistanceValue:= fDistance, fMax:=fEMR, fMin:=fSMR);
 
 nErrorID.0 := bCommunicationError;
-nErrorID.1 := bOutOfRange;
-
-
-//Condition
-IF nErrorID <> 0 THEN
-	eCondition := eConditionCheck.INIT;
-ELSE
-	eCondition := eConditionCheck.RUN;
-END_IF]]></ST>
-      </Implementation>
-    </Method>
+nErrorID.1 := bOutOfRange;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <LineIds Name="FB_DistanceSensor">
-      <LineId Id="149" Count="0" />
-      <LineId Id="196" Count="0" />
-      <LineId Id="150" Count="2" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="156" Count="0" />
+      <LineId Id="172" Count="5" />
       <LineId Id="107" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_DistanceSensor.Distance.Get">
-      <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_DistanceSensor.doCheckRange">
       <LineId Id="6" Count="4" />
     </LineIds>
-    <LineIds Name="FB_DistanceSensor.doConditionCheck">
-      <LineId Id="10" Count="0" />
-      <LineId Id="21" Count="1" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="23" Count="1" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="16" Count="4" />
+    <LineIds Name="FB_DistanceSensor.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_DistanceSensor.nErrorID.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
