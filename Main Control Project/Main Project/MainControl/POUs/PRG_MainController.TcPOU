@@ -125,12 +125,56 @@ fbGuidanceSystem(eState := GuidanceSystemSTM.Idling);]]></ST>
 VAR_INPUT
 END_VAR
 VAR
+	aTempArray0 : ARRAY [0..2] OF REAL;
 	aTempArray1 : ARRAY [0..2] OF REAL;
-	aTempArray2 : ARRAY [0..2] OF REAL;	
+	aTempArray2 : ARRAY [0..3] OF REAL;
+	aTempArray3 : ARRAY [0..3] OF REAL;
+	aTempArray4 : ARRAY [0..3] OF REAL;
+	aTempArray5 : ARRAY [0..3] OF REAL;
+	aTempArray6 : ARRAY [0..3] OF REAL;
+	aTempArray7 : ARRAY [0..3] OF REAL;
+	aTempArray8 : ARRAY [0..3] OF REAL;
+	aTempArray9 : ARRAY [0..3] OF REAL;
+	aTempArray10 : ARRAY [0..3] OF REAL;
+	aTempArray11 : ARRAY [0..3] OF REAL;
+	aTempArray12 : ARRAY [0..3] OF REAL;
+	aTempArray13 : ARRAY [0..3] OF REAL;
+	aTempArray14 : ARRAY [0..3] OF REAL;
+	aTempArray15 : ARRAY [0..3] OF REAL;
+	aTempArray16 : ARRAY [0..3] OF REAL;
+	aTempArray17 : ARRAY [0..3] OF REAL;
+	aTempArray18 : ARRAY [0..3] OF REAL;
+	aTempArray19 : ARRAY [0..3] OF REAL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//OperationControlData
+        <ST><![CDATA[//ArrayHandling
+aTempArray0 := PRG_MainController.fbGuidanceSystem.aIMU1Acceleration;
+aTempArray1 := PRG_MainController.fbGuidanceSystem.aIMU2Acceleration;
+aTempArray2 := PRG_MainController.fbLevitationSystem.aECOutputZVector;
+aTempArray3 := PRG_MainController.fbLevitationSystem.aTGOutputLevDistance;
+aTempArray4 := PRG_MainController.fbLevitationSystem.aTGOutputLevVelocity;
+aTempArray5 := PRG_MainController.fbLevitationSystem.aTGOutputLevAcceleration;
+aTempArray6 := PRG_MainController.fbLevitationSystem.aTGOutputLevCurrent;
+aTempArray7 := PRG_MainController.fbLevitationSystem.aTGOutputLevVoltage;
+aTempArray8 := PRG_MainController.fbLevitationSystem.aTGOutputLevForce;
+aTempArray9 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidCurrent;
+aTempArray10 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidVoltage;
+aTempArray11 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidForce;
+
+PRG_MainController.fbLevitationSystem.aTGActualLevDistance				:=		aTempArray12;
+PRG_MainController.fbLevitationSystem.aTGActualLevVelocity              :=      aTempArray13;
+PRG_MainController.fbLevitationSystem.aTGActualLevAcceleration          :=      aTempArray14;
+PRG_MainController.fbLevitationSystem.aTGActualLevCurrent               :=      aTempArray15;
+PRG_MainController.fbGuidanceSystem.aGCActualGuidDistance               :=      aTempArray16;
+PRG_MainController.fbGuidanceSystem.aGCActualGuidAcceleration           :=      aTempArray17;                                                             
+PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArray18;   
+
+
+
+
+
+//OperationControlData
 	//From OC to MC
 		//Main Controller
 		PRG_MainController.stOperationControlCommands.bStartOperational			:= 			OperationControlData.stFromOCToMC.OM_origO_StartOperational;     
@@ -150,7 +194,7 @@ END_VAR
 		PRG_MainController.fbLevitationSystem.fTGDesiredLevTime					:= 			OperationControlData.stFromOCToMC.OM_origG_DesiredLevTime;									
 		//Guidance
 		PRG_MainController.stOperationControlCommands.bMinimumAirGapForGC		:= 			OperationControlData.stFromOCToMC.OM_origG_EnableGuidController;	
-		PRG_MainController.fbGuidanceSystem.fGCReferenceYSignal					:= 			OperationControlData.stFromOCToMC.OM_origG_GuidReferenceYSignal;
+		PRG_MainController.fbGuidanceSystem.aGCReferenceYSignal					:= 			OperationControlData.stFromOCToMC.OM_origG_GuidReferenceYSignal;
 		PRG_MainController.fbGuidanceSystem.nGCControlOption					:= 			OperationControlData.stFromOCToMC.OM_origG_GuidControlOption;			
 
 	//From MC to OC
@@ -163,92 +207,92 @@ END_VAR
 		//ServiceModule
 		OperationControlData.stFromMCToOC.MO_origM_DistanceServiceModule		:=			PRG_MainController.fbServiceModule.fDistance;
 		//Levitation
-		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC1			:=			PRG_MainController.fbLevitationSystem.fECOutputZVector[0];
-		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC2			:=			PRG_MainController.fbLevitationSystem.fECOutputZVector[1];
-		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC3			:=			PRG_MainController.fbLevitationSystem.fECOutputZVector[2];
-		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC4			:=			PRG_MainController.fbLevitationSystem.fECOutputZVector[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC1		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC2		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC3		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC4		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC1		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC2		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC3		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC4		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC1	:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC2	:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC3	:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC4	:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC1		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC2		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC3		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC4		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC1		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC2		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC3		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC4		:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[3];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC1			:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[0];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC2			:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[1];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC3			:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[2];
-		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC4			:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[3];
+		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC1			:=			aTempArray2[0];
+		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC2			:=			aTempArray2[1];
+		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC3			:=			aTempArray2[2];
+		OperationControlData.stFromMCToOC.MO_origM_ECOutputDistanceXMC4			:=			aTempArray2[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC1		:=			aTempArray3[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC2		:=			aTempArray3[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC3		:=			aTempArray3[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevDistanceXMC4		:=			aTempArray3[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC1		:=			aTempArray4[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC2		:=			aTempArray4[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC3		:=			aTempArray4[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVelocityXMC4		:=			aTempArray4[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC1	:=			aTempArray5[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC2	:=			aTempArray5[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC3	:=			aTempArray5[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevAccelerationXMC4	:=			aTempArray5[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC1		:=			aTempArray6[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC2		:=			aTempArray6[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC3		:=			aTempArray6[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevCurrentXMC4		:=			aTempArray6[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC1		:=			aTempArray7[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC2		:=			aTempArray7[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC3		:=			aTempArray7[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevVoltageXMC4		:=			aTempArray7[3];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC1			:=			aTempArray8[0];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC2			:=			aTempArray8[1];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC3			:=			aTempArray8[2];
+		OperationControlData.stFromMCToOC.MO_origM_TGOutputLevForceXMC4			:=			aTempArray8[3];
 		//Guidance
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUX0				:=			PRG_MainController.fbGuidanceSystem.aIMU1Acceleration[0];
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUY0				:=			PRG_MainController.fbGuidanceSystem.aIMU1Acceleration[1];
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUZ0				:=			PRG_MainController.fbGuidanceSystem.aIMU1Acceleration[2];
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUX1				:=			PRG_MainController.fbGuidanceSystem.aIMU2Acceleration[0];
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUY1				:=			PRG_MainController.fbGuidanceSystem.aIMU2Acceleration[1];
-		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUZ1				:=			PRG_MainController.fbGuidanceSystem.aIMU2Acceleration[2];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC1		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[0];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC2		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[1];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC3		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[2];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC4		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[3];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC1		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[0];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC2		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[1];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC3		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[2];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC4		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[3];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC1		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[0];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC2		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[1];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC3		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[2];
-		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC4		:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[3];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUX0				:=			aTempArray0[0];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUY0				:=			aTempArray0[1];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUZ0				:=			aTempArray0[2];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUX1				:=			aTempArray1[0];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUY1				:=			aTempArray1[1];
+		OperationControlData.stFromMCToOC.MO_origM_GuidanceIMUZ1				:=			aTempArray1[2];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC1		:=			aTempArray9[0];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC2		:=			aTempArray9[1];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC3		:=			aTempArray9[2];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidCurrentXMC4		:=			aTempArray9[3];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC1		:=			aTempArray10[0];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC2		:=			aTempArray10[1];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC3		:=			aTempArray10[2];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidVoltageXMC4		:=			aTempArray10[3];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC1		:=			aTempArray11[0];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC2		:=			aTempArray11[1];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC3		:=			aTempArray11[2];
+		OperationControlData.stFromMCToOC.MO_origM_GCOutputGuidForceXMC4		:=			aTempArray11[3];
 
 
 
 //XMC Data
 	//From XMC to MC
 		//Sensor Values
-		XMCData.stFromXMC1ToMC.EM_origE_DistanceLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevDistance[0];
-		XMCData.stFromXMC2ToMC.EM_origE_DistanceLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevDistance[1];
-		XMCData.stFromXMC3ToMC.EM_origE_DistanceLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevDistance[2];
-		XMCData.stFromXMC4ToMC.EM_origE_DistanceLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevDistance[3];		
-		XMCData.stFromXMC1ToMC.EM_origE_VelocityLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevVelocity[0];
-		XMCData.stFromXMC2ToMC.EM_origE_VelocityLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevVelocity[1];
-		XMCData.stFromXMC3ToMC.EM_origE_VelocityLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevVelocity[2];
-		XMCData.stFromXMC4ToMC.EM_origE_VelocityLevFiltered						:=			PRG_MainController.fbLevitationSystem.fTGActualLevVelocity[3];			
-		XMCData.stFromXMC1ToMC.EM_origE_IMUZ									:=			PRG_MainController.fbLevitationSystem.fTGActualLevAcceleration[0];
-		XMCData.stFromXMC2ToMC.EM_origE_IMUZ									:=			PRG_MainController.fbLevitationSystem.fTGActualLevAcceleration[1];
-		XMCData.stFromXMC3ToMC.EM_origE_IMUZ									:=			PRG_MainController.fbLevitationSystem.fTGActualLevAcceleration[2];
-		XMCData.stFromXMC4ToMC.EM_origE_IMUZ									:=			PRG_MainController.fbLevitationSystem.fTGActualLevAcceleration[3];			
-		XMCData.stFromXMC1ToMC.EM_origE_CurrentLev								:=			PRG_MainController.fbLevitationSystem.fTGActualLevCurrent[0];
-		XMCData.stFromXMC2ToMC.EM_origE_CurrentLev								:=			PRG_MainController.fbLevitationSystem.fTGActualLevCurrent[1];
-		XMCData.stFromXMC3ToMC.EM_origE_CurrentLev								:=			PRG_MainController.fbLevitationSystem.fTGActualLevCurrent[2];
-		XMCData.stFromXMC4ToMC.EM_origE_CurrentLev								:=			PRG_MainController.fbLevitationSystem.fTGActualLevCurrent[3];		
-		XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidFiltered					:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidDistance[0];
-		XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidFiltered					:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidDistance[1];
-		XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidFiltered					:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidDistance[2];
-		XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidFiltered					:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidDistance[3];		
-		XMCData.stFromXMC1ToMC.EM_origE_IMUY									:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidAcceleration[0];
-		XMCData.stFromXMC2ToMC.EM_origE_IMUY									:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidAcceleration[1];
-		XMCData.stFromXMC3ToMC.EM_origE_IMUY									:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidAcceleration[2];
-		XMCData.stFromXMC4ToMC.EM_origE_IMUY									:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidAcceleration[3];			
-		XMCData.stFromXMC1ToMC.EM_origE_CurrentGuid								:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidCurrent[0];
-		XMCData.stFromXMC2ToMC.EM_origE_CurrentGuid								:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidCurrent[1];
-		XMCData.stFromXMC3ToMC.EM_origE_CurrentGuid								:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidCurrent[2];
-		XMCData.stFromXMC4ToMC.EM_origE_CurrentGuid								:=			PRG_MainController.fbGuidanceSystem.fGCActualGuidCurrent[3];			
+		aTempArray12[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceLevFiltered;					
+		aTempArray12[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceLevFiltered	;				
+		aTempArray12[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceLevFiltered	;				
+		aTempArray12[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceLevFiltered	;		
+		aTempArray13[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_VelocityLevFiltered	;				
+		aTempArray13[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_VelocityLevFiltered	;				
+		aTempArray13[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_VelocityLevFiltered	;				
+		aTempArray13[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_VelocityLevFiltered	;	
+		aTempArray14[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_IMUZ				;			
+		aTempArray14[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_IMUZ				;			
+		aTempArray14[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_IMUZ				;			
+		aTempArray14[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_IMUZ				;	
+		aTempArray15[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_CurrentLev			;				
+		aTempArray15[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_CurrentLev			;				
+		aTempArray15[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_CurrentLev			;				
+		aTempArray15[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_CurrentLev			;		
+		aTempArray16[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidFiltered;				
+		aTempArray16[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidFiltered;				
+		aTempArray16[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidFiltered;				
+		aTempArray16[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidFiltered;		
+		aTempArray17[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_IMUY				;			
+		aTempArray17[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_IMUY				;			
+		aTempArray17[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_IMUY				;			
+		aTempArray17[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_IMUY				;	
+		aTempArray18[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_CurrentGuid			;				
+		aTempArray18[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_CurrentGuid			;				
+		aTempArray18[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_CurrentGuid			;				
+		aTempArray18[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_CurrentGuid			;	
 		//System Status
-		XMCData.stFromXMC1ToMC.EM_origE_SafetyCounter							:= 			PRG_MainController.stXMCCommands.nSafetyCounterXMC1;
-		XMCData.stFromXMC2ToMC.EM_origE_SafetyCounter							:= 			PRG_MainController.stXMCCommands.nSafetyCounterXMC2;
-		XMCData.stFromXMC3ToMC.EM_origE_SafetyCounter							:= 			PRG_MainController.stXMCCommands.nSafetyCounterXMC3;
-		XMCData.stFromXMC4ToMC.EM_origE_SafetyCounter							:= 			PRG_MainController.stXMCCommands.nSafetyCounterXMC4;		
+		PRG_MainController.stXMCCommands.nSafetyCounterXMC1						:=			XMCData.stFromXMC1ToMC.EM_origE_SafetyCounter		;					 			
+		PRG_MainController.stXMCCommands.nSafetyCounterXMC2						:=			XMCData.stFromXMC2ToMC.EM_origE_SafetyCounter		;					 			
+		PRG_MainController.stXMCCommands.nSafetyCounterXMC3						:=			XMCData.stFromXMC3ToMC.EM_origE_SafetyCounter		;					 			
+		PRG_MainController.stXMCCommands.nSafetyCounterXMC4			        	:=			XMCData.stFromXMC4ToMC.EM_origE_SafetyCounter	;
 		
 	//From MC to XMC
 		//Control
@@ -281,18 +325,18 @@ END_VAR
 		XMCData.stFromMCToXMC3.ME_origM_DebugPWMGuid							:=			PRG_MainController.stXMCCommands.nDebugPWMGuid;
 		XMCData.stFromMCToXMC4.ME_origM_DebugPWMGuid							:=			PRG_MainController.stXMCCommands.nDebugPWMGuid;			
 		//Guidance
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidCurrent					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidCurrent					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidCurrent					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidCurrent					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidCurrent[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidForce					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidForce					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidForce					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidForce					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidForce[3];
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidVoltage					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidVoltage					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidVoltage					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidVoltage					:=			PRG_MainController.fbGuidanceSystem.fGCOutputGuidVoltage[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidForce					:=			aTempArray11[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidForce					:=			aTempArray11[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidForce					:=			aTempArray11[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidForce					:=			aTempArray11[3];
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[3];		
 		XMCData.stFromMCToXMC1.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC2.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC3.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
@@ -306,30 +350,30 @@ END_VAR
 		XMCData.stFromMCToXMC3.ME_origM_GuidEnablePControl						:=			PRG_MainController.fbGuidanceSystem.bEnableIControl;
 		XMCData.stFromMCToXMC4.ME_origM_GuidEnablePControl						:=			PRG_MainController.fbGuidanceSystem.bEnableIControl;			
 		//Levitation
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevDistance					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[0] + PRG_MainController.fbLevitationSystem.fECOutputZVector[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevDistance					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[1] + PRG_MainController.fbLevitationSystem.fECOutputZVector[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevDistance					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[2] + PRG_MainController.fbLevitationSystem.fECOutputZVector[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevDistance					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevDistance[3] + PRG_MainController.fbLevitationSystem.fECOutputZVector[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVelocity					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVelocity					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVelocity					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVelocity					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVelocity[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevAcceleration				:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevAcceleration				:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevAcceleration				:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevAcceleration				:=			PRG_MainController.fbLevitationSystem.fTGOutputLevAcceleration[3];			
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevCurrent					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevCurrent					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevCurrent					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevCurrent					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevCurrent[3];	
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVoltage					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVoltage					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVoltage					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVoltage					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevVoltage[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevForce					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevForce					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevForce					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevForce					:=			PRG_MainController.fbLevitationSystem.fTGOutputLevForce[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevDistance					:=			aTempArray3[0] + aTempArray2[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevDistance					:=			aTempArray3[1] + aTempArray2[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevDistance					:=			aTempArray3[2] + aTempArray2[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevDistance					:=			aTempArray3[3] + aTempArray2[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[3];			
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[3];	
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[3];		
+		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevForce					:=			aTempArray8[0];
+		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevForce					:=			aTempArray8[1];
+		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevForce					:=			aTempArray8[2];
+		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevForce					:=			aTempArray8[3];		
 		XMCData.stFromMCToXMC1.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC2.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC3.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
@@ -639,6 +683,18 @@ END_IF
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="PRG_MainController.doDataHandling">
+      <LineId Id="865" Count="0" />
+      <LineId Id="881" Count="0" />
+      <LineId Id="879" Count="0" />
+      <LineId Id="869" Count="2" />
+      <LineId Id="868" Count="0" />
+      <LineId Id="872" Count="2" />
+      <LineId Id="882" Count="1" />
+      <LineId Id="886" Count="0" />
+      <LineId Id="937" Count="6" />
+      <LineId Id="904" Count="0" />
+      <LineId Id="898" Count="3" />
+      <LineId Id="897" Count="0" />
       <LineId Id="446" Count="0" />
       <LineId Id="450" Count="0" />
       <LineId Id="391" Count="0" />
@@ -673,19 +729,8 @@ END_IF
       <LineId Id="413" Count="0" />
       <LineId Id="504" Count="0" />
       <LineId Id="506" Count="0" />
-      <LineId Id="505" Count="0" />
-      <LineId Id="489" Count="0" />
-      <LineId Id="507" Count="4" />
-      <LineId Id="490" Count="0" />
-      <LineId Id="512" Count="2" />
-      <LineId Id="491" Count="0" />
-      <LineId Id="515" Count="2" />
-      <LineId Id="492" Count="2" />
-      <LineId Id="518" Count="4" />
-      <LineId Id="495" Count="0" />
-      <LineId Id="523" Count="2" />
-      <LineId Id="496" Count="3" />
-      <LineId Id="526" Count="1" />
+      <LineId Id="905" Count="31" />
+      <LineId Id="527" Count="0" />
       <LineId Id="500" Count="1" />
       <LineId Id="547" Count="1" />
       <LineId Id="528" Count="0" />

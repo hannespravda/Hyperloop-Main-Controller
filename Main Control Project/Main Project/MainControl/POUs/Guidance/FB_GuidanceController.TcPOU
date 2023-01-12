@@ -7,29 +7,29 @@ VAR_INPUT
 	bActive : BOOL;
 	
 	fDesiredDeviationFromCenterLine : REAL;
-	
 	fActualYDistance : REAL;
 	fActualYAcceleration : REAL;
 	fActualCurrent	: REAL;
 END_VAR
 VAR_OUTPUT
-	fNewReferenceValueForCurrent : LREAL;
-	fNewRefrenceValueForForce : LREAL;
-	fNewreferenceValueForVoltage : LREAL;
+	fNewReferenceValueForCurrent : REAL;
+	fNewRefrenceValueForForce : REAL;
+	fNewreferenceValueForVoltage : REAL;
+	
+	//ErrorBits
+	bCurrentOutOfRange : BOOL;
+	bVoltageOutOfRange : BOOL;
+	bForceOutOfRange	: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE eOperationMode OF
 	GuidanceControllerOperationMode.CurrentControlled:
-		IF bActive THEN
-			doCalculateNewReferenceValueForCurrent(	fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,			//BlackBox: *Insert Guidance Controller Here and connect Output to fNewReferenceValueForCurrent*
-													fDistanceLeft1 := fDistanceLeft1,
-													fDistanceLeft2 := fDistanceLeft2,
-													fDistanceRight1 := fDistanceRight1,
-													fDistanceRight2 := fDistanceRight2,
-													fAccelerationY := fAccelerationY,
-													fCurrentLeft := fCurrentLeft,
-													fCurrentRight := fCurrentRight);
+		IF bActive THEN //Implement Method with Controller Structure
+			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
+													fActualYDistance := fActualYDistance,
+													fActualYAcceleration := fActualYAcceleration,
+													fActualCurrent := fActualCurrent);
 		ELSE
 			fNewReferenceValueForCurrent := 0;
 			fNewRefrenceValueForForce := 0;
@@ -37,16 +37,11 @@ END_VAR
 		END_IF
 
 	GuidanceControllerOperationMode.ForceControlled:
-		IF bActive THEN
-			doCalculateNewReferenceValueForCurrentandForce(	fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,	//BlackBox: *Insert Guidance Controller Here and connect Output to fNewReferenceValueForCurrent and fNewRefrenceValueForForce*
-															fDistanceLeft1 := fDistanceLeft1,
-															fDistanceLeft2 := fDistanceLeft2,
-															fDistanceRight1 := fDistanceRight1,
-															fDistanceRight2 := fDistanceRight2,
-															fAccelerationY := fAccelerationY,
-															fCurrentLeft := fCurrentLeft,
-															fCurrentRight := fCurrentRight,
-															fEstimatedForce := fEstimatedForce);
+		IF bActive THEN //Implement Method with Controller Structure
+			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
+													fActualYDistance := fActualYDistance,
+													fActualYAcceleration := fActualYAcceleration,
+													fActualCurrent := fActualCurrent);
 		ELSE
 			fNewReferenceValueForCurrent := 0;
 			fNewRefrenceValueForForce := 0;	
@@ -58,35 +53,30 @@ END_CASE]]></ST>
       <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrent
 VAR_INPUT
 	fDesiredDeviationFromCenterLine : LREAL;
-	fDistanceLeft1 : LREAL;
-	fDistanceLeft2 : LREAL;
-	fDistanceRight1 : LREAL;
-	fDistanceRight2 : LREAL;
-	fAccelerationY : LREAL;
-	fCurrentLeft : LREAL;
-	fCurrentRight : LREAL;
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[fNewReferenceValueForCurrent := 0;
+fNewRefrenceValueForForce := 0;
+fNewreferenceValueForVoltage := 0;]]></ST>
       </Implementation>
     </Method>
     <Method Name="doCalculateNewReferenceValueForCurrentandForce" Id="{0a2a5b17-8f04-42d3-8d30-42ae6c7495e1}">
       <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrentandForce
 VAR_INPUT
 	fDesiredDeviationFromCenterLine : LREAL;
-	fDistanceLeft1 : LREAL;
-	fDistanceLeft2 : LREAL;
-	fDistanceRight1 : LREAL;
-	fDistanceRight2 : LREAL;
-	fAccelerationY : LREAL;
-	fCurrentLeft : LREAL;
-	fCurrentRight : LREAL;
-	fEstimatedForce : LREAL;
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[fNewReferenceValueForCurrent := 0;
+fNewRefrenceValueForForce := 0;
+fNewreferenceValueForVoltage := 0;]]></ST>
       </Implementation>
     </Method>
     <Property Name="eCondition" Id="{42ce8d76-2444-4e2e-9c2b-69dafda1c213}">
@@ -113,7 +103,14 @@ END_IF]]></ST>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[nErrorID := 0;]]></ST>
+          <ST><![CDATA[//RangeAbfrage to be implemented
+bCurrentOutOfRange := FALSE;
+bVoltageOutOfRange := FALSE;
+bForceOutOfRange := FALSE;
+
+nErrorID.0 := bCurrentOutOfRange;
+nErrorID.1 := bVoltageOutOfRange;
+nErrorID.2 := bForceOutOfRange;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -121,14 +118,14 @@ END_VAR
       <LineId Id="9" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="99" Count="0" />
-      <LineId Id="74" Count="7" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="177" Count="2" />
       <LineId Id="130" Count="2" />
       <LineId Id="159" Count="0" />
       <LineId Id="100" Count="0" />
       <LineId Id="72" Count="1" />
       <LineId Id="101" Count="0" />
-      <LineId Id="90" Count="6" />
-      <LineId Id="46" Count="0" />
+      <LineId Id="180" Count="2" />
       <LineId Id="97" Count="0" />
       <LineId Id="134" Count="1" />
       <LineId Id="133" Count="0" />
@@ -137,9 +134,11 @@ END_VAR
       <LineId Id="44" Count="0" />
     </LineIds>
     <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrent">
+      <LineId Id="19" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrentandForce">
+      <LineId Id="20" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_GuidanceController.eCondition.Get">
@@ -148,6 +147,10 @@ END_VAR
     </LineIds>
     <LineIds Name="FB_GuidanceController.nErrorID.Get">
       <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

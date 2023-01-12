@@ -3,8 +3,8 @@
   <POU Name="PRG_ErrorHandling" Id="{433be138-7b85-46da-b772-f3bde756a423}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_ErrorHandling
 VAR
-	nErrorBits : UDINT;
-	nWarningBits : UDINT;
+	nErrorBits : ULINT;
+	nWarningBits : ULINT;
 	
 	fbStartUpTimer : TON := (PT := tStartUpTime);
 	bStartUpCheck : BOOL;
@@ -13,7 +13,6 @@ VAR
 	bErrorInOperational : BOOL;
 	bErrorInShutdown : BOOL;
 	bAllErrorsAcknowledged : BOOL;
-	
 	
 	
 	
@@ -27,8 +26,8 @@ VAR CONSTANT
 	tStartUpTime : TIME := T#10S;
 	tSafetyCounterTimeout : TIME := T#5s;
 	
-	iNumberOfMessages : USINT := 23;			//*set the number of MessageIDs here*
-	iNumberOfWarnings : USINT := 16;			//*set the number of Warnings here*
+	iNumberOfMessages : USINT := 59;			//*set the number of MessageIDs here*
+	iNumberOfWarnings : USINT := 52;			//*set the number of Warnings here*
 	iNumberOfErrors : USINT := 6;				//*set the number of Errors here*
 END_VAR
 ]]></Declaration>
@@ -50,6 +49,7 @@ fbEventLogging();
 CASE PRG_MainController.eState OF
 	TopLevelSTM.STARTUP:
 		bAllErrorsAcknowledged := FALSE;
+		
 		doStartUpCheck(	eConditionServiceModule := PRG_MainController.fbServiceModule.eCondition,
 						eConditionLevitationSystem := PRG_MainController.fbLevitationSystem.eCondition,
 						eConditionGuidanceSystem := PRG_MainController.fbGuidanceSystem.eCondition);
@@ -80,10 +80,6 @@ CASE PRG_MainController.eState OF
 		
 	TopLevelSTM.ERROR:
 		IF PRG_MainController.stOperationControlCommands.bAckError THEN
-			bErrorInStartUp := FALSE;
-			bErrorInReady := FALSE;
-			bErrorInOperational := FALSE;
-			bErrorInShutdown := FALSE;
 			
 			//Reset WarningBits and ErrorBits
 			nWarningBits := 0;
@@ -97,8 +93,16 @@ CASE PRG_MainController.eState OF
 				END_IF
 			END_FOR
 			fbEventLogging.aEventCounter := aSetEventCounterToZero;
-
 			
+			//ResetSafetyCounter
+			fbSafetyCounter(bReset := TRUE);
+			fbSafetyCounter.bReset := FALSE;
+			
+			//Acknowledge
+			bErrorInStartUp := FALSE;
+			bErrorInReady := FALSE;
+			bErrorInOperational := FALSE;
+			bErrorInShutdown := FALSE;
 			bAllErrorsAcknowledged := TRUE;
 		END_IF
 END_CASE
@@ -188,12 +192,49 @@ nWarningBits.9 := nErrorIDServiceModule.9;
 //LevitationSystem
 nWarningBits.10 := nErrorIDLevitationSystem.0;
 nWarningBits.11 := nErrorIDLevitationSystem.1;
+nWarningBits.12 := nErrorIDLevitationSystem.2;
+nWarningBits.13 := nErrorIDLevitationSystem.3;
+nWarningBits.14 := nErrorIDLevitationSystem.4;
+nWarningBits.15 := nErrorIDLevitationSystem.5;
+nWarningBits.16 := nErrorIDLevitationSystem.6;
+nWarningBits.17 := nErrorIDLevitationSystem.7;
+nWarningBits.18 := nErrorIDLevitationSystem.8;
+nWarningBits.19 := nErrorIDLevitationSystem.9;
+nWarningBits.20 := nErrorIDLevitationSystem.10;
+nWarningBits.21 := nErrorIDLevitationSystem.11;
+nWarningBits.22 := nErrorIDLevitationSystem.12;
+nWarningBits.23 := nErrorIDLevitationSystem.13;
+nWarningBits.24 := nErrorIDLevitationSystem.14;
+nWarningBits.25 := nErrorIDLevitationSystem.15;
+nWarningBits.26 := nErrorIDLevitationSystem.16;
+nWarningBits.27 := nErrorIDLevitationSystem.17;
+nWarningBits.28 := nErrorIDLevitationSystem.18;
+nWarningBits.29 := nErrorIDLevitationSystem.19;
+nWarningBits.30 := nErrorIDLevitationSystem.20;
+nWarningBits.31 := nErrorIDLevitationSystem.21;
+nWarningBits.32 := nErrorIDLevitationSystem.22;
+nWarningBits.33 := nErrorIDLevitationSystem.23;
+nWarningBits.34 := nErrorIDLevitationSystem.24;
+nWarningBits.35 := nErrorIDLevitationSystem.25;
+
 
 //GuidanceSystem
-nWarningBits.12 := nErrorIDGuidanceSystem.0;
-nWarningBits.13 := nErrorIDGuidanceSystem.1;
-nWarningBits.14 := nErrorIDGuidanceSystem.2;
-nWarningBits.15 := nErrorIDGuidanceSystem.3;
+nWarningBits.36 := nErrorIDGuidanceSystem.0;
+nWarningBits.37 := nErrorIDGuidanceSystem.1;
+nWarningBits.38 := nErrorIDGuidanceSystem.2;
+nWarningBits.39 := nErrorIDGuidanceSystem.3;
+nWarningBits.40 := nErrorIDGuidanceSystem.4;
+nWarningBits.41 := nErrorIDGuidanceSystem.5;
+nWarningBits.42 := nErrorIDGuidanceSystem.6;
+nWarningBits.43 := nErrorIDGuidanceSystem.7;
+nWarningBits.44 := nErrorIDGuidanceSystem.8;
+nWarningBits.45 := nErrorIDGuidanceSystem.9;
+nWarningBits.46 := nErrorIDGuidanceSystem.10;
+nWarningBits.47 := nErrorIDGuidanceSystem.11;
+nWarningBits.48 := nErrorIDGuidanceSystem.12;
+nWarningBits.49 := nErrorIDGuidanceSystem.13;
+nWarningBits.50 := nErrorIDGuidanceSystem.14;
+nWarningBits.51 := nErrorIDGuidanceSystem.15;
 
 //MainController
 		
@@ -254,6 +295,7 @@ END_IF
       <LineId Id="217" Count="0" />
       <LineId Id="19" Count="1" />
       <LineId Id="321" Count="0" />
+      <LineId Id="429" Count="0" />
       <LineId Id="257" Count="1" />
       <LineId Id="256" Count="0" />
       <LineId Id="239" Count="0" />
@@ -270,8 +312,6 @@ END_IF
       <LineId Id="81" Count="1" />
       <LineId Id="87" Count="1" />
       <LineId Id="308" Count="0" />
-      <LineId Id="311" Count="2" />
-      <LineId Id="309" Count="0" />
       <LineId Id="314" Count="0" />
       <LineId Id="336" Count="0" />
       <LineId Id="315" Count="1" />
@@ -282,8 +322,15 @@ END_IF
       <LineId Id="333" Count="2" />
       <LineId Id="326" Count="0" />
       <LineId Id="332" Count="0" />
-      <LineId Id="323" Count="0" />
-      <LineId Id="317" Count="1" />
+      <LineId Id="420" Count="0" />
+      <LineId Id="432" Count="0" />
+      <LineId Id="425" Count="0" />
+      <LineId Id="431" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="433" Count="0" />
+      <LineId Id="435" Count="2" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="318" Count="0" />
       <LineId Id="310" Count="0" />
       <LineId Id="284" Count="0" />
       <LineId Id="94" Count="1" />
@@ -317,8 +364,20 @@ END_IF
       <LineId Id="13" Count="9" />
       <LineId Id="217" Count="0" />
       <LineId Id="23" Count="2" />
+      <LineId Id="236" Count="7" />
+      <LineId Id="245" Count="6" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="253" Count="6" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="235" Count="0" />
       <LineId Id="218" Count="0" />
       <LineId Id="26" Count="4" />
+      <LineId Id="261" Count="2" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="265" Count="2" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="269" Count="2" />
+      <LineId Id="268" Count="0" />
       <LineId Id="227" Count="0" />
       <LineId Id="226" Count="0" />
       <LineId Id="71" Count="0" />

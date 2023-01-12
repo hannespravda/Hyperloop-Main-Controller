@@ -4,6 +4,7 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ServiceModule IMPLEMENTS ITF_HighLevelSystem
 VAR_INPUT
 	eState : ServiceModuleSTM;
+	eActivationStatus : ActivationStatus;
 END_VAR
 VAR
 	//Components
@@ -53,25 +54,6 @@ END_IF
 
 ]]></ST>
     </Implementation>
-    <Property Name="eActivationStatus" Id="{5627b3e3-7587-4ab7-aba3-5759e7f09b05}">
-      <Declaration><![CDATA[PROPERTY eActivationStatus : ActivationStatus]]></Declaration>
-      <Get Name="Get" Id="{cd950775-993a-4ef5-b24c-0ae0d6aa2168}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{68bae9ab-2028-4c1d-8c62-13d5e086b869}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
     <Property Name="eCondition" Id="{03d6c99f-9fe7-48bb-9be9-856045bd0ea5}">
       <Declaration><![CDATA[PROPERTY eCondition : HighLevelCondition
 ]]></Declaration>
@@ -141,12 +123,6 @@ nErrorID.9 := nErrorBitsRGB.5;]]></ST>
       <LineId Id="474" Count="3" />
       <LineId Id="480" Count="0" />
       <LineId Id="45" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ServiceModule.eActivationStatus.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ServiceModule.eActivationStatus.Set">
-      <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_ServiceModule.eCondition.Get">
       <LineId Id="12" Count="1" />
