@@ -3,7 +3,7 @@
   <POU Name="FB_GuidanceController" Id="{b762347b-0b73-4a03-97c5-dc8d2cb401ab}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceController IMPLEMENTS ITF_SubSystem
 VAR_INPUT
-	eOperationMode : GuidanceControllerOperationMode;
+	eOperationMode : GCControllerMode;
 	bActive : BOOL;
 	
 	fDesiredDeviationFromCenterLine : REAL;
@@ -15,7 +15,8 @@ VAR_OUTPUT
 	fNewReferenceValueForCurrent : REAL;
 	fNewRefrenceValueForForce : REAL;
 	fNewreferenceValueForVoltage : REAL;
-	
+END_VAR
+VAR
 	//ErrorBits
 	bCurrentOutOfRange : BOOL;
 	bVoltageOutOfRange : BOOL;
@@ -24,7 +25,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE eOperationMode OF
-	GuidanceControllerOperationMode.CurrentControlled:
+	GCControllerMode.CurrentControlled:
 		IF bActive THEN //Implement Method with Controller Structure
 			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
 													fActualYDistance := fActualYDistance,
@@ -36,7 +37,7 @@ END_VAR
 			fNewreferenceValueForVoltage := 0;
 		END_IF
 
-	GuidanceControllerOperationMode.ForceControlled:
+	GCControllerMode.ForceControlled:
 		IF bActive THEN //Implement Method with Controller Structure
 			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
 													fActualYDistance := fActualYDistance,
@@ -52,7 +53,7 @@ END_CASE]]></ST>
     <Method Name="doCalculateNewReferenceValueForCurrent" Id="{0266ba02-b1c4-4402-b0b0-9dcacc0680af}">
       <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrent
 VAR_INPUT
-	fDesiredDeviationFromCenterLine : LREAL;
+	fDesiredDeviationFromCenterLine : REAL;
 	fActualYDistance : REAL;
 	fActualYAcceleration : REAL;
 	fActualCurrent	: REAL;
@@ -67,7 +68,7 @@ fNewreferenceValueForVoltage := 0;]]></ST>
     <Method Name="doCalculateNewReferenceValueForCurrentandForce" Id="{0a2a5b17-8f04-42d3-8d30-42ae6c7495e1}">
       <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrentandForce
 VAR_INPUT
-	fDesiredDeviationFromCenterLine : LREAL;
+	fDesiredDeviationFromCenterLine : REAL;
 	fActualYDistance : REAL;
 	fActualYAcceleration : REAL;
 	fActualCurrent	: REAL;

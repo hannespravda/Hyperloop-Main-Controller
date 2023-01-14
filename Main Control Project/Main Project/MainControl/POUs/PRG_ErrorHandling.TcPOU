@@ -3,32 +3,32 @@
   <POU Name="PRG_ErrorHandling" Id="{433be138-7b85-46da-b772-f3bde756a423}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_ErrorHandling
 VAR
-	nErrorBits : ULINT;
-	nWarningBits : ULINT;
+	nErrorBits 						: ULINT;
+	nWarningBits 					: ULINT;
 	
-	fbStartUpTimer : TON := (PT := tStartUpTime);
-	bStartUpCheck : BOOL;
-	bErrorInStartUp : BOOL;
-	bErrorInReady : BOOL;
-	bErrorInOperational : BOOL;
-	bErrorInShutdown : BOOL;
-	bAllErrorsAcknowledged : BOOL;
+	fbStartUpTimer 					: TON := (PT := tStartUpTime);
+	bStartUpCheck 					: BOOL;
+	bErrorInStartUp 				: BOOL;
+	bErrorInReady 					: BOOL;
+	bErrorInOperational 			: BOOL;
+	bErrorInShutdown 				: BOOL;
+	bAllErrorsAcknowledged 			: BOOL;
 	
+	fbEventLogging 					: FB_EventLogging;
+	aSetEventCounterToZero 			: ARRAY [0..iNumberOfMessages-1] OF USINT;
+	n 								: USINT;
 	
+	fbSafetyCounter 				: FB_SafetyCounter;
 	
-	fbEventLogging : FB_EventLogging;
-	aSetEventCounterToZero : ARRAY [0..iNumberOfMessages-1] OF USINT;
-	n : USINT;
-	
-	fbSafetyCounter : FB_SafetyCounter;
+	bDebugMode 						: BOOL;
 END_VAR
 VAR CONSTANT
-	tStartUpTime : TIME := T#10S;
-	tSafetyCounterTimeout : TIME := T#5s;
+	tStartUpTime 					: TIME := T#10S;
+	tSafetyCounterTimeout 			: TIME := T#5S;
 	
-	iNumberOfMessages : USINT := 59;			//*set the number of MessageIDs here*
-	iNumberOfWarnings : USINT := 52;			//*set the number of Warnings here*
-	iNumberOfErrors : USINT := 6;				//*set the number of Errors here*
+	iNumberOfMessages 				: USINT := 59;			//*set the number of MessageIDs here*
+	iNumberOfWarnings 				: USINT := 52;			//*set the number of Warnings here*
+	iNumberOfErrors 				: USINT := 6;			//*set the number of Errors here*
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -45,15 +45,24 @@ doSetErrorBits(		nErrorIDServiceModule := PRG_MainController.fbServiceModule.nEr
 fbSafetyCounter();
 fbEventLogging();
 
+IF bDebugMode THEN
+	nWarningBits := 0;
+	nErrorBits := 0;
+	bStartUpCheck := TRUE;
+END_IF
+
 							
 CASE PRG_MainController.eState OF
 	TopLevelSTM.STARTUP:
 		bAllErrorsAcknowledged := FALSE;
 		
-		doStartUpCheck(	eConditionServiceModule := PRG_MainController.fbServiceModule.eCondition,
-						eConditionLevitationSystem := PRG_MainController.fbLevitationSystem.eCondition,
-						eConditionGuidanceSystem := PRG_MainController.fbGuidanceSystem.eCondition);
-
+		IF NOT bDebugMode THEN
+			doStartUpCheck(	eConditionServiceModule := PRG_MainController.fbServiceModule.eCondition,
+							eConditionLevitationSystem := PRG_MainController.fbLevitationSystem.eCondition,
+							eConditionGuidanceSystem := PRG_MainController.fbGuidanceSystem.eCondition);
+		ELSE
+			bStartUpCheck := TRUE;
+		END_IF	
 										
 	TopLevelSTM.READY:
 		IF nErrorBits <> 0 THEN
@@ -88,9 +97,6 @@ CASE PRG_MainController.eState OF
 			//Reset Event Logging
 			FOR n := 0 TO iNumberOfMessages-1 DO
 				aSetEventCounterToZero[n] := 0;
-				IF n = iNumberOfMessages-1 THEN
-					aSetEventCounterToZero[n] := 1;
-				END_IF
 			END_FOR
 			fbEventLogging.aEventCounter := aSetEventCounterToZero;
 			
@@ -291,14 +297,21 @@ END_IF
       <LineId Id="193" Count="0" />
       <LineId Id="358" Count="0" />
       <LineId Id="271" Count="0" />
+      <LineId Id="470" Count="0" />
+      <LineId Id="469" Count="0" />
+      <LineId Id="471" Count="0" />
+      <LineId Id="473" Count="1" />
+      <LineId Id="472" Count="0" />
       <LineId Id="278" Count="0" />
       <LineId Id="217" Count="0" />
       <LineId Id="19" Count="1" />
       <LineId Id="321" Count="0" />
       <LineId Id="429" Count="0" />
+      <LineId Id="476" Count="0" />
       <LineId Id="257" Count="1" />
       <LineId Id="256" Count="0" />
       <LineId Id="239" Count="0" />
+      <LineId Id="477" Count="1" />
       <LineId Id="60" Count="3" />
       <LineId Id="70" Count="1" />
       <LineId Id="64" Count="0" />
@@ -319,7 +332,6 @@ END_IF
       <LineId Id="337" Count="0" />
       <LineId Id="324" Count="0" />
       <LineId Id="330" Count="0" />
-      <LineId Id="333" Count="2" />
       <LineId Id="326" Count="0" />
       <LineId Id="332" Count="0" />
       <LineId Id="420" Count="0" />

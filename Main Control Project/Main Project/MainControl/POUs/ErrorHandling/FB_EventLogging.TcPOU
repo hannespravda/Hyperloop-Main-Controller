@@ -7,6 +7,7 @@ VAR
 	fbEventLogger : FB_TcEventLogger;
 	fbCsvExport : FB_TcEventCsvExportSettings;
 	fbCsvClear : FB_TcClearLoggedEventsSettings;
+
 	
 	n : USINT;
 	aCounterID : ARRAY [0..PRG_ErrorHandling.iNumberOfMessages-1] OF USINT;
@@ -27,7 +28,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//AckErrorLogging
-IF PRG_MainController.stOperationControlCommands.bAckError THEN
+IF PRG_ErrorHandling.bAllErrorsAcknowledged THEN
 	aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] + 1;
 	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] = iCounterMax THEN
 		aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := iCounterReset;

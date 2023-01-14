@@ -3124,29 +3124,14 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{43F052BD-275D-E861-0525-E6F0C581F164}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{EF494ED5-00B2-A363-F179-7276AB9B7E5D}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>BoxLED.bWhiteError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>TEST.iTest</Name>
 							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bWhiteWarning</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>OperationControlData.stFromOCToMC</Name>
@@ -3174,9 +3159,24 @@
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
 						</Var>
 						<Var>
+							<Name>BoxLED.bWhiteError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>BoxLED.bWhiteWarning</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>DistanceSensor.stEL6021In</Name>
 							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.bRedWarning</Name>
@@ -3206,11 +3206,6 @@
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask Outputs</Name>
-						<Var>
-							<Name>BoxLED.iWhite</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
-							<Type>INT</Type>
-						</Var>
 						<Var>
 							<Name>OperationControlData.stFromMCToOC</Name>
 							<Type GUID="{1E03E858-6AC4-A6B8-1463-2E40786C0360}">FromMainControlToOperationControl</Type>
@@ -3251,6 +3246,11 @@
 							<Name>AccelerationSensor.stEL6001Out</Name>
 							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+						<Var>
+							<Name>BoxLED.iWhite</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
 						</Var>
 						<Var>
 							<Name>DistanceSensor.stEL6021Out</Name>

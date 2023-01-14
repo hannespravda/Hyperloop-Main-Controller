@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_GuidanceSystem" Id="{f33f1b41-c667-4ee8-81c9-ea9b824242db}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceSystem IMPLEMENTS ITF_HighLevelSystem
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceSystem EXTENDS FB_HighLevelSystem
 VAR_INPUT
 	eState : GuidanceSystemSTM;
 	nGCControlOption : USINT;
-	eActivationStatus : ActivationStatus;
+	//eActivationStatus : ActivationStatus;
 END_VAR
 VAR
 	fbAccelerationSensor1 : FB_AccelerationSensor;
@@ -19,8 +19,7 @@ VAR_OUTPUT
 	bEnableCurrentController : BOOL;
 	bEnableIControl			: BOOL;
 	bEnablePControl			: BOOL;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF eActivationStatus = ActivationStatus.Enabled THEN
 	//High Level State Machine
@@ -209,20 +208,20 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF nGCControlOption.0 THEN
-	fbGuidanceControllerXMC1.eOperationMode := GuidanceControllerOperationMode.CurrentControlled;
-	fbGuidanceControllerXMC2.eOperationMode := GuidanceControllerOperationMode.CurrentControlled;
-	fbGuidanceControllerXMC3.eOperationMode := GuidanceControllerOperationMode.CurrentControlled;
-	fbGuidanceControllerXMC4.eOperationMode := GuidanceControllerOperationMode.CurrentControlled;
+	fbGuidanceControllerXMC1.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC2.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC3.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC4.eOperationMode := GCControllerMode.CurrentControlled;
 	
 	bEnableIControl := TRUE;
 	bEnablePControl := FALSE;
 END_IF
 
 IF nGCControlOption.1 THEN
-	fbGuidanceControllerXMC1.eOperationMode := GuidanceControllerOperationMode.ForceControlled;
-	fbGuidanceControllerXMC2.eOperationMode := GuidanceControllerOperationMode.ForceControlled;
-	fbGuidanceControllerXMC3.eOperationMode := GuidanceControllerOperationMode.ForceControlled;
-	fbGuidanceControllerXMC4.eOperationMode := GuidanceControllerOperationMode.ForceControlled;
+	fbGuidanceControllerXMC1.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC2.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC3.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC4.eOperationMode := GCControllerMode.ForceControlled;
 	
 	bEnableIControl := FALSE;
 	bEnablePControl := TRUE;

@@ -3,14 +3,14 @@
   <POU Name="PRG_MainController" Id="{4edc6fe0-de01-4ab3-bf7e-58f3d4baabe4}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_MainController
 VAR
-	fbServiceModule : FB_ServiceModule;
-	fbLevitationSystem : FB_LevitationSystem;
-	fbGuidanceSystem : FB_GuidanceSystem;
+	fbServiceModule 			: FB_ServiceModule;
+	fbLevitationSystem 			: FB_LevitationSystem;
+	fbGuidanceSystem 			: FB_GuidanceSystem;
 	
-	eState : TopLevelSTM := TopLevelSTM.STARTUP;
+	eState 						: TopLevelSTM := TopLevelSTM.STARTUP;
 	
-	stOperationControlCommands : OperationControlCommands;
-	stXMCCommands : XMCCommands;
+	stOperationControlCommands 	: OperationControlCommands;
+	stXMCCommands 				: XMCCommands;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -21,6 +21,7 @@ CASE eState OF
 	TopLevelSTM.STARTUP:
 		doEnableSystems();
 		doCheckSystem();
+		
 		
 		IF PRG_ErrorHandling.bStartUpCheck AND NOT stOperationControlCommands.bGoToError THEN
 			eState := TopLevelSTM.READY;
@@ -37,6 +38,7 @@ CASE eState OF
 		fbServiceModule.eState := ServiceModuleSTM.Waiting;
 		fbLevitationSystem.eState := LevitationSystemSTM.Stationary;
 		fbGuidanceSystem.eState := GuidanceSystemSTM.PreRunning;
+		stXMCCommands.bStopOperational := FALSE;
 		
 		fbServiceModule();
 		fbLevitationSystem();
@@ -53,8 +55,7 @@ CASE eState OF
 	////
 	TopLevelSTM.OPERATIONAL:
 		fbServiceModule.eState := ServiceModuleSTM.Running;
-		
-		
+		stXMCCommands.bStartOperational := FALSE;
 		
 		IF fbLevitationSystem.bTrajectoryCompleted THEN
 			fbLevitationSystem.eState := LevitationSystemSTM.HoldingAirGap;
@@ -92,15 +93,19 @@ CASE eState OF
 		fbLevitationSystem();
 		fbGuidanceSystem();
 		
-		IF PRG_ErrorHandling.bErrorInOperational OR PRG_ErrorHandling.bErrorInShutdown OR stOperationControlCommands.bGoToError THEN
-			fbServiceModule(eState := ServiceModuleSTM.PreparingForError);
-			eState := TopLevelSTM.ERROR;
-		ELSIF fbLevitationSystem.bTrajectoryCompleted THEN
+		IF fbLevitationSystem.bTrajectoryCompleted THEN
 			stOperationControlCommands.bShutdownFinished := TRUE;
-		ELSIF stOperationControlCommands.bEndShutdown THEN
-			stXMCCommands.bStopOperational := TRUE;
-			eState := TopLevelSTM.READY;
+			
+			IF PRG_ErrorHandling.bErrorInOperational OR PRG_ErrorHandling.bErrorInShutdown OR stOperationControlCommands.bGoToError THEN
+				fbServiceModule(eState := ServiceModuleSTM.PreparingForError);
+				eState := TopLevelSTM.ERROR;
+			ELSIF stOperationControlCommands.bEndShutdown THEN
+				stXMCCommands.bStopOperational := TRUE;
+				eState := TopLevelSTM.READY;
+			END_IF
 		END_IF
+		
+
 	////	
 	TopLevelSTM.ERROR:
 		IF PRG_ErrorHandling.bAllErrorsAcknowledged THEN
@@ -117,7 +122,11 @@ END_VAR
       <Implementation>
         <ST><![CDATA[fbServiceModule(eState := ServiceModuleSTM.Idling);
 fbLevitationSystem(eState := LevitationSystemSTM.Idling);
-fbGuidanceSystem(eState := GuidanceSystemSTM.Idling);]]></ST>
+fbGuidanceSystem(eState := GuidanceSystemSTM.Idling);
+
+stXMCCommands.bAckError := FALSE;
+stXMCCommands.bStartOperational := FALSE;
+stXMCCommands.bStopOperational := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="doDataHandling" Id="{568182d4-d084-4287-916a-eb551c4ce282}">
@@ -618,12 +627,14 @@ END_IF
       <LineId Id="74" Count="2" />
       <LineId Id="118" Count="0" />
       <LineId Id="78" Count="0" />
+      <LineId Id="321" Count="0" />
       <LineId Id="151" Count="0" />
       <LineId Id="156" Count="1" />
       <LineId Id="159" Count="6" />
       <LineId Id="155" Count="0" />
       <LineId Id="80" Count="2" />
       <LineId Id="213" Count="1" />
+      <LineId Id="325" Count="0" />
       <LineId Id="167" Count="0" />
       <LineId Id="169" Count="0" />
       <LineId Id="215" Count="1" />
@@ -637,7 +648,7 @@ END_IF
       <LineId Id="131" Count="0" />
       <LineId Id="88" Count="1" />
       <LineId Id="170" Count="0" />
-      <LineId Id="287" Count="1" />
+      <LineId Id="326" Count="0" />
       <LineId Id="256" Count="0" />
       <LineId Id="219" Count="1" />
       <LineId Id="222" Count="1" />
@@ -666,12 +677,12 @@ END_IF
       <LineId Id="181" Count="0" />
       <LineId Id="183" Count="0" />
       <LineId Id="239" Count="1" />
-      <LineId Id="140" Count="2" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="199" Count="0" />
-      <LineId Id="301" Count="1" />
-      <LineId Id="297" Count="0" />
-      <LineId Id="200" Count="0" />
+      <LineId Id="314" Count="2" />
+      <LineId Id="338" Count="0" />
+      <LineId Id="340" Count="5" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="140" Count="0" />
       <LineId Id="143" Count="0" />
       <LineId Id="96" Count="2" />
       <LineId Id="299" Count="0" />
@@ -681,6 +692,8 @@ END_IF
     <LineIds Name="PRG_MainController.doCheckSystem">
       <LineId Id="17" Count="1" />
       <LineId Id="5" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="22" Count="0" />
     </LineIds>
     <LineIds Name="PRG_MainController.doDataHandling">
       <LineId Id="865" Count="0" />

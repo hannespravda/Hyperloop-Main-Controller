@@ -2,6 +2,12 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_SafetyCounter" Id="{6f347c18-b88c-4382-a068-898d8214114a}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_SafetyCounter
+VAR_INPUT
+	bReset : BOOL;
+END_VAR
+VAR_OUTPUT
+	nSafetyCounter : UDINT;
+END_VAR
 VAR
 	nSafetyCounterOC 	: UDINT;
 	nSafetyCounterXMC1 	: UDINT;
@@ -21,6 +27,7 @@ VAR
 	bCount : BOOL;
 	fFramesPerSecond : LREAL;
 	
+	//ErrorBits
 	bNoConnectionToOC : BOOL;
 	bNoConnectionToXMC1 : BOOL;
 	bNoConnectionToXMC2 : BOOL;
@@ -28,18 +35,18 @@ VAR
 	bNoConnectionToXMC4 : BOOL;
 	bNoEtherCATConnection : BOOL;
 END_VAR
-VAR_INPUT
-	bReset : BOOL;
+VAR CONSTANT
+	nCounterMax : UDINT := 4294967295;
 END_VAR
-VAR_OUTPUT
-	nSafetyCounter : UDINT;
-END_VAR
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[doEtherCATFrameCount();
 
 nSafetyCounter := nSafetyCounter + 1;
-
+IF nSafetyCounter = nCounterMax THEN
+	nSafetyCounter := 0;
+END_IF
 
 //OC
 IF PRG_MainController.stOperationControlCommands.nSafetyCounterOC <> nSafetyCounterOC THEN
@@ -156,6 +163,7 @@ nErrorID.5 :=	bNoEtherCATConnection;]]></ST>
       <LineId Id="140" Count="0" />
       <LineId Id="139" Count="0" />
       <LineId Id="173" Count="0" />
+      <LineId Id="235" Count="1" />
       <LineId Id="52" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="60" Count="0" />

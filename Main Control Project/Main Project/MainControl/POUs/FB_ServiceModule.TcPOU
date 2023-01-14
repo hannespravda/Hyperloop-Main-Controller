@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="FB_ServiceModule" Id="{c2b68249-78b4-4ae5-91f5-9de9a918b256}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServiceModule IMPLEMENTS ITF_HighLevelSystem
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServiceModule EXTENDS FB_HighLevelSystem
 VAR_INPUT
 	eState : ServiceModuleSTM;
-	eActivationStatus : ActivationStatus;
+	//eActivationStatus : ActivationStatus;
 END_VAR
 VAR
 	//Components

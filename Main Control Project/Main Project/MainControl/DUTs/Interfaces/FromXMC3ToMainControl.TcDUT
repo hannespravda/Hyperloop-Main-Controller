@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="FromXMC3ToMainControl" Id="{3f2dcb5d-a63b-4a8f-a81d-086746a02c00}">
+    <Declaration><![CDATA[TYPE FromXMC3ToMainControl :
+STRUCT
+	//Sensor Values
+	EM_origE_CurrentGuid						: REAL	;
+	EM_origE_CurrentLev							: REAL	;
+	EM_origE_DistanceRawLev11					: REAL	;
+	EM_origE_DistanceRawLev12					: REAL	;
+	EM_origE_DistanceRawLev21					: REAL	;
+	EM_origE_DistanceRawLev22					: REAL	;
+	EM_origE_DistanceRawGuid11					: REAL	;
+	EM_origE_DistanceRawGuid12					: REAL	;
+	EM_origE_DistanceGuidFiltered				: REAL	;
+	EM_origE_DistanceLevFiltered				: REAL	;
+	EM_origE_VelocityLevFiltered				: REAL	;
+	EM_origE_IMUX								: REAL	;
+	EM_origE_IMUY								: REAL	;
+	EM_origE_IMUZ								: REAL	;
+	EM_origE_PressureBox						: REAL	;
+	EM_origE_TemperatureBox						: REAL	;
+	EM_origE_TemperatureGuid					: REAL	;
+	EM_origE_TemperatureLev0					: REAL	;
+	EM_origE_TemperatureLev1					: REAL	;
+	
+	//System Status
+	EM_origE_ErrBits							: UDINT	;
+	EM_origE_SafetyCounter						: UDINT	;
+	EM_origE_State								: USINT	;
+	EM_origE_Timestamp							: UDINT	;
+	EM_origE_WarnBits							: UDINT	;
+	EM_origE_LoggingCounterIn					: USINT	;
+	EM_origE_LoggingCounterSize					: USINT	;
+	EM_origE_LoggingCounterBuf					: BYTE	;
+	
+	//Levitation
+	EM_origE_LevEstimatedFlux0					: REAL	;
+	EM_origE_LevEstimatedFlux1                  : REAL	;
+	EM_origE_LevEstimatedCurrent                : REAL	;
+	EM_origE_LevEstimatedResistance             : REAL	;
+	EM_origE_LevIntegratedControlError          : REAL	;
+	EM_origE_LevReferenceVoltage                : REAL	;
+	
+	//Guidance                                 
+	EM_origE_GuidEstimatedFlux0                 : REAL	;
+	EM_origE_GuidEstimatedFlux1					: REAL	;
+	EM_origE_GuidEstimatedCurrent				: REAL	;
+	EM_origE_GuidEstimatedResistance			: REAL	;
+	EM_origE_GuidIntegratedControlError			: REAL	;
+	EM_origE_GuidReferenceVoltage				: REAL	;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -18,12 +18,12 @@ VAR_INPUT
 	tDesiredTimeForTransitioning : TIME;
 END_VAR
 VAR_OUTPUT
-	fNewReferenceValueForAirGap : LREAL;
-	fNewReferenceVaueForVelocity : LREAL;
-	fNewReferenceValueForAcceleration : LREAL;
-	fNewReferenceValueForCurrent : LREAL;
-	fNewReferenceValueForVoltage : LREAL;
-	fNewReferenceValueForForce : LREAL;
+	fNewReferenceValueForAirGap : REAL;
+	fNewReferenceVaueForVelocity : REAL;
+	fNewReferenceValueForAcceleration : REAL;
+	fNewReferenceValueForCurrent : REAL;
+	fNewReferenceValueForVoltage : REAL;
+	fNewReferenceValueForForce : REAL;
 	
 	bTrajectoryCompleted : BOOL;
 END_VAR
@@ -101,6 +101,8 @@ END_VAR
 ELSE
 	nCounter := 0;
 	fbTransitionTimer(IN := FALSE);
+	
+	bTrajectoryCompleted := TRUE;
 	
 	fNewReferenceValueForAirGap := 0;
 	fNewReferenceVaueForVelocity := 0;
@@ -226,6 +228,7 @@ nErrorID.5 := bForceOutOfRange;]]></ST>
       <LineId Id="253" Count="0" />
       <LineId Id="279" Count="1" />
       <LineId Id="331" Count="0" />
+      <LineId Id="413" Count="1" />
       <LineId Id="363" Count="0" />
       <LineId Id="365" Count="4" />
       <LineId Id="364" Count="0" />

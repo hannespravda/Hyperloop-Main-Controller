@@ -3,11 +3,11 @@
   <POU Name="FB_EqualizingController" Id="{1b93f9fb-b1f3-4cac-8dde-1961920761d2}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EqualizingController IMPLEMENTS ITF_SubSystem
 VAR_INPUT
-	fActualDeltaFmag : LREAL;
+	fActualDeltaFmag : REAL;
 	bActive : BOOL;
 END_VAR
 VAR_OUTPUT 
-	fdzVector : ARRAY [0..3] OF LREAL;
+	fdzVector : ARRAY [0..3] OF REAL;
 END_VAR
 VAR
 	//Local
@@ -21,15 +21,15 @@ VAR
 END_VAR
 VAR CONSTANT
 	//PID paramters
-	fSetpointValue : LREAL := 0; 			// Reference delta F = 0 N
-	fCtrlCycleTime : LREAL := 0.1; 			// Update cycle time of PID block
-	fKp : LREAL := 0.001;  					// Proportional gain of PID block
-	fTn : LREAL := 1/INT_TO_LREAL(150); 
-	fTv : LREAL := 0;
-	fTd : LREAL := 0;
+	fSetpointValue : REAL := 0; 			// Reference delta F = 0 N
+	fCtrlCycleTime : REAL := 0.1; 			// Update cycle time of PID block
+	fKp : REAL := 0.001;  					// Proportional gain of PID block
+	fTn : REAL := 1/INT_TO_REAL(150); 
+	fTv : REAL := 0;
+	fTd : REAL := 0;
 	//Saturation parameters
-	fdzMax : LREAL := 0.001;
-	fdzMin : LREAL := -0.001;
+	fdzMax : REAL := 0.001;
+	fdzMin : REAL := -0.001;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -46,10 +46,10 @@ END_VAR
 
 					
 	// Update the dz output vector
-	fdzVector[0] := (-1/INT_TO_LREAL(7900))*fPIDOutput;
-	fdzVector[1] := (1/INT_TO_LREAL(7900))*fPIDOutput;
-	fdzVector[2] := (-1/INT_TO_LREAL(7900))*fPIDOutput;
-	fdzVector[3] := (1/INT_TO_LREAL(7900))*fPIDOutput;	  
+	fdzVector[0] := (-1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[1] := (1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[2] := (-1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[3] := (1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);	  
 	
 	
 	// Saturate the dz output vector
