@@ -26,7 +26,7 @@ VAR CONSTANT
 	tStartUpTime 					: TIME := T#10S;
 	tSafetyCounterTimeout 			: TIME := T#5S;
 	
-	iNumberOfMessages 				: USINT := 59;			//*set the number of MessageIDs here*
+	iNumberOfMessages 				: USINT := 62;			//*set the number of MessageIDs here*
 	iNumberOfWarnings 				: USINT := 52;			//*set the number of Warnings here*
 	iNumberOfErrors 				: USINT := 6;			//*set the number of Errors here*
 END_VAR

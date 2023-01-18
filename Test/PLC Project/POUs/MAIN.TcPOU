@@ -3,19 +3,23 @@
   <POU Name="MAIN" Id="{53c863e0-dbf2-43aa-ba37-9c40920ffee2}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbTest : FB_Test;
-	
-	bActivate : BOOL;
+	fbDistanceSensor : FB_DistanceSensor;
+	fbIMU1 : FB_AccelerationSensor;
+	fbIMU2 : FB_AccelerationSensor;
+	fbRGBLED : FB_RGBLED;
+	fbBoxLED : FB_BoxLED;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbTest();
-
-fbTest.Prop := bActivate;]]></ST>
+      <ST><![CDATA[fbIMU1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+fbIMU2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs := AccelerationSensor.stEL6001OutIMU2);
+fbDistanceSensor();
+fbRGBLED();
+fbBoxLED();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="15" Count="1" />
-      <LineId Id="13" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="49" Count="3" />
     </LineIds>
   </POU>
 </TcPlcObject>

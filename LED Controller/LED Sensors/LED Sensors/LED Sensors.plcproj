@@ -17,10 +17,10 @@
     <LibraryReferences>{8b79fde7-0da0-4601-a4a3-ec255c9bfba9}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\eLEDColor.TcDUT">
+    <Compile Include="DUTs\LEDColor.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\eLEDMode.TcDUT">
+    <Compile Include="DUTs\LEDMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
@@ -33,7 +33,10 @@
     <Compile Include="POUs\FB_BoxLED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_RGBController.TcPOU">
+    <Compile Include="POUs\FB_EventLogging.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_RGBLED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -58,6 +61,10 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_EventLogger">
+      <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_EventLogger</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

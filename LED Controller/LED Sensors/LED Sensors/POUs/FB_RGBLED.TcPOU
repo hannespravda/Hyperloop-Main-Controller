@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RGBLED" Id="{469ae6ce-499d-4fa3-8525-1529c7798012}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RGBLED
+VAR_INPUT
+	eColor : LEDColor;
+END_VAR
+VAR
+	//Local
+	iRedLED : INT;
+	iGreenLED : INT;
+	iBlueLED : INT;
+	
+	//ErrorBits
+	bRedTemperatureTooHigh : BIT;
+	bRedNoSupplyVoltage : BIT;
+	bGreenTemperatureTooHigh : BIT;
+	bGreenNoSupplyVoltage : BIT;
+	bBlueTemperatureTooHigh : BIT;
+	bBlueNoSupplyVoltage : BIT;	
+END_VAR
+VAR CONSTANT
+	iMax : INT := 32767;		//Maximum Intensity (100%)
+	iMin : INT := 0;			//Off (0%)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eColor OF
+	LEDColor.Off:
+		iRedLED := iMin;
+		iGreenLED := iMin;
+		iBlueLED := iMin;
+	LEDColor.Red:
+		iRedLED := iMax;
+		iGreenLED := iMin;
+		iBlueLED := iMin;
+	LEDColor.Green:
+		iRedLED := iMin;
+		iGreenLED := iMax;
+		iBlueLED := iMin;
+	LEDColor.Blue:
+		iRedLED := iMin;
+		iGreenLED := iMin;
+		iBlueLED := iMax;
+END_CASE
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RGBLED">
+      <LineId Id="356" Count="0" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="363" Count="13" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="191" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -3,101 +3,103 @@
   <POU Name="FB_BoxLED" Id="{7417f049-9846-439d-bd3a-1b6848121830}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED
 VAR_INPUT
-END_VAR
-VAR_OUTPUT
+	eMode : LEDMode;
 END_VAR
 VAR
-	eMode : eLEDMode;
+	//Local
 	iBoxLED : INT;
+	fbFlashingTimer : TON;
+	bOn : BOOL;
 	
-	fbSlowTimer : TON := (PT:=T#1S);
-	fbSlowTimerReset : TON := (PT:=T#1S);
-	fbFastTimer : TON := (PT:=T#100MS);
-	fbFastTimerReset : TON := (PT:=T#100MS);
-	bTrigger : BOOL := TRUE;
-	bReset : BOOL;
-	
-	bWarning : BOOL;
-	bError : BOOL;
+	//ErrorBits
+	bTemperatureTooHigh : BIT;
+	bNoSupplyVoltage : BIT;
 END_VAR
 VAR CONSTANT
-	iMAX : INT := 32767;		//Maximum Intensity (100%)
-	iMIN : INT := 0;			//Off (0%)
-	rDimFactor : REAL := 0.01;	//Percentage (0..100%)
+	iIntensity : INT := 32767;				//Intensity [0..32767]
+	rDimFactor : REAL := 0.01;				//Percentage (0..100%)
+	tSlowFlashingTime : TIME := T#1S;		
+	tFastFlashingTime : TIME := T#100MS;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE eMode OF
-	eLEDMode.On:
-			iBoxLED := iMAX;
-	eLEDMode.Off:
-			iBoxLED := iMIN;
-	eLEDMode.Dimmed:
-			iBoxLED := REAL_TO_INT(rDimFactor * iMAX);
-	eLEDMode.SlowFlashing:
-			fbSlowTimer(IN:=bTrigger);
-			fbSlowTimerReset(IN:=bReset);
-			IF fbSlowTimer.Q THEN
-				iBoxLED := iMAX;
-				bReset := TRUE;
-			ELSE
-				iBoxLED := iMIN;
-			END_IF
-			IF fbSlowTimerReset.Q THEN
-					bTrigger := FALSE;
-					fbSlowTimer(IN:=bTrigger);		
-					bReset := FALSE;
-					fbSlowTimerReset(IN:=bReset);
-					bTrigger := TRUE;	
-			END_IF
-	eLEDMode.FastFlashing:
-			fbFastTimer(IN:=bTrigger);
-			fbFastTimerReset(IN:=bReset);
-			IF fbFastTimer.Q THEN
-				iBoxLED := iMAX;
-				bReset := TRUE;
-			ELSE
-				iBoxLED := iMIN;
-			END_IF
-			IF fbFastTimerReset.Q THEN
-					bTrigger := FALSE;
-					fbFastTimer(IN:=bTrigger);		
-					bReset := FALSE;
-					fbFastTimerReset(IN:=bReset);
-					bTrigger := TRUE;
-			END_IF
+	LEDMode.Off:
+			doTurnOn(iBrightness := 0);
+	LEDMode.On:
+			doTurnOn(iBrightness := iIntensity);
+	LEDMode.Dimmed:
+			doDimming(rDimmingFactor:=rDimFactor);
+	LEDMode.SlowFlashing:
+			doFlashing(FlashingTime:=tSlowFlashingTime);
+	LEDMode.FastFlashing:
+			doFlashing(FlashingTime:=tFastFlashingTime);
 END_CASE
 
-GVL.iWhite := iBoxLED;
-bWarning := GVL.bRedWarning;
-bError := GVL.bRedError;]]></ST>
+
+
+
+
+]]></ST>
     </Implementation>
+    <Method Name="doDimming" Id="{ef13b277-d6e0-4180-8bd3-5ca9a77d8ba4}">
+      <Declaration><![CDATA[METHOD PRIVATE doDimming
+VAR_INPUT
+	rDimmingFactor : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iBoxLED := REAL_TO_INT(rDimmingFactor * iIntensity);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doFlashing" Id="{a56a3bcf-ecb7-4bdc-afc1-de57457e0ffa}">
+      <Declaration><![CDATA[METHOD PRIVATE doFlashing
+VAR_INPUT
+	FlashingTime : TIME;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbFlashingTimer(IN:=TRUE, PT:=FlashingTime);
+IF fbFlashingTimer.Q THEN
+	fbFlashingTimer(IN:=FALSE);
+	bOn := NOT bOn;	
+END_IF
+IF bOn THEN
+	iBoxLED := iIntensity;
+ELSE
+	iBoxLED := 0;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doTurnOn" Id="{ff9f7808-2e93-4ad9-ae70-22394be7f716}">
+      <Declaration><![CDATA[METHOD PRIVATE doTurnOn
+VAR_INPUT
+	iBrightness : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iBoxLED := iBrightness;]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_BoxLED">
-      <LineId Id="9" Count="0" />
-      <LineId Id="16" Count="1" />
-      <LineId Id="222" Count="1" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="129" Count="0" />
-      <LineId Id="198" Count="0" />
-      <LineId Id="130" Count="2" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="161" Count="0" />
-      <LineId Id="134" Count="1" />
-      <LineId Id="164" Count="0" />
-      <LineId Id="136" Count="0" />
-      <LineId Id="159" Count="0" />
-      <LineId Id="137" Count="1" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="165" Count="0" />
-      <LineId Id="199" Count="0" />
-      <LineId Id="166" Count="5" />
-      <LineId Id="173" Count="6" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="248" Count="1" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="294" Count="8" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="306" Count="3" />
+      <LineId Id="226" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doDimming">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doFlashing">
+      <LineId Id="27" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="3" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doTurnOn">
+      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

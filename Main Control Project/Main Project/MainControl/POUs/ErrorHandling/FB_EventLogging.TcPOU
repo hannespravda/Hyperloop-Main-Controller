@@ -29,11 +29,56 @@ END_VAR
     <Implementation>
       <ST><![CDATA[//AckErrorLogging
 IF PRG_ErrorHandling.bAllErrorsAcknowledged THEN
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] + 1;
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] = iCounterMax THEN
+		aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] := iCounterReset;
+	END_IF
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.AckErr, 0);
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] = 1 THEN
+		fbEventMessage.Send(0);
+	END_IF
+ELSE
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-4] := 0;
+END_IF
+
+//ServiceModuele Disable
+IF PRG_MainController.stOperationControlCommands.nOperationMode.0 THEN
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] + 1;
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] = iCounterMax THEN
+		aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] := iCounterReset;
+	END_IF
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.DisableSystem, 0);
+	fbEventMessage.ipArguments.AddString('Service Module');
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] = 1 THEN
+		fbEventMessage.Send(0);
+	END_IF
+ELSE
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-3] := 0;
+END_IF
+
+//LevitatonSystem Disable
+IF PRG_MainController.stOperationControlCommands.nOperationMode.1 THEN
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] + 1;
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] = iCounterMax THEN
+		aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] := iCounterReset;
+	END_IF
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.DisableSystem, 0);
+	fbEventMessage.ipArguments.AddString('Levitation System');
+	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] = 1 THEN
+		fbEventMessage.Send(0);
+	END_IF
+ELSE
+	aCounterID[PRG_ErrorHandling.iNumberOfMessages-2] := 0;
+END_IF
+
+//GuidanceSystem Disable
+IF PRG_MainController.stOperationControlCommands.nOperationMode.2 THEN
 	aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] + 1;
 	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] = iCounterMax THEN
 		aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] := iCounterReset;
 	END_IF
-	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.AckErr, 0);
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.DisableSystem, 0);
+	fbEventMessage.ipArguments.AddString('Guidance System');
 	IF aCounterID[PRG_ErrorHandling.iNumberOfMessages-1] = 1 THEN
 		fbEventMessage.Send(0);
 	END_IF
@@ -249,6 +294,18 @@ END_FOR]]></ST>
       <LineId Id="434" Count="2" />
       <LineId Id="132" Count="5" />
       <LineId Id="123" Count="0" />
+      <LineId Id="626" Count="7" />
+      <LineId Id="669" Count="0" />
+      <LineId Id="634" Count="4" />
+      <LineId Id="625" Count="0" />
+      <LineId Id="640" Count="7" />
+      <LineId Id="668" Count="0" />
+      <LineId Id="648" Count="4" />
+      <LineId Id="639" Count="0" />
+      <LineId Id="654" Count="7" />
+      <LineId Id="667" Count="0" />
+      <LineId Id="662" Count="4" />
+      <LineId Id="653" Count="0" />
       <LineId Id="139" Count="1" />
       <LineId Id="138" Count="0" />
       <LineId Id="600" Count="0" />

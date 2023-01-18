@@ -29,4 +29,16 @@
 			<Value>true</Value>
 		</Property>
 	</Source>
+	<Source>
+		<GUID>{953DBBCC-E5A7-4828-A3B5-27AD830324B9}</GUID>
+		<Name LcId="1033">LED Events</Name>
+		<Event>
+			<Id>1</Id>
+			<Message LcId="1033">Box LED switched to {0} Mode</Message>
+		</Event>
+		<Event>
+			<Id>2</Id>
+			<Message LcId="1033">RGB LED switched to {0}</Message>
+		</Event>
+	</Source>
 </TcEventSources>

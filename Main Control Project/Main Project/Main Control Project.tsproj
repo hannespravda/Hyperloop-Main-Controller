@@ -3079,7 +3079,7 @@
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{BF1D14F9-BB67-4B9C-994C-0D784E537C59}" PersistentType="true">MainControlEventClass</Name>
+			<Name GUID="{8DC4CC84-8D6F-4732-B73A-E5823C1B7B9B}" PersistentType="true">MainControlEventClass</Name>
 			<DisplayName TxtId=""><![CDATA[Main Control Events]]></DisplayName>
 			<EventId>
 				<Name Id="1">Error</Name>
@@ -3101,9 +3101,15 @@
 				<DisplayName TxtId=""><![CDATA[All Errors acknowledged and cleared by Operation Control]]></DisplayName>
 				<Severity>Info</Severity>
 			</EventId>
+			<EventId>
+				<Name Id="6">DisableSystem</Name>
+				<DisplayName TxtId=""><![CDATA[{0} disabled]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
 			<Hides>
 				<Hide GUID="{53BBCEF5-A2E4-4539-AE3C-A6749215CE6B}"/>
 				<Hide GUID="{874E9EF6-9BB7-41E1-9D01-89D5F5675370}"/>
+				<Hide GUID="{BF1D14F9-BB67-4B9C-994C-0D784E537C59}"/>
 			</Hides>
 		</DataType>
 	</DataTypes>
@@ -3124,14 +3130,29 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{EF494ED5-00B2-A363-F179-7276AB9B7E5D}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{D1BDF4D4-5BF7-05DD-ACD2-501473135056}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
 						<Var>
+							<Name>BoxLED.bWhiteError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>TEST.iTest</Name>
 							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>BoxLED.bWhiteWarning</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>OperationControlData.stFromOCToMC</Name>
@@ -3159,24 +3180,9 @@
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
 						</Var>
 						<Var>
-							<Name>BoxLED.bWhiteError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bWhiteWarning</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>DistanceSensor.stEL6021In</Name>
 							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.bRedWarning</Name>
@@ -3206,6 +3212,11 @@
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>BoxLED.iWhite</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
 						<Var>
 							<Name>OperationControlData.stFromMCToOC</Name>
 							<Type GUID="{1E03E858-6AC4-A6B8-1463-2E40786C0360}">FromMainControlToOperationControl</Type>
@@ -3246,11 +3257,6 @@
 							<Name>AccelerationSensor.stEL6001Out</Name>
 							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.iWhite</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
-							<Type>INT</Type>
 						</Var>
 						<Var>
 							<Name>DistanceSensor.stEL6021Out</Name>

@@ -85,8 +85,8 @@
 			<Licenses IgnoreProjectLicenses="true">
 				<Target>
 					<ManualSelect>{3FF18E97-7754-401B-93FB-70544DE28A13}</ManualSelect>
-					<ManualSelect>{66689887-CCBD-452C-AC9A-039D997C6E66}</ManualSelect>
 					<ManualSelect>{BCA6EE0A-9CE1-4D3F-98CA-413ABC0D94FD}</ManualSelect>
+					<ManualSelect>{66689887-CCBD-452C-AC9A-039D997C6E66}</ManualSelect>
 					<ManualSelect>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</ManualSelect>
 				</Target>
 			</Licenses>
@@ -101,7 +101,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{06E8E57A-99E8-4AEF-B5F4-B628A65BAC60}" Name="AccelerationSensor" PrjFilePath="AccelerationSensor\AccelerationSensor.plcproj" TmcFilePath="AccelerationSensor\AccelerationSensor.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x0002">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="AccelerationSensor\AccelerationSensor.tmc" TmcHash="{F22DD080-58A9-B698-2B5C-7CFEE9512971}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="AccelerationSensor\AccelerationSensor.tmc" TmcHash="{906F3A55-2F57-36B6-114D-5EE76869E7B6}">
 					<Name>AccelerationSensor Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -986,6 +986,7 @@
 		</Io>
 	</Project>
 	<Mappings>
+		<MappingInfo Identifier="{00000000-2002-0850-0120-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^AccelerationSensor^AccelerationSensor Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6001)">
 				<Link VarA="PlcTask_Standard Inputs^AccelerationSensor.stEL6001In" VarB="COM Inputs^Data In 0" Size="8" OffsA="16"/>

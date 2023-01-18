@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TcEventSources Version="2">
+	<Source>
+		<GUID>{28111931-0002-0000-5230-040A00001000}</GUID>
+		<Name LcId="1031">EL2564 4 K. LED-Ausgang, 5...48 V DC, 4 A, RGBW</Name>
+		<Name LcId="1033">EL2564 4Ch.LED output, 5...48 V DC, 4 A, RGBW</Name>
+		<Event>
+			<Id>16641</Id>
+			<Message LcId="1031">Klemmen-Übertemperatur</Message>
+			<Message LcId="1033">Terminal-Overtemperature</Message>
+		</Event>
+		<Event>
+			<Id>17425</Id>
+			<Message LcId="1031">Unterspannung Power-Kontakte oder LED Versorgung</Message>
+			<Message LcId="1033">Undervoltage power contacts or LED supply</Message>
+		</Event>
+		<Event>
+			<Id>33028</Id>
+			<Message LcId="1031">Klemmen-Übertemperatur</Message>
+			<Message LcId="1033">Terminal-Overtemperature</Message>
+		</Event>
+		<Event>
+			<Id>33798</Id>
+			<Message LcId="1031">Unterspannung Power-Kontakte oder LED Versorgung</Message>
+			<Message LcId="1033">Undervoltage power contacts or LED supply</Message>
+		</Event>
+		<Property>
+			<Name>DisplayTxtId</Name>
+			<Value>true</Value>
+		</Property>
+	</Source>
+</TcEventSources>
