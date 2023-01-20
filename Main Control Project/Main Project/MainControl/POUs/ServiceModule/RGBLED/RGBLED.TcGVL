@@ -3,9 +3,9 @@
   <GVL Name="RGBLED" Id="{43ebbbac-30a0-4414-8b43-c77b57a7845c}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	iRed AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 1 (PWM output)**
-	iGreen AT %Q* : INT;			//**To EL2564 PWM Outputs Channel 2 (PWM output)**
-	iBlue AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 3 (PWM output)**
+	nRed AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 1 (PWM output)**
+	nGreen AT %Q* : INT;			//**To EL2564 PWM Outputs Channel 2 (PWM output)**
+	nBlue AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 3 (PWM output)**
 	
 	bRedError AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 1 (Status -> Error)**
 	bRedWarning AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 1 (Status -> Warning)**

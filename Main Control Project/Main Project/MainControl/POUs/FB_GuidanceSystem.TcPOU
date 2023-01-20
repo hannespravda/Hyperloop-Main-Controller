@@ -25,8 +25,8 @@ END_VAR]]></Declaration>
 	//High Level State Machine
 	CASE eState OF
 		GuidanceSystemSTM.Idling:
-				fbAccelerationSensor1();
-				fbAccelerationSensor2();
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
 		
 		GuidanceSystemSTM.PreRunning:
 				bEnableCurrentController := FALSE;
@@ -37,8 +37,8 @@ END_VAR]]></Declaration>
 				
 				doSetOperationMode();
 
-				fbAccelerationSensor1();
-				fbAccelerationSensor2();
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
 				fbGuidanceControllerXMC1();
 				fbGuidanceControllerXMC2();
 				fbGuidanceControllerXMC3();
@@ -52,8 +52,8 @@ END_VAR]]></Declaration>
 				fbGuidanceControllerXMC3.bActive := TRUE;
 				fbGuidanceControllerXMC4.bActive := TRUE;
 
-				fbAccelerationSensor1();
-				fbAccelerationSensor2();
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
 				fbGuidanceControllerXMC1();
 				fbGuidanceControllerXMC2();
 				fbGuidanceControllerXMC3();
@@ -66,8 +66,8 @@ END_VAR]]></Declaration>
 				fbGuidanceControllerXMC3.bActive := FALSE;
 				fbGuidanceControllerXMC4.bActive := FALSE;
 				
-				fbAccelerationSensor1();
-				fbAccelerationSensor2();
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
 				fbGuidanceControllerXMC1();
 				fbGuidanceControllerXMC2();
 				fbGuidanceControllerXMC3();
@@ -195,7 +195,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[aIMU2Acceleration := fbAccelerationSensor1.aAccelerationValues;]]></ST>
+          <ST><![CDATA[aIMU2Acceleration := fbAccelerationSensor2.aAccelerationValues;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -301,7 +301,8 @@ nErrorID.15 := nErrorBitsGCXMC4.2;]]></ST>
       <LineId Id="375" Count="0" />
       <LineId Id="379" Count="1" />
       <LineId Id="333" Count="0" />
-      <LineId Id="277" Count="1" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="278" Count="0" />
       <LineId Id="309" Count="2" />
       <LineId Id="308" Count="0" />
       <LineId Id="302" Count="0" />
@@ -310,14 +311,17 @@ nErrorID.15 := nErrorBitsGCXMC4.2;]]></ST>
       <LineId Id="328" Count="0" />
       <LineId Id="282" Count="2" />
       <LineId Id="232" Count="0" />
-      <LineId Id="286" Count="5" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="288" Count="3" />
       <LineId Id="285" Count="0" />
       <LineId Id="235" Count="1" />
       <LineId Id="330" Count="0" />
       <LineId Id="298" Count="2" />
       <LineId Id="297" Count="0" />
       <LineId Id="301" Count="0" />
-      <LineId Id="292" Count="1" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="293" Count="0" />
       <LineId Id="305" Count="2" />
       <LineId Id="304" Count="0" />
       <LineId Id="202" Count="0" />

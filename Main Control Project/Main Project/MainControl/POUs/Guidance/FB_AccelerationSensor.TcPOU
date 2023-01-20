@@ -5,6 +5,10 @@
 VAR_OUTPUT
 	aAccelerationValues : ARRAY [0..2] OF REAL;
 END_VAR
+VAR_IN_OUT
+	stRS232Inputs : EL6inData22B;
+	stRS232Outputs : EL6outData22B;
+END_VAR
 VAR
 	//Local
 	fbEL6001	: FB_SerialComRS232;
@@ -31,7 +35,7 @@ END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbEL6001(stEL6001In:=AccelerationSensor.stEL6001In, stEL6001Out:=AccelerationSensor.stEL6001Out);
+      <ST><![CDATA[fbEL6001(stEL6001In:=stRS232Inputs, stEL6001Out:=stRS232Outputs);
 
 aAccelerationValues := fbEL6001.aAcceleration;
 
@@ -83,6 +87,8 @@ IF i = 10 THEN
 	fPacketRate := (UDINT_TO_REAL(nSum) / UDINT_TO_REAL(i));
 	i := 0;
 	nSum := 0;
+	
+	bStartPacketCount := TRUE;
 END_IF
 
 fbReset(IN := bTrigger, PT := T#3S);
@@ -148,6 +154,7 @@ nErrorID.1 := bOutOfRange;]]></ST>
       <LineId Id="6" Count="3" />
       <LineId Id="12" Count="14" />
       <LineId Id="36" Count="1" />
+      <LineId Id="41" Count="1" />
       <LineId Id="27" Count="5" />
       <LineId Id="5" Count="0" />
     </LineIds>

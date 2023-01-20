@@ -7,9 +7,11 @@ VAR_INPUT
 END_VAR
 VAR
 	//Local
-	iRedLED : INT;
-	iGreenLED : INT;
-	iBlueLED : INT;
+	nRedLED : INT;
+	nGreenLED : INT;
+	nBlueLED : INT;
+	
+	aErrorTimer : ARRAY [0..5] OF TON;
 	
 	//ErrorBits
 	bRedTemperatureTooHigh : BIT;
@@ -20,27 +22,27 @@ VAR
 	bBlueNoSupplyVoltage : BIT;	
 END_VAR
 VAR CONSTANT
-	iMax : INT := 32767;		//Maximum Intensity (100%)
-	iMin : INT := 0;			//Off (0%)
+	nMax : INT := 32767;		//Maximum Intensity (100%)
+	nMin : INT := 0;			//Off (0%)
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[CASE eColor OF
 	LEDColor.Off:
-		iRedLED := iMin;
-		iGreenLED := iMin;
-		iBlueLED := iMin;
+		nRedLED := nMin;
+		nGreenLED := nMin;
+		nBlueLED := nMin;
 	LEDColor.Red:
-		iRedLED := iMax;
-		iGreenLED := iMin;
-		iBlueLED := iMin;
+		nRedLED := nMax;
+		nGreenLED := nMin;
+		nBlueLED := nMin;
 	LEDColor.Green:
-		iRedLED := iMin;
-		iGreenLED := iMax;
-		iBlueLED := iMin;
+		nRedLED := nMin;
+		nGreenLED := nMax;
+		nBlueLED := nMin;
 	LEDColor.Blue:
-		iRedLED := iMin;
-		iGreenLED := iMin;
-		iBlueLED := iMax;
+		nRedLED := nMin;
+		nGreenLED := nMin;
+		nBlueLED := nMax;
 END_CASE
 
 
@@ -69,9 +71,9 @@ bBlueNoSupplyVoltage := RGBLED.bBlueError;]]></ST>
       <Declaration><![CDATA[METHOD PRIVATE doSetClampValues
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RGBLED.iRed := iRedLED;
-RGBLED.iGreen := iGreenLED;
-RGBLED.iBlue := iBlueLED;]]></ST>
+        <ST><![CDATA[RGBLED.nRed := nRedLED;
+RGBLED.nGreen := nGreenLED;
+RGBLED.nBlue := nBlueLED;]]></ST>
       </Implementation>
     </Method>
     <Property Name="eCondition" Id="{07f8f374-c150-465f-b84c-fb20f0d2bc35}">
@@ -98,12 +100,19 @@ END_IF]]></ST>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[nErrorID.0 := bRedTemperatureTooHigh;
-nErrorID.1 := bRedNoSupplyVoltage;
-nErrorID.2 := bGreenTemperatureTooHigh;
-nErrorID.3 := bGreenNoSupplyVoltage;
-nErrorID.4 := bBlueTemperatureTooHigh;
-nErrorID.5 := bBlueNoSupplyVoltage;]]></ST>
+          <ST><![CDATA[nErrorID.0 := aErrorTimer[0].Q;
+nErrorID.1 := aErrorTimer[1].Q;
+nErrorID.2 := aErrorTimer[2].Q;
+nErrorID.3 := aErrorTimer[3].Q;
+nErrorID.4 := aErrorTimer[4].Q;
+nErrorID.5 := aErrorTimer[5].Q;
+
+aErrorTimer[0](IN:=bRedTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[1](IN:=bRedNoSupplyVoltage, PT:=T#5S);
+aErrorTimer[2](IN:=bGreenTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[3](IN:=bGreenNoSupplyVoltage, PT:=T#5S);
+aErrorTimer[4](IN:=bBlueTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[5](IN:=bBlueNoSupplyVoltage, PT:=T#5S);]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -137,6 +146,9 @@ nErrorID.5 := bBlueNoSupplyVoltage;]]></ST>
     <LineIds Name="FB_RGBLED.nErrorID.Get">
       <LineId Id="5" Count="4" />
       <LineId Id="2" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="4" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -15,20 +15,20 @@ VAR
 	bAllErrorsAcknowledged 			: BOOL;
 	
 	fbEventLogging 					: FB_EventLogging;
-	aSetEventCounterToZero 			: ARRAY [0..iNumberOfMessages-1] OF USINT;
+	aSetEventCounterToZero 			: ARRAY [0..nNumberOfWarnings + nNumberOfErrors + nNumberOfInfos - 1] OF USINT;
 	n 								: USINT;
 	
 	fbSafetyCounter 				: FB_SafetyCounter;
 	
-	bDebugMode 						: BOOL;
+	bDebugMode 						: BOOL := TRUE;
 END_VAR
 VAR CONSTANT
 	tStartUpTime 					: TIME := T#10S;
 	tSafetyCounterTimeout 			: TIME := T#5S;
 	
-	iNumberOfMessages 				: USINT := 62;			//*set the number of MessageIDs here*
-	iNumberOfWarnings 				: USINT := 52;			//*set the number of Warnings here*
-	iNumberOfErrors 				: USINT := 6;			//*set the number of Errors here*
+	nNumberOfWarnings 				: USINT := 52;			//*set the number of Warnings here*
+	nNumberOfErrors 				: USINT := 6;			//*set the number of Errors here*
+	nNumberOfInfos					: USINT := 4;			//*set the number of Infos here*
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -95,7 +95,7 @@ CASE PRG_MainController.eState OF
 			nErrorBits := 0;
 			
 			//Reset Event Logging
-			FOR n := 0 TO iNumberOfMessages-1 DO
+			FOR n := 0 TO nNumberOfWarnings + nNumberOfErrors + nNumberOfInfos -1 DO
 				aSetEventCounterToZero[n] := 0;
 			END_FOR
 			fbEventLogging.aEventCounter := aSetEventCounterToZero;
