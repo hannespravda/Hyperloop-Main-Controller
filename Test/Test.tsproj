@@ -136,7 +136,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{528554B7-4DE1-4168-AF4F-C9F58AAD6544}" Name="PLC Project" PrjFilePath="PLC Project\PLC Project.plcproj" TmcFilePath="PLC Project\PLC Project.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{D6057763-6D5C-6152-1035-739058E0BAFF}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{7C3C08BE-B869-DF42-A769-684D5AA96BAF}">
 					<Name>PLC Project Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -149,6 +149,11 @@
 						<Var>
 							<Name>BoxLED.bWhiteWarning</Name>
 							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -165,11 +170,6 @@
 							<Name>DistanceSensor.stEL6021In</Name>
 							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.bRedWarning</Name>
@@ -3584,6 +3584,54 @@
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^PLC Project^PLC Project Instance">
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6021)">
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 0" Size="8" OffsA="16"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 1" Size="8" OffsA="24"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 10" Size="8" OffsA="96"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 11" Size="8" OffsA="104"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 12" Size="8" OffsA="112"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 13" Size="8" OffsA="120"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 14" Size="8" OffsA="128"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 15" Size="8" OffsA="136"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 16" Size="8" OffsA="144"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 17" Size="8" OffsA="152"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 18" Size="8" OffsA="160"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 19" Size="8" OffsA="168"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 2" Size="8" OffsA="32"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 20" Size="8" OffsA="176"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 21" Size="8" OffsA="184"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 3" Size="8" OffsA="40"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 4" Size="8" OffsA="48"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 5" Size="8" OffsA="56"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 6" Size="8" OffsA="64"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 7" Size="8" OffsA="72"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 8" Size="8" OffsA="80"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 9" Size="8" OffsA="88"/>
+				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Status"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Ctrl"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 0" Size="8" OffsA="16"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 1" Size="8" OffsA="24"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 10" Size="8" OffsA="96"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 11" Size="8" OffsA="104"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 12" Size="8" OffsA="112"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 13" Size="8" OffsA="120"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 14" Size="8" OffsA="128"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 15" Size="8" OffsA="136"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 16" Size="8" OffsA="144"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 17" Size="8" OffsA="152"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 18" Size="8" OffsA="160"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 19" Size="8" OffsA="168"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 2" Size="8" OffsA="32"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 20" Size="8" OffsA="176"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 21" Size="8" OffsA="184"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 3" Size="8" OffsA="40"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 4" Size="8" OffsA="48"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 5" Size="8" OffsA="56"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 6" Size="8" OffsA="64"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 7" Size="8" OffsA="72"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 8" Size="8" OffsA="80"/>
+				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 9" Size="8" OffsA="88"/>
+			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6001)">
 				<Link VarA="PlcTask Inputs^AccelerationSensor.stEL6001InIMU1" VarB="COM Inputs^Data In 0" Size="8" OffsA="16"/>
 				<Link VarA="PlcTask Inputs^AccelerationSensor.stEL6001InIMU1" VarB="COM Inputs^Data In 1" Size="8" OffsA="24"/>
