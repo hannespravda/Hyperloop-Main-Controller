@@ -52,7 +52,7 @@
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000001}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000001}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BIT</Name>
 			<BitSize>1</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -61,7 +61,7 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
 			<BitSize>4</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -70,7 +70,7 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000005}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..4] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000005}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..4] OF BIT</Name>
 			<BitSize>5</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -105,6 +105,15 @@
 				<Elements>2</Elements>
 			</ArrayInfo>
 		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
+			<BitSize>6</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
 	</DataTypes>
 	<ImageDatas>
 		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
@@ -112,6 +121,7 @@
 		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ff000000000000ff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ff000000000000ff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1003">424dd6020000000000003600000028000000100000000e0000000100180000000000a002000000000000000000000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1004">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1005">424dd6020000000000003600000028000000100000000e00000001001800000000000000000074120000741200000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc474747404040404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc424242404040404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd9d9d94a4a4a444444404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</ImageData>
 	</ImageDatas>
 	<Project ProjectGUID="{1A6D6078-2671-4D99-9118-C92DE1DBFD9A}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
@@ -126,14 +136,19 @@
 		</System>
 		<Plc>
 			<Project GUID="{528554B7-4DE1-4168-AF4F-C9F58AAD6544}" Name="PLC Project" PrjFilePath="PLC Project\PLC Project.plcproj" TmcFilePath="PLC Project\PLC Project.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{A7F10E71-9065-2617-C7CB-2E89480635E2}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{D6057763-6D5C-6152-1035-739058E0BAFF}">
 					<Name>PLC Project Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Name>BoxLED.bWhiteError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>BoxLED.bWhiteWarning</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -150,6 +165,11 @@
 							<Name>DistanceSensor.stEL6021In</Name>
 							<Comment><![CDATA[**To EL6021 Inputs**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.bRedWarning</Name>
@@ -176,19 +196,29 @@
 							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 3 (Status -> Warning)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
-						<Var>
-							<Name>BoxLED.bWhiteError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bWhiteWarning</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>BoxLED.iWhite</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>AccelerationSensor.stEL6001OutIMU1</Name>
+							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
+							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+						<Var>
+							<Name>AccelerationSensor.stEL6001OutIMU2</Name>
+							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
+							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
+						<Var>
+							<Name>DistanceSensor.stEL6021Out</Name>
+							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
+							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
+						</Var>
 						<Var>
 							<Name>RGBLED.iRed</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
@@ -200,29 +230,9 @@
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>AccelerationSensor.stEL6001OutIMU1</Name>
-							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
-							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
-						</Var>
-						<Var>
-							<Name>DistanceSensor.stEL6021Out</Name>
-							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
-							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
-						</Var>
-						<Var>
 							<Name>RGBLED.iBlue</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 3 (PWM output)**]]></Comment>
 							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.iWhite</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>AccelerationSensor.stEL6001OutIMU2</Name>
-							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
-							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
 						</Var>
 					</Vars>
 					<Contexts>
@@ -396,31 +406,31 @@
 								<ExcludePdo>#x1a02</ExcludePdo>
 								<ExcludePdo>#x1a05</ExcludePdo>
 								<ExcludePdo>#x1a06</ExcludePdo>
-								<Entry Name="Status__Transmit accepted" Index="#x6000" Sub="#x01" Flags="#x00008020">
+								<Entry Name="Status__Transmit accepted" Index="#x6000" Sub="#x01">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Receive request" Index="#x6000" Sub="#x02" Flags="#x00008020">
+								<Entry Name="Status__Receive request" Index="#x6000" Sub="#x02">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Init accepted" Index="#x6000" Sub="#x03" Flags="#x00008020">
+								<Entry Name="Status__Init accepted" Index="#x6000" Sub="#x03">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Buffer full" Index="#x6000" Sub="#x04" Flags="#x00008020">
+								<Entry Name="Status__Buffer full" Index="#x6000" Sub="#x04">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Parity error" Index="#x6000" Sub="#x05" Flags="#x00008020">
+								<Entry Name="Status__Parity error" Index="#x6000" Sub="#x05">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Framing error" Index="#x6000" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Framing error" Index="#x6000" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Overrun error" Index="#x6000" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Overrun error" Index="#x6000" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Input length" Index="#x6000" Sub="#x09" Flags="#x00008020">
+								<Entry Name="Status__Input length" Index="#x6000" Sub="#x09">
 									<Type>USINT</Type>
 								</Entry>
 								<Entry Name="Data In 0" Index="#x6000" Sub="#x11">
@@ -1844,31 +1854,31 @@
 								<ExcludePdo>#x1a01</ExcludePdo>
 								<ExcludePdo>#x1a02</ExcludePdo>
 								<ExcludePdo>#x1a05</ExcludePdo>
-								<Entry Name="Status__Transmit accepted" Index="#x6000" Sub="#x01" Flags="#x00008020">
+								<Entry Name="Status__Transmit accepted" Index="#x6000" Sub="#x01">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Receive request" Index="#x6000" Sub="#x02" Flags="#x00008020">
+								<Entry Name="Status__Receive request" Index="#x6000" Sub="#x02">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Init accepted" Index="#x6000" Sub="#x03" Flags="#x00008020">
+								<Entry Name="Status__Init accepted" Index="#x6000" Sub="#x03">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Buffer full" Index="#x6000" Sub="#x04" Flags="#x00008020">
+								<Entry Name="Status__Buffer full" Index="#x6000" Sub="#x04">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Parity error" Index="#x6000" Sub="#x05" Flags="#x00008020">
+								<Entry Name="Status__Parity error" Index="#x6000" Sub="#x05">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Framing error" Index="#x6000" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Framing error" Index="#x6000" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Overrun error" Index="#x6000" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Overrun error" Index="#x6000" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000001}">ARRAY [0..0] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Input length" Index="#x6000" Sub="#x09" Flags="#x00008020">
+								<Entry Name="Status__Input length" Index="#x6000" Sub="#x09">
 									<Type>USINT</Type>
 								</Entry>
 								<Entry Name="Data In 0" Index="#x6000" Sub="#x11">
@@ -3320,10 +3330,10 @@
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000005}">ARRAY [0..4] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Warning" Index="#x6000" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Warning" Index="#x6000" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Error" Index="#x6000" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Error" Index="#x6000" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
@@ -3362,16 +3372,16 @@
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000005}">ARRAY [0..4] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Warning" Index="#x6010" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Warning" Index="#x6010" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Error" Index="#x6010" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Error" Index="#x6010" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
 								</Entry>
-								<Entry Name="Status__TxPDO Toggle" Index="#x6010" Sub="#x10" Flags="#x00008020">
+								<Entry Name="Status__TxPDO Toggle" Index="#x6010" Sub="#x10">
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
@@ -3404,16 +3414,16 @@
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000005}">ARRAY [0..4] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Warning" Index="#x6020" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Warning" Index="#x6020" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Error" Index="#x6020" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Error" Index="#x6020" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
 								</Entry>
-								<Entry Name="Status__TxPDO Toggle" Index="#x6020" Sub="#x10" Flags="#x00008020">
+								<Entry Name="Status__TxPDO Toggle" Index="#x6020" Sub="#x10">
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
@@ -3446,10 +3456,10 @@
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000005}">ARRAY [0..4] OF BIT</Type>
 								</Entry>
-								<Entry Name="Status__Warning" Index="#x6030" Sub="#x06" Flags="#x00008020">
+								<Entry Name="Status__Warning" Index="#x6030" Sub="#x06">
 									<Type>BIT</Type>
 								</Entry>
-								<Entry Name="Status__Error" Index="#x6030" Sub="#x07" Flags="#x00008020">
+								<Entry Name="Status__Error" Index="#x6030" Sub="#x07">
 									<Type>BIT</Type>
 								</Entry>
 								<Entry Name="Status__">
@@ -3529,67 +3539,51 @@
 							<CoeProfile ProfileNo="16389001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="6" BoxType="9099">
-						<Name>Klemme 6 (EL9011)</Name>
+					<Box Id="7" BoxType="9099">
+						<Name>Klemme 7 (EL9011)</Name>
 						<ImageId>1004</ImageId>
 						<EtherCAT CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x23333050" InfoDataState="false" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9011 Endklemme" Desc="EL9011" PortABoxInfo="#x01000005"/>
 					</Box>
 				</Box>
-				<EtherCAT/>
+				<Box Id="6" BoxType="9099" BoxFlags="#x00000020">
+					<Name>Box 6 (CX2040 EtherCAT slave)</Name>
+					<ImageId>1005</ImageId>
+					<EtherCAT SlaveType="3" AdsServerAddress="0ab742880207ee03" PdiType="#x0c08" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="55" EoeType="1" VendorId="#x00000002" ProductCode="#x07f86034" RevisionNo="#x00121b82" InfoDataAddr="true" InfoDataNetId="true" GenerateOwnNetId="true" InitializeOwnNetId="true" PortPhys="17" IdentificationAdo="308" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="CX2040 EtherCAT slave" Desc="CX2040 EtherCAT slave" PortABoxInfo="#x02000001">
+						<SyncMan>001000022600010001000000400000040002001026010000</SyncMan>
+						<SyncMan>001200022200010002000000400000040002001222010000</SyncMan>
+						<SyncMan>001a00006400000003000000000000000000001a64000000</SyncMan>
+						<SyncMan>001402002000010004000000000000000000001420000000</SyncMan>
+						<Fmmu>0000000000000000000000020000000001000000000000000000000000000000</Fmmu>
+						<Fmmu>0000000000000000001400010100000002000000000000000000000000000000</Fmmu>
+						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+						<SwitchPortData>00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</SwitchPortData>
+						<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3"/>
+						<Pdo Name="Device Status Mapping" Index="#x1a80" Flags="#x0010" SyncMan="3">
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+							</Entry>
+							<Entry Name="TxPdoState" Index="#xf100" Sub="#x0f">
+								<Type>BIT</Type>
+							</Entry>
+							<Entry Name="TxPdoToggle" Index="#xf100" Sub="#x10">
+								<Type>BIT</Type>
+							</Entry>
+						</Pdo>
+						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2"/>
+					</EtherCAT>
+				</Box>
+				<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
 			</Device>
 		</Io>
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^PLC Project^PLC Project Instance">
-			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6021)">
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 0" Size="8" OffsA="16"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 1" Size="8" OffsA="24"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 10" Size="8" OffsA="96"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 11" Size="8" OffsA="104"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 12" Size="8" OffsA="112"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 13" Size="8" OffsA="120"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 14" Size="8" OffsA="128"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 15" Size="8" OffsA="136"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 16" Size="8" OffsA="144"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 17" Size="8" OffsA="152"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 18" Size="8" OffsA="160"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 19" Size="8" OffsA="168"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 2" Size="8" OffsA="32"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 20" Size="8" OffsA="176"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 21" Size="8" OffsA="184"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 3" Size="8" OffsA="40"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 4" Size="8" OffsA="48"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 5" Size="8" OffsA="56"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 6" Size="8" OffsA="64"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 7" Size="8" OffsA="72"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 8" Size="8" OffsA="80"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Data In 9" Size="8" OffsA="88"/>
-				<Link VarA="PlcTask Inputs^DistanceSensor.stEL6021In" VarB="COM TxPDO-Map Inputs^Status"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Ctrl"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 0" Size="8" OffsA="16"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 1" Size="8" OffsA="24"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 10" Size="8" OffsA="96"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 11" Size="8" OffsA="104"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 12" Size="8" OffsA="112"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 13" Size="8" OffsA="120"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 14" Size="8" OffsA="128"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 15" Size="8" OffsA="136"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 16" Size="8" OffsA="144"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 17" Size="8" OffsA="152"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 18" Size="8" OffsA="160"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 19" Size="8" OffsA="168"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 2" Size="8" OffsA="32"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 20" Size="8" OffsA="176"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 21" Size="8" OffsA="184"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 3" Size="8" OffsA="40"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 4" Size="8" OffsA="48"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 5" Size="8" OffsA="56"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 6" Size="8" OffsA="64"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 7" Size="8" OffsA="72"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 8" Size="8" OffsA="80"/>
-				<Link VarA="PlcTask Outputs^DistanceSensor.stEL6021Out" VarB="COM RxPDO-Map Outputs^Data Out 9" Size="8" OffsA="88"/>
-			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6001)">
 				<Link VarA="PlcTask Inputs^AccelerationSensor.stEL6001InIMU1" VarB="COM Inputs^Data In 0" Size="8" OffsA="16"/>
 				<Link VarA="PlcTask Inputs^AccelerationSensor.stEL6001InIMU1" VarB="COM Inputs^Data In 1" Size="8" OffsA="24"/>
@@ -3685,20 +3679,6 @@
 				<Link VarA="PlcTask Outputs^AccelerationSensor.stEL6001OutIMU2" VarB="COM Outputs^Data Out 7" Size="8" OffsA="72"/>
 				<Link VarA="PlcTask Outputs^AccelerationSensor.stEL6001OutIMU2" VarB="COM Outputs^Data Out 8" Size="8" OffsA="80"/>
 				<Link VarA="PlcTask Outputs^AccelerationSensor.stEL6001OutIMU2" VarB="COM Outputs^Data Out 9" Size="8" OffsA="88"/>
-			</OwnerB>
-			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL2564)">
-				<Link VarA="PlcTask Inputs^BoxLED.bWhiteError" VarB="PWM Inputs Channel 4^Status^Error"/>
-				<Link VarA="PlcTask Inputs^BoxLED.bWhiteWarning" VarB="PWM Inputs Channel 4^Status^Warning"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bBlueError" VarB="PWM Inputs Channel 3^Status^Error"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bBlueWarning" VarB="PWM Inputs Channel 3^Status^Warning"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bGreenError" VarB="PWM Inputs Channel 2^Status^Error"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bGreenWarning" VarB="PWM Inputs Channel 2^Status^Warning"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bRedError" VarB="PWM Inputs Channel 1^Status^Error"/>
-				<Link VarA="PlcTask Inputs^RGBLED.bRedWarning" VarB="PWM Inputs Channel 1^Status^Warning"/>
-				<Link VarA="PlcTask Outputs^BoxLED.iWhite" VarB="PWM Outputs Channel 4^PWM output"/>
-				<Link VarA="PlcTask Outputs^RGBLED.iBlue" VarB="PWM Outputs Channel 3^PWM output"/>
-				<Link VarA="PlcTask Outputs^RGBLED.iGreen" VarB="PWM Outputs Channel 2^PWM output"/>
-				<Link VarA="PlcTask Outputs^RGBLED.iRed" VarB="PWM Outputs Channel 1^PWM output"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

@@ -95,10 +95,16 @@
     <Compile Include="POUs\FB_RGBLED.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\RGBLED\RGBLED.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
