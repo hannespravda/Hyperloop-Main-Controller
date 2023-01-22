@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_TrajectoryGenerator" Id="{0fe2a302-c596-4eee-ba7e-45869f82e2bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TrajectoryGenerator IMPLEMENTS ITF_SubSystem
+VAR_INPUT
+	eMode : TGControllerMode;
+	
+	bTransition : BOOL;
+
+	fInitialAirGap : REAL;
+	fInitialVelocity : REAL;
+	fInitialAcceleration : REAL;
+	fInitialCurrent	: REAL;
+	
+	fDesiredAirGapAfterTransitioning : REAL;
+	fDesiredVelocityAfterTransitioning : REAL;
+	fDesiredAccelerationAfterTransitioning : REAL;
+	tDesiredTimeForTransitioning : TIME;
+END_VAR
+VAR_OUTPUT
+	fNewReferenceValueForAirGap : REAL;
+	fNewReferenceVaueForVelocity : REAL;
+	fNewReferenceValueForAcceleration : REAL;
+	fNewReferenceValueForCurrent : REAL;
+	fNewReferenceValueForVoltage : REAL;
+	fNewReferenceValueForForce : REAL;
+	
+	bTrajectoryCompleted : BOOL;
+END_VAR
+VAR
+	nCounter : UDINT;
+	fbTransitionTimer : TON;
+	tElapsedTransitionTime : TIME;
+
+	//ErrorBits
+	bAirGapValueOutOfRange : BOOL;
+	bVelocityOutOfRange : BOOL;
+	bAccelerationOutOfRange : BOOL;
+	bCurrentOutOfRange : BOOL;
+	bVoltageOutOfRange : BOOL;
+	bForceOutOfRange : BOOL;
+END_VAR
+VAR CONSTANT
+	nCounterMax : UDINT := 255;
+	nCounterReset : UDINT := 2;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bTransition THEN
+	nCounter := nCounter + 1;
+	IF nCounter > nCounterMax THEN
+		nCounter := nCounterReset;
+	END_IF	
+
+	CASE eMode OF
+		TGControllerMode.IControl:
+		IF nCounter = 1 THEN
+			doSetInitialValues(	fInitialDistance := fInitialAirGap,				//BlackBox to be implemented with Controller structure
+								fInitialVelocity := fInitialVelocity,
+								fInitialAcceleration := fInitialAcceleration,
+								fInitialCurrent := fInitialCurrent);
+									
+			doSetDesiredValues(	fDesiredDistance := fDesiredAirGapAfterTransitioning, 		//BlackBox to be implemented with Controller structure
+								fDesiredVelocity := fDesiredVelocityAfterTransitioning,
+								fDesiredAcceleration := fDesiredAccelerationAfterTransitioning,
+								tDesiredTime := tDesiredTimeForTransitioning);		
+			doCalculateTrajectory();										//BlackBox to be implemented with Controller structure
+			
+			fbTransitionTimer(IN := TRUE, PT := tDesiredTimeForTransitioning, ET => tElapsedTransitionTime);
+		END_IF
+		doGetTrajectoryValues(tElapsedTime := tElapsedTransitionTime);		//BlackBox to be implemented with Controller structure
+		IF fbTransitionTimer.Q THEN
+			bTrajectoryCompleted := TRUE;
+		ELSE
+			bTrajectoryCompleted := FALSE;
+		END_IF
+	
+	
+		TGControllerMode.PControl:
+		IF nCounter = 1 THEN
+			doSetInitialValues(	fInitialDistance := fInitialAirGap,				//BlackBox to be implemented with Controller structure
+								fInitialVelocity := fInitialVelocity,
+								fInitialAcceleration := fInitialAcceleration,
+								fInitialCurrent := fInitialCurrent);
+									
+			doSetDesiredValues(	fDesiredDistance := fDesiredAirGapAfterTransitioning, 		//BlackBox to be implemented with Controller structure
+								fDesiredVelocity := fDesiredVelocityAfterTransitioning,
+								fDesiredAcceleration := fDesiredAccelerationAfterTransitioning,
+								tDesiredTime := tDesiredTimeForTransitioning);		
+			doCalculateTrajectory();										//BlackBox to be implemented with Controller structure
+			
+			fbTransitionTimer(IN := TRUE, PT := tDesiredTimeForTransitioning, ET => tElapsedTransitionTime);
+		END_IF
+		doGetTrajectoryValues(tElapsedTime := tElapsedTransitionTime);		//BlackBox to be implemented with Controller structure
+		IF fbTransitionTimer.Q THEN
+			bTrajectoryCompleted := TRUE;
+		ELSE
+			bTrajectoryCompleted := FALSE;
+		END_IF
+	END_CASE
+ELSE
+	nCounter := 0;
+	fbTransitionTimer(IN := FALSE);
+	
+	bTrajectoryCompleted := TRUE;
+	
+	fNewReferenceValueForAirGap := 0;
+	fNewReferenceVaueForVelocity := 0;
+	fNewReferenceValueForAcceleration := 0;
+	fNewReferenceValueForCurrent := 0;
+	fNewReferenceValueForVoltage := 0;
+	fNewReferenceValueForForce := 0;
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="doCalculateTrajectory" Id="{df2d3959-761c-49f8-9cbe-64ec351b587c}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateTrajectory
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doGetTrajectoryValues" Id="{bc5042e0-523c-45de-8cc7-e9edd1adbde5}">
+      <Declaration><![CDATA[METHOD PRIVATE doGetTrajectoryValues
+VAR_INPUT
+	tElapsedTime : TIME;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fNewReferenceValueForAirGap := 0;
+fNewReferenceVaueForVelocity := 0;
+fNewReferenceValueForAcceleration := 0;
+fNewReferenceValueForCurrent := 0;
+fNewReferenceValueForVoltage := 0;
+fNewReferenceValueForForce := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetDesiredValues" Id="{e82ca100-23a9-4c79-a5c9-688f47144b5b}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetDesiredValues
+VAR_INPUT
+	fDesiredDistance : REAL;
+	fDesiredVelocity : REAL;
+	fDesiredAcceleration : REAL;
+	tDesiredTime : TIME;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetInitialValues" Id="{f04dd42a-3f7a-4daf-af7b-cc1e58ba768e}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetInitialValues
+VAR_INPUT
+	fInitialDistance : REAL;
+	fInitialVelocity : REAL;
+	fInitialAcceleration : REAL;
+	fInitialCurrent : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{df5c52f5-45dd-448b-a7cc-778bc0792b22}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{8a81cf47-3f8c-4912-a777-24c917897c9d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{83c901c7-a7de-4b49-85f1-bd0dc23c2a57}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{355ce037-a55c-4ac6-bba2-1bbbdd697d84}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//*RangeAbfrage to be implemented*
+bAirGapValueOutOfRange := FALSE;
+bVelocityOutOfRange := FALSE;
+bAccelerationOutOfRange := FALSE;
+bCurrentOutOfRange := FALSE;
+bVoltageOutOfRange := FALSE;
+bForceOutOfRange := FALSE;
+
+nErrorID.0 := bAirGapValueOutOfRange;
+nErrorID.1 := bVelocityOutOfRange;
+nErrorID.2 := bAccelerationOutOfRange;
+nErrorID.3 := bCurrentOutOfRange;
+nErrorID.4 := bVoltageOutOfRange;
+nErrorID.5 := bForceOutOfRange;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_TrajectoryGenerator">
+      <LineId Id="246" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="272" Count="2" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="255" Count="1" />
+      <LineId Id="275" Count="1" />
+      <LineId Id="332" Count="3" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="336" Count="2" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="329" Count="1" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="339" Count="1" />
+      <LineId Id="342" Count="1" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="258" Count="2" />
+      <LineId Id="344" Count="18" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="253" Count="0" />
+      <LineId Id="279" Count="1" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="413" Count="1" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="365" Count="4" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="254" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="182" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.doCalculateTrajectory">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.doGetTrajectoryValues">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="4" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.doSetDesiredValues">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.doSetInitialValues">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TrajectoryGenerator.nErrorID.Get">
+      <LineId Id="19" Count="0" />
+      <LineId Id="12" Count="4" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="6" Count="5" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

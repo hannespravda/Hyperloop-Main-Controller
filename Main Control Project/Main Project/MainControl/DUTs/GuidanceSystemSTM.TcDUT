@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="GuidanceSystemSTM" Id="{4f1c65d1-df72-4db4-9416-57d142abfa9e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE GuidanceSystemSTM :
+(
+	Idling,
+	PreRunning,
+	Running,
+	PostRunning
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

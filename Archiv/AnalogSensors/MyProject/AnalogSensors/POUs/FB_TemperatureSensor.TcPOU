@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_TemperatureSensor" Id="{6f346c49-8053-4f07-8a66-62825debe819}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TemperatureSensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	rTemperature : REAL;
+	rCorrespondenceFactor : REAL := 0.01;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rTemperature := INT_TO_REAL(MyGVL.iInput1) * rCorrespondenceFactor;]]></ST>
+    </Implementation>
+    <Property Name="getTemperature" Id="{49ba6347-cabd-4894-bd6d-9d1e0d858dbd}">
+      <Declaration><![CDATA[PROPERTY getTemperature : REAL]]></Declaration>
+      <Get Name="Get" Id="{333791c2-d511-43d9-bbb5-4e9f336f4662}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getTemperature := rTemperature;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_TemperatureSensor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_TemperatureSensor.getTemperature.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

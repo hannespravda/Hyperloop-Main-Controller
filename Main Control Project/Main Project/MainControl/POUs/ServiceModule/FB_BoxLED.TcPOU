@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BoxLED" Id="{7417f049-9846-439d-bd3a-1b6848121830}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED IMPLEMENTS ITF_SubSystem
+VAR_INPUT
+	eMode : LEDMode;
+END_VAR
+VAR
+	//Local
+	nBoxLED : INT;
+	fbFlashingTimer : TON;
+	bOn : BOOL;
+	
+	aErrorTimer : ARRAY [0..1] OF TON;
+	
+	//ErrorBits
+	bTemperatureTooHigh : BIT;
+	bNoSupplyVoltage : BIT;
+END_VAR
+VAR CONSTANT
+	nIntensity : INT := 32767;				//Intensity [0..32767]
+	fDimFactor : REAL := 0.01;				//Percentage (0..100%)
+	tSlowFlashingTime : TIME := T#1S;		
+	tFastFlashingTime : TIME := T#100MS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eMode OF
+	LEDMode.Off:
+			doTurnOn(nBrightness := 0);
+	LEDMode.On:
+			doTurnOn(nBrightness := nIntensity);
+	LEDMode.Dimmed:
+			doDimming(fDimmingFactor:=fDimFactor);
+	LEDMode.SlowFlashing:
+			doFlashing(tFlashingTime:=tSlowFlashingTime);
+	LEDMode.FastFlashing:
+			doFlashing(tFlashingTime:=tFastFlashingTime);
+END_CASE
+
+doSetClampValues();
+doGetClampValues();
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="doDimming" Id="{ef13b277-d6e0-4180-8bd3-5ca9a77d8ba4}">
+      <Declaration><![CDATA[METHOD PRIVATE doDimming
+VAR_INPUT
+	fDimmingFactor : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[nBoxLED := REAL_TO_INT(fDimmingFactor * nIntensity);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doFlashing" Id="{a56a3bcf-ecb7-4bdc-afc1-de57457e0ffa}">
+      <Declaration><![CDATA[METHOD PRIVATE doFlashing
+VAR_INPUT
+	tFlashingTime : TIME;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbFlashingTimer(IN:=TRUE, PT:=tFlashingTime);
+IF fbFlashingTimer.Q THEN
+	fbFlashingTimer(IN:=FALSE);
+	bOn := NOT bOn;	
+END_IF
+IF bOn THEN
+	nBoxLED := nIntensity;
+ELSE
+	nBoxLED := 0;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doGetClampValues" Id="{ed091663-cac3-4e07-8db6-bc90a174ab60}">
+      <Declaration><![CDATA[METHOD PRIVATE doGetClampValues
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bTemperatureTooHigh := BoxLED.bBoxGreenWarning;
+bNoSupplyVoltage := BoxLED.bBoxGreenError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetClampValues" Id="{dc51a952-fa37-42fa-8053-b84e73c61317}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetClampValues
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[BoxLED.nBoxGreen := nBoxLED;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doTurnOn" Id="{ff9f7808-2e93-4ad9-ae70-22394be7f716}">
+      <Declaration><![CDATA[METHOD PRIVATE doTurnOn
+VAR_INPUT
+	nBrightness : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[nBoxLED := nBrightness;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{4e482d49-3544-41a4-af6c-918dcc95d53c}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{79825f0a-16ce-4375-9182-20617a9508fb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{5e4b59cd-ff12-43ce-a556-f3f12e731d20}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{3a0b74a6-2860-46c3-baf9-490027dc347b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorID.0 := aErrorTimer[0].Q;
+nErrorID.1 := aErrorTimer[1].Q;
+
+aErrorTimer[0](IN := bTemperatureTooHigh, PT := T#5S);
+aErrorTimer[1](IN := bNoSupplyVoltage, PT := T#5S);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_BoxLED">
+      <LineId Id="293" Count="0" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="294" Count="11" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="306" Count="3" />
+      <LineId Id="226" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doDimming">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doFlashing">
+      <LineId Id="27" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="3" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doGetClampValues">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doSetClampValues">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doTurnOn">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.nErrorID.Get">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_InteriorOperationMonitoring" Id="{09ca3a33-707f-4a06-b20c-932141df74ec}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_InteriorOperationMonitoring
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fb_humiditysensor : FB_HumiditySensor;
+	fb_cO2sensor : FB_CO2Sensor;
+	fb_temperaturesensor : FB_TemperatureSensor;
+	fb_pressuresensor : FB_PressureSensor;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="updateSensorValues" Id="{0879ac93-2ad3-4ff2-9a0a-e9e0396a0e0b}">
+      <Declaration><![CDATA[METHOD updateSensorValues
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fb_cO2sensor();
+fb_humiditysensor();
+fb_pressuresensor();
+fb_temperaturesensor();
+
+SensorValues.rCO2Value := fb_cO2sensor.getCO2Value;
+SensorValues.rHumidity := fb_humiditysensor.getHumidity;
+SensorValues.rPressure := fb_pressuresensor.getPressure;
+SensorValues.rTemperature := fb_temperaturesensor.getTemperature;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_InteriorOperationMonitoring">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_InteriorOperationMonitoring.updateSensorValues">
+      <LineId Id="9" Count="0" />
+      <LineId Id="12" Count="2" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="5" Count="3" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

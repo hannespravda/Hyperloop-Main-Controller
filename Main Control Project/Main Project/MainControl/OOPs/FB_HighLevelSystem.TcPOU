@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_HighLevelSystem" Id="{f32a59e3-2d4b-4764-a617-36cef38b7412}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HighLevelSystem IMPLEMENTS ITF_HighLevelSystem
+VAR_INPUT
+	eActivationStatus : ActivationStatus;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="eCondition" Id="{6df130c8-b321-441d-91d8-3607b8ea8faa}">
+      <Declaration><![CDATA[PROPERTY eCondition : HighLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{0fd506c0-da7e-4d3d-8a8b-1d010ebd2181}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{35b6f844-4929-4eec-9295-ee6b2842d9a9}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{4338d5e2-1fec-4320-a214-083e1d5e26dc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_HighLevelSystem">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.eCondition.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HighLevelSystem.nErrorID.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

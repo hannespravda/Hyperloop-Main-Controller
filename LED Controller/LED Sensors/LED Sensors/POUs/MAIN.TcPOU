@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{2ff7b83e-9d69-4049-8b2d-19c87bd75e82}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbRGBLED : FB_RGBLED;
+	fbBoxLED : FB_BoxLED;
+	
+	fbEventLogging : FB_EventLogging;
+	
+	eMode : LEDMode;
+	eColor : LEDColor;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbBoxLED.eMode := eMode;
+fbRGBLED.eColor := eColor;
+
+fbRGBLED();
+fbBoxLED();
+
+fbEventLogging();
+			]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="101" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="61" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

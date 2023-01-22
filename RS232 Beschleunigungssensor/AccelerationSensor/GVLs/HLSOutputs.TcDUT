@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="HLSOutputs" Id="{c84a1d81-65c6-4ef5-9c90-4714a3717f1b}">
+    <Declaration><![CDATA[TYPE HLSOutputs :
+STRUCT
+	iOut : INT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

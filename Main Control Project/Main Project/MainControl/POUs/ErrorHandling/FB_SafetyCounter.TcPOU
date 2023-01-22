@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_SafetyCounter" Id="{6f347c18-b88c-4382-a068-898d8214114a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SafetyCounter
+VAR_INPUT
+	bReset : BOOL;
+END_VAR
+VAR_OUTPUT
+	nSafetyCounter : UDINT;
+END_VAR
+VAR
+	nSafetyCounterOC 	: UDINT;
+	nSafetyCounterXMC1 	: UDINT;
+	nSafetyCounterXMC2 	: UDINT;
+	nSafetyCounterXMC3 	: UDINT;
+	nSafetyCounterXMC4 	: UDINT;
+	
+
+	fbTimeoutOC : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	fbTimeoutXMC1 : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	fbTimeoutXMC2 : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	fbTimeoutXMC3 : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	fbTimeoutXMC4 : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	fbTimeoutEtherCAT : TON := (PT := PRG_ErrorHandling.tSafetyCounterTimeout);
+	
+	fbFrameCounter : FB_EcMasterFrameStatistic;
+	bCount : BOOL;
+	fFramesPerSecond : LREAL;
+	
+	//ErrorBits
+	bNoConnectionToOC : BOOL;
+	bNoConnectionToXMC1 : BOOL;
+	bNoConnectionToXMC2 : BOOL;
+	bNoConnectionToXMC3 : BOOL;
+	bNoConnectionToXMC4 : BOOL;
+	bNoEtherCATConnection : BOOL;
+END_VAR
+VAR CONSTANT
+	nCounterMax : UDINT := 4294967295;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[doEtherCATFrameCount();
+
+nSafetyCounter := nSafetyCounter + 1;
+IF nSafetyCounter = nCounterMax THEN
+	nSafetyCounter := 0;
+END_IF
+
+//OC
+IF PRG_MainController.stOperationControlCommands.nSafetyCounterOC <> nSafetyCounterOC THEN
+	nSafetyCounterOC := PRG_MainController.stOperationControlCommands.nSafetyCounterOC;
+	fbTimeoutOC(IN := FALSE);
+	bNoConnectionToOC := FALSE;
+ELSE
+	fbTimeoutOC(IN := NOT bReset);
+	bNoConnectionToOC := FALSE;
+	IF fbTimeoutOC.Q THEN
+		bNoConnectionToOC := TRUE;
+	END_IF
+END_IF
+
+//XMC1
+IF PRG_MainController.stXMCCommands.nSafetyCounterXMC1 <> nSafetyCounterXMC1 THEN
+	nSafetyCounterXMC1 := PRG_MainController.stXMCCommands.nSafetyCounterXMC1;
+	fbTimeoutXMC1(IN := FALSE);
+	bNoConnectionToXMC1 := FALSE;
+ELSE
+	fbTimeoutXMC1(IN:= NOT bReset);
+	bNoConnectionToXMC1 := FALSE;
+	IF fbTimeoutXMC1.Q THEN
+		bNoConnectionToXMC1 := TRUE;
+	END_IF
+END_IF
+
+//XMC2
+IF PRG_MainController.stXMCCommands.nSafetyCounterXMC2 <> nSafetyCounterXMC2 THEN
+	nSafetyCounterXMC2 := PRG_MainController.stXMCCommands.nSafetyCounterXMC2;
+	fbTimeoutXMC2(IN := FALSE);
+	bNoConnectionToXMC2 := FALSE;
+ELSE
+	fbTimeoutXMC2(IN:= NOT bReset);
+	bNoConnectionToXMC2 := FALSE;
+	IF fbTimeoutXMC2.Q THEN
+		bNoConnectionToXMC2 := TRUE;
+	END_IF
+END_IF
+
+//XMC3
+IF PRG_MainController.stXMCCommands.nSafetyCounterXMC3 <> nSafetyCounterXMC3 THEN
+	nSafetyCounterXMC3 := PRG_MainController.stXMCCommands.nSafetyCounterXMC3;
+	fbTimeoutXMC3(IN := FALSE);
+	bNoConnectionToXMC3 := FALSE;
+ELSE
+	fbTimeoutXMC3(IN:= NOT bReset);
+	bNoConnectionToXMC3 := FALSE;
+	IF fbTimeoutXMC3.Q THEN
+		bNoConnectionToXMC3 := TRUE;
+	END_IF
+END_IF
+
+//XMC4
+IF PRG_MainController.stXMCCommands.nSafetyCounterXMC4 <> nSafetyCounterXMC4 THEN
+	nSafetyCounterXMC4 := PRG_MainController.stXMCCommands.nSafetyCounterXMC4;
+	fbTimeoutXMC4(IN := FALSE);
+	bNoConnectionToXMC4 := FALSE;
+	fbTimeoutXMC1(IN := FALSE);
+ELSE
+	fbTimeoutXMC4(IN:= NOT bReset);
+	bNoConnectionToXMC4 := FALSE;
+	IF fbTimeoutXMC4.Q THEN
+		bNoConnectionToXMC4 := TRUE;
+	END_IF
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="doEtherCATFrameCount" Id="{4c37a95f-b91c-4db3-bee0-e47fcbc81cef}">
+      <Declaration><![CDATA[METHOD PRIVATE doEtherCATFrameCount
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bCount THEN
+	bCount := TRUE;
+	fbFrameCounter(sNetId := '10.183.66.136.2.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
+END_IF
+
+IF bCount THEN
+	bCount := FALSE;
+	fbFrameCounter(sNetId := '10.183.66.136.2.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
+END_IF
+
+IF fFramesPerSecond <> 0 THEN
+	bNoEtherCATConnection := FALSE;
+	fbTimeoutEtherCAT(IN := FALSE);
+ELSE
+	fbTimeoutEtherCAT(IN := NOT bReset);
+	bNoEtherCATConnection := FALSE;
+	IF fbTimeoutEtherCAT.Q THEN
+		bNoEtherCATConnection := TRUE;
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="nErrorID" Id="{eb85ba54-2be4-4713-9fe4-b6279706a220}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT]]></Declaration>
+      <Get Name="Get" Id="{4ce907e6-a3f0-49c3-adc0-5271cdbfc60e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorID.0 := 	bNoConnectionToOC;
+nErrorID.1 :=	bNoConnectionToXMC1;
+nErrorID.2 :=	bNoConnectionToXMC2;
+nErrorID.3 :=	bNoConnectionToXMC3;
+nErrorID.4 := 	bNoConnectionToXMC4;
+nErrorID.5 :=	bNoEtherCATConnection;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_SafetyCounter">
+      <LineId Id="29" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="235" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="96" Count="5" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="102" Count="2" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="107" Count="5" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="119" Count="5" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="125" Count="2" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="130" Count="3" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="136" Count="2" />
+      <LineId Id="129" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SafetyCounter.doEtherCATFrameCount">
+      <LineId Id="6" Count="11" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SafetyCounter.nErrorID.Get">
+      <LineId Id="5" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

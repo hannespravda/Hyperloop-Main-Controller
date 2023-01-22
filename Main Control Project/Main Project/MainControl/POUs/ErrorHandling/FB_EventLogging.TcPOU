@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EventLogging" Id="{1d6c9a0f-e224-46e5-8e17-afe0ce918b9d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EventLogging
+VAR
+	fbEventMessage : FB_TcMessage;
+	fbEventLogger : FB_TcEventLogger;
+	fbCsvExport : FB_TcEventCsvExportSettings;
+	fbCsvClear : FB_TcClearLoggedEventsSettings;
+
+	
+	n : USINT;
+	aCounterID : ARRAY [0..PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors + PRG_ErrorHandling.nNumberOfInfos - 1] OF USINT;
+	aWarningArray : ARRAY [0..PRG_ErrorHandling.nNumberOfWarnings-1] OF BOOL;
+	aWarningMessagesAsStrings : ARRAY [0..PRG_ErrorHandling.nNumberOfWarnings-1] OF STRING;
+	aErrorArray : ARRAY [0..PRG_ErrorHandling.nNumberOfErrors-1] OF BOOL;
+	aErrorMessagesAsStrings : ARRAY [0..PRG_ErrorHandling.nNumberOfErrors-1] OF STRING;
+	aInfoArray : ARRAY [0..PRG_ErrorHandling.nNumberOfInfos-1] OF BOOL;
+	aInfoMessagesAsStrings : ARRAY [0..PRG_ErrorHandling.nNumberOfInfos - 1] OF STRING;
+	eMainControllerState : TopLevelSTM;
+	sMainControllerStateAsString : STRING;
+	
+	bClearLoggedEvents : BOOL;
+END_VAR
+VAR CONSTANT
+	nCounterMax : USINT := 255; //max value for USINT data type
+	nCounterReset : USINT := 2;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//CSV-Export
+fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\hanne\Hannes\Studium\Bachelorarbeit\TwinCAT Projekte\Main Control Project\Log.csv', ipExportSettings := fbCsvExport);
+//CSV-Clear
+IF bClearLoggedEvents THEN
+	fbEventLogger.ClearLoggedEvents(ipClearSettings:=fbCsvClear);	
+END_IF
+
+//TransitionLogging
+sMainControllerStateAsString := TO_STRING(PRG_MainController.eState);
+IF eMainControllerState <> PRG_MainController.eState THEN
+	eMainControllerState := PRG_MainController.eState; 
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.STMTransition, 0);
+	fbEventMessage.ipArguments.AddString('MainController').AddString(sMainControllerStateAsString);
+	fbEventMessage.Send(0);
+END_IF
+
+//InfoMessages
+//*Add New Info Messages Here*
+aInfoArray[0] := PRG_ErrorHandling.bAllErrorsAcknowledged;
+aInfoArray[1] := PRG_MainController.stOperationControlCommands.nOperationMode.0;
+aInfoArray[2] := PRG_MainController.stOperationControlCommands.nOperationMode.1;
+aInfoArray[3] := PRG_MainController.stOperationControlCommands.nOperationMode.2;
+
+aInfoMessagesAsStrings[0] := 'All Errors Acknowledged and Cleared by Operation Control';
+aInfoMessagesAsStrings[1] := 'Service Module disabled';
+aInfoMessagesAsStrings[2] := 'Levitation System disabled';
+aInfoMessagesAsStrings[3] := 'Guidance System disabled';
+
+FOR n := 0 TO PRG_ErrorHandling.nNumberOfInfos-1 DO
+	IF aInfoArray[n] THEN
+		aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] := aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] + 1;
+		IF aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] = nCounterMax THEN
+			aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] := nCounterReset;
+		END_IF
+		fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.Info, 0);
+		IF aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] = 1 THEN
+			fbEventMessage.ipArguments.Clear().AddString(aInfoMessagesAsStrings[n]);
+			fbEventMessage.Send(0);
+		END_IF
+	ELSE
+		aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors] := 0;
+	END_IF	
+END_FOR
+
+//WarningMessages
+//*Add New Warning Messages Here*
+aWarningArray[0] := PRG_ErrorHandling.nWarningBits.0;
+aWarningArray[1] := PRG_ErrorHandling.nWarningBits.1;
+aWarningArray[2] := PRG_ErrorHandling.nWarningBits.2;
+aWarningArray[3] := PRG_ErrorHandling.nWarningBits.3;
+aWarningArray[4] := PRG_ErrorHandling.nWarningBits.4;
+aWarningArray[5] := PRG_ErrorHandling.nWarningBits.5;
+aWarningArray[6] := PRG_ErrorHandling.nWarningBits.6;
+aWarningArray[7] := PRG_ErrorHandling.nWarningBits.7;
+aWarningArray[8] := PRG_ErrorHandling.nWarningBits.8;
+aWarningArray[9] := PRG_ErrorHandling.nWarningBits.9;
+aWarningArray[10] := PRG_ErrorHandling.nWarningBits.10;
+aWarningArray[11] := PRG_ErrorHandling.nWarningBits.11;
+aWarningArray[12] := PRG_ErrorHandling.nWarningBits.12;
+aWarningArray[13] := PRG_ErrorHandling.nWarningBits.13;
+aWarningArray[14] := PRG_ErrorHandling.nWarningBits.14;
+aWarningArray[15] := PRG_ErrorHandling.nWarningBits.15;
+aWarningArray[16] := PRG_ErrorHandling.nWarningBits.16;
+aWarningArray[17] := PRG_ErrorHandling.nWarningBits.17;
+aWarningArray[18] := PRG_ErrorHandling.nWarningBits.18;
+aWarningArray[19] := PRG_ErrorHandling.nWarningBits.19;
+aWarningArray[20] := PRG_ErrorHandling.nWarningBits.20;
+aWarningArray[21] := PRG_ErrorHandling.nWarningBits.21;
+aWarningArray[22] := PRG_ErrorHandling.nWarningBits.22;
+aWarningArray[23] := PRG_ErrorHandling.nWarningBits.23;
+aWarningArray[24] := PRG_ErrorHandling.nWarningBits.24;
+aWarningArray[25] := PRG_ErrorHandling.nWarningBits.25;
+aWarningArray[26] := PRG_ErrorHandling.nWarningBits.26;
+aWarningArray[27] := PRG_ErrorHandling.nWarningBits.27;
+aWarningArray[28] := PRG_ErrorHandling.nWarningBits.28;
+aWarningArray[29] := PRG_ErrorHandling.nWarningBits.29;
+aWarningArray[30] := PRG_ErrorHandling.nWarningBits.30;
+aWarningArray[31] := PRG_ErrorHandling.nWarningBits.31;
+aWarningArray[32] := PRG_ErrorHandling.nWarningBits.32;
+aWarningArray[33] := PRG_ErrorHandling.nWarningBits.33;
+aWarningArray[34] := PRG_ErrorHandling.nWarningBits.34;
+aWarningArray[35] := PRG_ErrorHandling.nWarningBits.35;
+aWarningArray[36] := PRG_ErrorHandling.nWarningBits.36;
+aWarningArray[37] := PRG_ErrorHandling.nWarningBits.37;
+aWarningArray[38] := PRG_ErrorHandling.nWarningBits.38;
+aWarningArray[39] := PRG_ErrorHandling.nWarningBits.39;
+aWarningArray[40] := PRG_ErrorHandling.nWarningBits.40;
+aWarningArray[41] := PRG_ErrorHandling.nWarningBits.41;
+aWarningArray[42] := PRG_ErrorHandling.nWarningBits.42;
+aWarningArray[43] := PRG_ErrorHandling.nWarningBits.43;
+aWarningArray[44] := PRG_ErrorHandling.nWarningBits.44;
+aWarningArray[45] := PRG_ErrorHandling.nWarningBits.45;
+aWarningArray[46] := PRG_ErrorHandling.nWarningBits.46;
+aWarningArray[47] := PRG_ErrorHandling.nWarningBits.47;
+aWarningArray[48] := PRG_ErrorHandling.nWarningBits.48;
+aWarningArray[49] := PRG_ErrorHandling.nWarningBits.49;
+aWarningArray[50] := PRG_ErrorHandling.nWarningBits.50;
+aWarningArray[51] := PRG_ErrorHandling.nWarningBits.51;		
+
+aWarningMessagesAsStrings[0] :=		'DistanceSensor Communication Error					';      
+aWarningMessagesAsStrings[1] :=    	'DistanceSensor out of Range						';             
+aWarningMessagesAsStrings[2] :=    	'BoxLED Temperature too high						';             
+aWarningMessagesAsStrings[3] :=    	'BoxLED No Supply Voltage							';                
+aWarningMessagesAsStrings[4] :=    	'RedLED Temperature too high						';             
+aWarningMessagesAsStrings[5] :=    	'RedLED No Supply Voltage							';                
+aWarningMessagesAsStrings[6] :=    	'GreenLED Temperature too high						';           
+aWarningMessagesAsStrings[7] :=    	'GreenLED No Supply Voltage							';              
+aWarningMessagesAsStrings[8] :=    	'BlueLED Temperature too high						';            
+aWarningMessagesAsStrings[9] :=    	'BlueLED No Supply Voltage							';               
+aWarningMessagesAsStrings[10]:=     'EqualizingController Invalid Paramaters			';
+aWarningMessagesAsStrings[11]:=     'EqualizingController Invalid CycleTime				'; 
+aWarningMessagesAsStrings[12]:=     'TrajectoryGeneratorXMC1 AirGap OutOfRange			';                     
+aWarningMessagesAsStrings[13]:=     'TrajectoryGeneratorXMC1 Velocity OutOfRange		';                    
+aWarningMessagesAsStrings[14]:=     'TrajectoryGeneratorXMC1 Acceleration OutOfRange	';                 
+aWarningMessagesAsStrings[15]:=     'TrajectoryGeneratorXMC1 Current OutOfRange			';                    
+aWarningMessagesAsStrings[16]:=     'TrajectoryGeneratorXMC1 Voltage OutOfRange			';      
+aWarningMessagesAsStrings[17]:=     'TrajectoryGeneratorXMC1 Force OutOfRange           ';
+aWarningMessagesAsStrings[18]:=     'TrajectoryGeneratorXMC2 AirGap OutOfRange          ';
+aWarningMessagesAsStrings[19]:=     'TrajectoryGeneratorXMC2 Velocity OutOfRange        ';
+aWarningMessagesAsStrings[20]:=     'TrajectoryGeneratorXMC2 Acceleration OutOfRange    ';
+aWarningMessagesAsStrings[21]:=     'TrajectoryGeneratorXMC2 Current OutOfRange         ';
+aWarningMessagesAsStrings[22]:=     'TrajectoryGeneratorXMC2 Voltage OutOfRange         ';
+aWarningMessagesAsStrings[23]:=     'TrajectoryGeneratorXMC2 Force OutOfRange           ';
+aWarningMessagesAsStrings[24]:=     'TrajectoryGeneratorXMC3 AirGap OutOfRange          ';
+aWarningMessagesAsStrings[25]:=     'TrajectoryGeneratorXMC3 Velocity OutOfRange        ';
+aWarningMessagesAsStrings[26]:=     'TrajectoryGeneratorXMC3 Acceleration OutOfRange    ';
+aWarningMessagesAsStrings[27]:=     'TrajectoryGeneratorXMC3 Current OutOfRange         ';
+aWarningMessagesAsStrings[28]:=     'TrajectoryGeneratorXMC3 Voltage OutOfRange         ';
+aWarningMessagesAsStrings[29]:=     'TrajectoryGeneratorXMC3 Force OutOfRange           ';
+aWarningMessagesAsStrings[30]:=     'TrajectoryGeneratorXMC4 AirGap OutOfRange          ';
+aWarningMessagesAsStrings[31]:=     'TrajectoryGeneratorXMC4 Velocity OutOfRange        ';
+aWarningMessagesAsStrings[32]:=     'TrajectoryGeneratorXMC4 Acceleration OutOfRange    ';
+aWarningMessagesAsStrings[33]:=     'TrajectoryGeneratorXMC4 Current OutOfRange         ';
+aWarningMessagesAsStrings[34]:=     'TrajectoryGeneratorXMC4 Voltage OutOfRange         ';
+aWarningMessagesAsStrings[35]:=     'TrajectoryGeneratorXMC4 Force OutOfRange	        ';  
+aWarningMessagesAsStrings[36]:=     'IMU1 CommunicationError                            ';
+aWarningMessagesAsStrings[37]:=     'IMU1 OutOfRange                                    ';
+aWarningMessagesAsStrings[38]:=     'IMU2 CommunicationError                            ';
+aWarningMessagesAsStrings[39]:=		'IMU2 OutOfRange                                    ';
+aWarningMessagesAsStrings[40]:=		'GuidanceControllerXMC1 Current OutOfRange          ';
+aWarningMessagesAsStrings[41]:=		'GuidanceControllerXMC1 Voltage OutOfRange          ';
+aWarningMessagesAsStrings[42]:=		'GuidanceControllerXMC1 Force OutOfRange            ';
+aWarningMessagesAsStrings[43]:=     'GuidanceControllerXMC2 Current OutOfRange          ';                     
+aWarningMessagesAsStrings[44]:=     'GuidanceControllerXMC2 Voltage OutOfRange          ';
+aWarningMessagesAsStrings[45]:=     'GuidanceControllerXMC2 Force OutOfRange            ';
+aWarningMessagesAsStrings[46]:=     'GuidanceControllerXMC3 Current OutOfRange          ';
+aWarningMessagesAsStrings[47]:=     'GuidanceControllerXMC3 Voltage OutOfRange          ';
+aWarningMessagesAsStrings[48]:=     'GuidanceControllerXMC3 Force OutOfRange            ';
+aWarningMessagesAsStrings[49]:=     'GuidanceControllerXMC4 Current OutOfRange          ';
+aWarningMessagesAsStrings[50]:=     'GuidanceControllerXMC4 Voltage OutOfRange          ';
+aWarningMessagesAsStrings[51]:=     'GuidanceControllerXMC4 Force OutOfRange            ';
+
+
+FOR n := 0 TO PRG_ErrorHandling.nNumberOfWarnings-1 DO
+	IF aWarningArray[n] THEN
+		aCounterID[n] := aCounterID[n] + 1;
+		IF aCounterID[n] = nCounterMax THEN
+			aCounterID[n] := nCounterReset;
+		END_IF
+		fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.Warning, 0);
+		IF aCounterID[n] = 1 THEN
+			fbEventMessage.ipArguments.Clear().AddString(aWarningMessagesAsStrings[n]);
+			fbEventMessage.Send(0);
+		END_IF
+	ELSE
+		aCounterID[n] := 0;
+	END_IF	
+END_FOR
+
+
+//ErrorMessages
+//*Add New ErrorMessages here*
+aErrorArray[0] := PRG_ErrorHandling.nErrorBits.0;
+aErrorArray[1] := PRG_ErrorHandling.nErrorBits.1;
+aErrorArray[2] := PRG_ErrorHandling.nErrorBits.2;
+aErrorArray[3] := PRG_ErrorHandling.nErrorBits.3;
+aErrorArray[4] := PRG_ErrorHandling.nErrorBits.4;
+aErrorArray[5] := PRG_ErrorHandling.nErrorBits.5;
+
+aErrorMessagesAsStrings[0] := 'Connection Timeout to Operation Control';
+aErrorMessagesAsStrings[1] := 'Connection Timeout to XMC1';
+aErrorMessagesAsStrings[2] := 'Connection Timeout to XMC2';
+aErrorMessagesAsStrings[3] := 'Connection Timeout to XMC3';
+aErrorMessagesAsStrings[4] := 'Connection Timeout to XMC4';
+aErrorMessagesAsStrings[5] := 'EtherCAT Master Missing Ethernet Connection';
+
+FOR n := 0 TO PRG_ErrorHandling.nNumberOfErrors - 1 DO
+	IF aErrorArray[n] THEN
+		aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] := aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] + 1;
+		IF aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] = nCounterMax THEN
+			aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] := nCounterReset;
+		END_IF
+		fbEventMessage.CreateEx(stEventEntry:=TC_Events.MainControlEventClass.Error, 0);
+		IF aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] = 1 THEN
+			fbEventMessage.ipArguments.Clear().AddString(sMainControllerStateAsString).AddString(aErrorMessagesAsStrings[n]);
+			fbEventMessage.Send(0);
+		END_IF
+	ELSE
+		aCounterID[n + PRG_ErrorHandling.nNumberOfWarnings] := 0;
+	END_IF
+END_FOR
+]]></ST>
+    </Implementation>
+    <Property Name="aEventCounter" Id="{8e03e36f-3da1-4b82-a440-56fb433eb286}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aEventCounter : ARRAY [0..PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors + PRG_ErrorHandling.nNumberOfInfos - 1] OF USINT]]></Declaration>
+      <Get Name="Get" Id="{dc0aecaf-b58c-4774-b0f3-3c0f106a0f8e}">
+        <Declaration><![CDATA[VAR
+	k : INT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FOR k := 0 TO PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors + PRG_ErrorHandling.nNumberOfInfos - 1 DO
+	aEventCounter[k] := aCounterID[k];
+END_FOR]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0a212a7b-d31e-47b2-a4c3-9d474156c20a}">
+        <Declaration><![CDATA[VAR
+	k : INT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FOR k := 0 TO PRG_ErrorHandling.nNumberOfWarnings + PRG_ErrorHandling.nNumberOfErrors + PRG_ErrorHandling.nNumberOfInfos - 1 DO
+	aCounterID[k] := aEventCounter[k];
+END_FOR]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <LineIds Name="FB_EventLogging">
+      <LineId Id="761" Count="4" />
+      <LineId Id="757" Count="0" />
+      <LineId Id="797" Count="7" />
+      <LineId Id="796" Count="0" />
+      <LineId Id="769" Count="26" />
+      <LineId Id="768" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="469" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="271" Count="14" />
+      <LineId Id="494" Count="14" />
+      <LineId Id="493" Count="0" />
+      <LineId Id="510" Count="14" />
+      <LineId Id="509" Count="0" />
+      <LineId Id="526" Count="3" />
+      <LineId Id="542" Count="17" />
+      <LineId Id="599" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="597" Count="0" />
+      <LineId Id="596" Count="0" />
+      <LineId Id="595" Count="0" />
+      <LineId Id="565" Count="29" />
+      <LineId Id="541" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="253" Count="1" />
+      <LineId Id="438" Count="1" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="255" Count="6" />
+      <LineId Id="251" Count="1" />
+      <LineId Id="352" Count="1" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="468" Count="0" />
+      <LineId Id="358" Count="5" />
+      <LineId Id="367" Count="0" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="368" Count="4" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="375" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="441" Count="1" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="381" Count="5" />
+      <LineId Id="380" Count="0" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="376" Count="0" />
+      <LineId Id="430" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventLogging.aEventCounter.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_EventLogging.aEventCounter.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

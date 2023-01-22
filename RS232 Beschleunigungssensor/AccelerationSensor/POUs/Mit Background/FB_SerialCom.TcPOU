@@ -1,0 +1,669 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_SerialCom" Id="{181e7c70-138b-446a-a6f5-34e588388885}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialCom
+VAR_IN_OUT
+	TxBuffer	: ComBuffer;
+	RxBuffer	: ComBuffer;
+END_VAR
+VAR
+	fbReceive		: ReceiveData;
+	eReceiveErrorID	: ComError_t;
+	nReceiveCounter	: UDINT;
+	prefix : ARRAY[0..1] OF BYTE;
+	receivedata : ARRAY [0..15] OF BYTE;					//decrease or increase by 17 pro packet
+	packet_ID : BYTE := 37;
+	packet_length : BYTE := 12;	
+	
+	//First Package
+	crc : WORD;
+	crc_check : WORD;
+	pt_crc : POINTER TO WORD;
+	crc12 : ARRAY [0..1] OF BYTE;	
+	dataArray : ARRAY[0..11] OF BYTE;
+	i : USINT;
+	acc_x : ARRAY [0..3] OF BYTE;
+	acc_y : ARRAY [0..3] OF BYTE;
+	acc_z : ARRAY [0..3] OF BYTE;
+	pt_x : POINTER TO REAL;
+    x_acc : REAL;
+	pt_y : POINTER TO REAL;
+    y_acc : REAL;
+	pt_z : POINTER TO REAL;
+    z_acc : REAL;
+	
+
+//	//Second Package
+//	bSecondReceivedData: ARRAY [0..16] OF BYTE;
+//	dataArray2 : ARRAY[0..11] OF BYTE;
+//	crc2 : WORD;
+//	crc122 : ARRAY [0..1]OF BYTE;
+//	pt_crc2 : POINTER TO WORD;
+//	crc_check2 : WORD;
+//	k2 : USINT;
+//	LRCsum2 : BYTE;
+//	LRC2 : BYTE;
+//	LRCchecked2 : BOOL;
+//	j2 : USINT;
+//	bIn2 : BOOL;
+//	acc_x2 : ARRAY [0..3] OF BYTE;
+//	acc_y2 : ARRAY [0..3] OF BYTE;
+//	acc_z2 : ARRAY [0..3] OF BYTE;
+//	pt_x2 : POINTER TO REAL;
+//  x_acc2 : REAL;
+//	pt_y2 : POINTER TO REAL;
+//  y_acc2 : REAL;
+//	pt_z2 : POINTER TO REAL;
+//  z_acc2 : REAL;
+	
+//	//Third Package
+//	bThirdReceivedData: ARRAY [0..16] OF BYTE;
+//	dataArray3 : ARRAY[0..11] OF BYTE;
+//	crc3 : WORD;
+//	crc123 : ARRAY [0..1]OF BYTE;
+//	pt_crc3 : POINTER TO WORD;
+//	crc_check3 : WORD;
+//	k3 : USINT;
+//	LRCsum3 : BYTE;
+//	LRC3 : BYTE;
+//	LRCchecked3 : BOOL;
+//	j3 : USINT;
+//	bIn3 : BOOL;
+//	acc_x3 : ARRAY [0..3] OF BYTE;
+//	acc_y3 : ARRAY [0..3] OF BYTE;
+//	acc_z3 : ARRAY [0..3] OF BYTE;
+//	pt_x3 : POINTER TO REAL;
+//  x_acc3 : REAL;
+//	pt_y3 : POINTER TO REAL;
+//  y_acc3 : REAL;
+//	pt_z3 : POINTER TO REAL;
+//  z_acc3 : REAL;
+	
+//	//Fourth Package
+//	bFourthReceivedData: ARRAY [0..16] OF BYTE;
+//	dataArray4 : ARRAY[0..11] OF BYTE;
+//	crc4 : WORD;
+//	crc124 : ARRAY [0..1]OF BYTE;
+//	pt_crc4 : POINTER TO WORD;
+//	crc_check4 : WORD;
+//	k4 : USINT;
+//	LRCsum4 : BYTE;
+//	LRC4 : BYTE;
+//	LRCchecked4 : BOOL;
+//	j4 : USINT;
+//	bIn4 : BOOL;
+//	acc_x4 : ARRAY [0..3] OF BYTE;
+//	acc_y4 : ARRAY [0..3] OF BYTE;
+//	acc_z4 : ARRAY [0..3] OF BYTE;
+//	pt_x4 : POINTER TO REAL;
+//  x_acc4 : REAL;
+//	pt_y4 : POINTER TO REAL;
+//  y_acc4 : REAL;
+//	pt_z4 : POINTER TO REAL;
+//  z_acc4 : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[prefix[0] := packet_ID;
+prefix[1] := packet_length;
+
+fbReceive(
+	RXbuffer:= RxBuffer,
+	pPrefix := ADR(prefix),
+	LenPrefix := 2,
+	pReceiveData := ADR(receivedata),
+	SizeReceiveData  := 16,											//decrease or increase by 17 per packet
+	Error=> ,
+	DataReceived=>,
+		);
+IF fbReceive.Error <> COMERROR_NOERROR THEN
+	eReceiveErrorID := fbReceive.Error;
+END_IF
+IF fbReceive.DataReceived THEN										//check bIn* variables as well for multiple packets
+	nReceiveCounter := nReceiveCounter + 1;
+END_IF
+
+doCRC16Check1();
+
+//IF receivedata[17] = 37 AND receivedata[18] = 12 THEN				//decrease or increase by 17 per packet
+//	bIn2 := TRUE;	
+//	FOR k2:=0 TO 16 DO
+//		bSecondReceivedData[k] := receivedata[k+16];
+//	END_FOR
+	
+//	doLRCCheck2();
+//	doCRC16Check2();
+//ELSE
+//	bIn2 := FALSE;
+//END_IF
+
+
+//IF receivedata[34] = 37 AND receivedata[35] = 12 THEN				//decrease or increase by 17 per packet
+//	bIn3 := TRUE;	
+//	FOR k3:=0 TO 16 DO
+//		bThirdReceivedData[k3] := receivedata[k3+16];
+//	END_FOR
+	
+//	doLRCCheck3();
+//	doCRC16Check3();
+//ELSE
+//	bIn3 := FALSE;
+//END_IF
+
+
+//IF receivedata[51] = 37 AND receivedata[52] = 12 THEN			//decrease or increase by 17 per packet
+//	bIn4 := TRUE;	
+//	FOR k4:=0 TO 16 DO
+//		bFourthReceivedData[k4] := receivedata[k4+16];
+//	END_FOR
+	
+//	doLRCCheck4();
+//	doCRC16Check4();
+//ELSE
+//	bIn4 := FALSE;
+//END_IF
+
+
+	]]></ST>
+    </Implementation>
+    <Method Name="doCRC16Check1" Id="{402d79e6-a8fb-4a7c-8d55-db08bc01f1c2}">
+      <Declaration><![CDATA[METHOD doCRC16Check1 : BOOL
+VAR_INPUT
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i:=0 TO 11 DO
+	dataArray[i] := receivedata[i+4];
+END_FOR
+
+
+crc := F_DATA_TO_CRC16_CCITT(
+	pData := ADR(dataArray),
+	cbData := BYTE_TO_UDINT(packet_length),
+	crc := 16#FFFF);
+
+crc12[0] := receivedata[2];
+crc12[1] := receivedata[3];
+pt_crc := ADR(crc12);
+crc_check := pt_crc^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCRC16Check2" Id="{4d6a851d-22a5-444e-92a6-a16e7e6e4164}">
+      <Declaration><![CDATA[METHOD doCRC16Check2 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//FOR j2:=0 TO 11 DO
+//	dataArray2[j] := bSecondReceivedData[j+5];
+//END_FOR
+	
+	
+//crc2 := F_DATA_TO_CRC16_CCITT(
+//	pData := ADR(dataArray2),
+//	cbData := BYTE_TO_UDINT(packet_length),
+//	crc := 16#FFFF);
+
+//crc122[0] := bSecondReceivedData[3];
+//crc122[1] := bSecondReceivedData[4];
+//pt_crc2 := ADR(crc122);
+//crc_check2 := pt_crc2^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCRC16Check3" Id="{a645f49e-2c83-4393-9ac6-4b128718a521}">
+      <Declaration><![CDATA[METHOD doCRC16Check3 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//FOR j3:=0 TO 11 DO
+//	dataArray3[j3] := bThirdReceivedData[j3+5];
+//END_FOR
+	
+	
+//crc3 := F_DATA_TO_CRC16_CCITT(
+//	pData := ADR(dataArray3),
+//	cbData := BYTE_TO_UDINT(packet_length),
+//	crc := 16#FFFF);
+
+//crc123[0] := bThirdReceivedData[3];
+//crc123[1] := bThirdReceivedData[4];
+//pt_crc3 := ADR(crc123);
+//crc_check3 := pt_crc3^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCRC16Check4" Id="{c545cb61-b2d1-49b2-9a9a-d8d2ed4bb3b8}">
+      <Declaration><![CDATA[METHOD doCRC16Check4 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//FOR j4:=0 TO 11 DO
+//	dataArray4[j4] := bFourthReceivedData[j4+5];
+//END_FOR
+	
+	
+//crc4 := F_DATA_TO_CRC16_CCITT(
+//	pData := ADR(dataArray4),
+//	cbData := BYTE_TO_UDINT(packet_length),
+//	crc := 16#FFFF);
+
+//crc124[0] := bFourthReceivedData[3];
+//crc124[1] := bFourthReceivedData[4];
+//pt_crc4 := ADR(crc124);
+//crc_check4 := pt_crc4^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doLRCCheck2" Id="{83a7aa2f-029a-492f-9259-087dea157233}">
+      <Declaration><![CDATA[METHOD doLRCCheck2 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//LRCsum2 := (bSecondReceivedData[1] + bSecondReceivedData[2] + bSecondReceivedData[3] + bSecondReceivedData[4]) XOR 255;
+//LRC2 := bSecondReceivedData[0] - 1;
+//LRCchecked2 := (LRCsum2 = LRC2);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doLRCCheck3" Id="{65245296-341d-4f4d-a10c-08cbc3d5fd3a}">
+      <Declaration><![CDATA[METHOD doLRCCheck3 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//LRCsum3 := (bThirdReceivedData[1] + bThirdReceivedData[2] + bThirdReceivedData[3] + bThirdReceivedData[4]) XOR 255;
+//LRC3 := bThirdReceivedData[0] - 1;
+//LRCchecked3 := (LRCsum3 = LRC3);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doLRCCheck4" Id="{dbd34cd1-b431-4689-bde7-2ab394beefd5}">
+      <Declaration><![CDATA[METHOD doLRCCheck4 : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//LRCsum4 := (bFourthReceivedData[1] + bFourthReceivedData[2] + bFourthReceivedData[3] + bFourthReceivedData[4]) XOR 255;
+//LRC4 := bFourthReceivedData[0] - 1;
+//LRCchecked4 := (LRCsum4 = LRC4);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="getAccelerationValueX" Id="{bc94098a-9a77-45c6-908e-086ed4a9c91b}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueX : REAL]]></Declaration>
+      <Get Name="Get" Id="{ba6ddbbc-cc5d-417a-8cf7-c48fe0e1a0b2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF crc_check = crc THEN
+
+	acc_x[0] := receivedata[4];
+	acc_x[1] := receivedata[5];
+	acc_x[2] := receivedata[6];
+	acc_x[3] := receivedata[7];
+	pt_x := ADR(acc_x);
+	x_acc := pt_x^;
+END_IF
+
+getAccelerationValueX := x_acc;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueX2" Id="{1441fcdf-3e79-45fa-b0c4-579326ec55a6}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueX2 : REAL]]></Declaration>
+      <Get Name="Get" Id="{b9be0e2f-b8a4-4a99-a8cf-3a771f86b8da}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum = LRC AND crc2 = crc_check2 THEN
+//	acc_x2[0] := bSecondReceivedData[5];
+//	acc_x2[1] := bSecondReceivedData[6];
+//	acc_x2[2] := bSecondReceivedData[7];
+//	acc_x2[3] := bSecondReceivedData[8];
+//	pt_x2 := ADR(acc_x2);
+//	x_acc2 := pt_x2^;
+//END_IF
+
+//getAccelerationValueX2 := x_acc2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueX3" Id="{ce6bb1e4-710a-4278-89ea-7168f355ea97}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueX3 : REAL]]></Declaration>
+      <Get Name="Get" Id="{8631e2cc-4064-46c6-9bb9-2235f5e7f8b7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum3 = LRC3 AND crc3 = crc_check3 THEN
+//	acc_x3[0] := bThirdReceivedData[5];
+//	acc_x3[1] := bThirdReceivedData[6];
+//	acc_x3[2] := bThirdReceivedData[7];
+//	acc_x3[3] := bThirdReceivedData[8];
+//	pt_x3 := ADR(acc_x3);
+//	x_acc3 := pt_x3^;
+//END_IF
+
+//getAccelerationValueX3 := x_acc3;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueX4" Id="{a4f1e7ea-db6d-41cf-a4b0-60c8929de74b}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueX4 : REAL]]></Declaration>
+      <Get Name="Get" Id="{5d470118-059f-4417-a943-6c93050af6b8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum4 = LRC4 AND crc4 = crc_check4 THEN
+//	acc_x4[0] := bFourthReceivedData[5];
+//	acc_x4[1] := bFourthReceivedData[6];
+//	acc_x4[2] := bFourthReceivedData[7];
+//	acc_x4[3] := bFourthReceivedData[8];
+//	pt_x4 := ADR(acc_x4);
+//	x_acc4 := pt_x4^;
+//END_IF
+
+//getAccelerationValueX4 := x_acc4;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueY" Id="{bf4e2282-4810-4b14-b6bd-6cc9d8487ce8}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueY : REAL]]></Declaration>
+      <Get Name="Get" Id="{5a78a6f3-4b22-4600-9d01-dc7af91cccc7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF crc_check = crc THEN
+	
+	acc_y[0] := receivedata[8];
+	acc_y[1] := receivedata[9];
+	acc_y[2] := receivedata[10];
+	acc_y[3] := receivedata[11];
+	pt_y := ADR(acc_y);
+	y_acc := pt_y^;
+
+END_IF
+getAccelerationValueY := y_acc;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueY2" Id="{332c1314-4cf0-4417-9b6a-cbb7822f9c09}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueY2 : REAL]]></Declaration>
+      <Get Name="Get" Id="{62436089-6800-4031-afb5-85d44f4d75a7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum = LRC AND crc2 = crc_check2 THEN
+//	acc_y2[0] := bSecondReceivedData[9];
+//	acc_y2[1] := bSecondReceivedData[10];
+//	acc_y2[2] := bSecondReceivedData[11];
+//	acc_y2[3] := bSecondReceivedData[12];
+//	pt_y2 := ADR(acc_y2);
+//	y_acc2 := pt_y2^;
+//END_IF
+
+//getAccelerationValueY2 := y_acc2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueY3" Id="{b695d8b1-d182-4d5f-9661-31a215444023}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueY3 : REAL]]></Declaration>
+      <Get Name="Get" Id="{d69227ac-34a8-410c-a88c-8c054daf2f8a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum3 = LRC3 AND crc3 = crc_check3 THEN
+//	acc_y3[0] := bThirdReceivedData[9];
+//	acc_y3[1] := bThirdReceivedData[10];
+//	acc_y3[2] := bThirdReceivedData[11];
+//	acc_y3[3] := bThirdReceivedData[12];
+//	pt_y3 := ADR(acc_y3);
+//	y_acc3 := pt_y3^;
+//END_IF
+
+//getAccelerationValueY3 := y_acc3;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueY4" Id="{d4a44b51-e821-42ad-9e24-2b04e88448bb}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueY4 : REAL]]></Declaration>
+      <Get Name="Get" Id="{600d14ed-4fd3-46e4-a7a4-57f934e2103a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum4 = LRC4 AND crc4 = crc_check4 THEN
+//	acc_y4[0] := bFourthReceivedData[9];
+//	acc_y4[1] := bFourthReceivedData[10];
+//	acc_y4[2] := bFourthReceivedData[11];
+//	acc_y4[3] := bFourthReceivedData[12];
+//	pt_y4 := ADR(acc_y4);
+//	y_acc4 := pt_y4^;
+//END_IF
+
+//getAccelerationValueY4 := y_acc4;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueZ" Id="{7c40e5c6-9f5b-49d3-8d6e-7d9c99c30b17}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueZ : REAL]]></Declaration>
+      <Get Name="Get" Id="{82b17f14-e3c3-4811-8412-1ca005785c16}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF crc_check = crc THEN
+	
+	acc_z[0] := receivedata[12];
+	acc_z[1] := receivedata[13];
+	acc_z[2] := receivedata[14];
+	acc_z[3] := receivedata[15];
+	pt_z := ADR(acc_z);
+	z_acc := pt_z^;
+END_IF
+
+getAccelerationValueZ := z_acc;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueZ2" Id="{14d195ee-bc7d-43c7-bc19-9c57316a959a}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueZ2 : REAL]]></Declaration>
+      <Get Name="Get" Id="{820c16d9-6fe9-4e83-be53-3ad7dcf399dd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum = LRC AND crc2 = crc_check2 THEN
+//	acc_z2[0] := bSecondReceivedData[13];
+//	acc_z2[1] := bSecondReceivedData[14];
+//	acc_z2[2] := bSecondReceivedData[15];
+//	acc_z2[3] := bSecondReceivedData[16];
+//	pt_z2 := ADR(acc_z2);
+//	z_acc2 := pt_z2^;
+//END_IF
+
+//getAccelerationValueZ2 := z_acc2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueZ3" Id="{c82ba777-758c-41cc-922f-b88c1c9b2225}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueZ3 : REAL]]></Declaration>
+      <Get Name="Get" Id="{16e95f57-045d-4621-a578-a32b378cab0a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum3 = LRC3 AND crc3 = crc_check3 THEN
+//	acc_z3[0] := bThirdReceivedData[13];
+//	acc_z3[1] := bThirdReceivedData[14];
+//	acc_z3[2] := bThirdReceivedData[15];
+//	acc_z3[3] := bThirdReceivedData[16];
+//	pt_z3 := ADR(acc_z3);
+//	z_acc3 := pt_z3^;
+//END_IF
+
+//getAccelerationValueZ3 := z_acc3;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="getAccelerationValueZ4" Id="{8fc36f31-a129-411c-93f7-fd98619a6f98}">
+      <Declaration><![CDATA[PROPERTY getAccelerationValueZ4 : REAL]]></Declaration>
+      <Get Name="Get" Id="{8faf11aa-a99d-4640-abe5-8c86144fbaee}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//IF LRCsum4 = LRC4 AND crc4 = crc_check4 THEN
+//	acc_z4[0] := bFourthReceivedData[13];
+//	acc_z4[1] := bFourthReceivedData[14];
+//	acc_z4[2] := bFourthReceivedData[15];
+//	acc_z4[3] := bFourthReceivedData[16];
+//	pt_z4 := ADR(acc_z4);
+//	z_acc4 := pt_z4^;
+//END_IF
+
+//getAccelerationValueZ4 := z_acc4;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_SerialCom">
+      <LineId Id="88" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="28" Count="5" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="284" Count="0" />
+      <LineId Id="283" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="550" Count="0" />
+      <LineId Id="294" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="551" Count="2" />
+      <LineId Id="394" Count="0" />
+      <LineId Id="396" Count="2" />
+      <LineId Id="554" Count="0" />
+      <LineId Id="399" Count="4" />
+      <LineId Id="555" Count="1" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="437" Count="0" />
+      <LineId Id="429" Count="1" />
+      <LineId Id="557" Count="0" />
+      <LineId Id="431" Count="5" />
+      <LineId Id="558" Count="1" />
+      <LineId Id="428" Count="0" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="247" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doCRC16Check1">
+      <LineId Id="6" Count="12" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doCRC16Check2">
+      <LineId Id="6" Count="12" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doCRC16Check3">
+      <LineId Id="6" Count="12" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doCRC16Check4">
+      <LineId Id="6" Count="12" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doLRCCheck2">
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doLRCCheck3">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.doLRCCheck4">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueX.Get">
+      <LineId Id="5" Count="7" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueX2.Get">
+      <LineId Id="5" Count="6" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueX3.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueX4.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueY.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="6" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueY2.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="5" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueY3.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueY4.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueZ.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="20" Count="6" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueZ2.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="20" Count="5" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueZ3.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialCom.getAccelerationValueZ4.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

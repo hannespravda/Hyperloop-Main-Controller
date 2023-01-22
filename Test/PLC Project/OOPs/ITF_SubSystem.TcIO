@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="ITF_SubSystem" Id="{09154105-ab75-48cb-83dd-c703e22f8f7e}">
+    <Declaration><![CDATA[INTERFACE ITF_SubSystem
+]]></Declaration>
+    <Property Name="eCondition" Id="{07acda04-f4aa-4889-9552-e7c66af85bb5}">
+      <Declaration><![CDATA[PROPERTY PUBLIC eCondition : SubLevelCondition]]></Declaration>
+      <Get Name="Get" Id="{0781b1e4-08b5-4f0a-946d-9624d47875cf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{787c5caa-e97a-4517-b512-292dc9fabe96}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT]]></Declaration>
+      <Get Name="Get" Id="{e895180c-0fa7-4dfe-acbd-6ae7f98d2cdf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_LevitationSystem" Id="{62be560f-4773-4be3-a5a8-e6fcaa9fdc5e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LevitationSystem EXTENDS FB_HighLevelSystem
+VAR_INPUT
+	eState : LevitationSystemSTM;
+	nTGControlOption : USINT;
+	//eActivationStatus : ActivationStatus;
+END_VAR
+VAR_OUTPUT
+	bEnableCurrentController : BOOL;
+	bEnableIControl : BOOL;
+	bEnablePControl : BOOL;
+END_VAR
+VAR
+	fbEqualizingControl			: FB_EqualizingController;
+	fbTrajectoryGeneratorXMC1	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC2	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC3	: FB_TrajectoryGenerator;
+	fbTrajectoryGeneratorXMC4	: FB_TrajectoryGenerator;
+	
+	fActualLevDistanceForFmag : ARRAY [0..3] OF REAL;
+	fActualLevCurrentForFmag : ARRAY [0..3] OF REAL;
+	
+	fDesiredLevDistance : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF eActivationStatus = ActivationStatus.Enabled THEN
+	//High Level State Machine
+	CASE eState OF
+		LevitationSystemSTM.Idling:
+			;
+			
+			
+		LevitationSystemSTM.Stationary:
+			bEnableCurrentController := FALSE;
+			fbTrajectoryGeneratorXMC1.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC2.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC3.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC4.bTransition := FALSE;
+
+			fbEqualizingControl.bActive := FALSE;		
+		
+			doSetOperationMode();
+			
+			fbTrajectoryGeneratorXMC1();
+			fbTrajectoryGeneratorXMC2();
+			fbTrajectoryGeneratorXMC3();
+			fbTrajectoryGeneratorXMC4();
+			fbEqualizingControl();
+			
+		LevitationSystemSTM.Transitioning:
+			bEnableCurrentController := TRUE;
+//			fbTrajectoryGeneratorXMC1.bTransition := TRUE;
+//			fbTrajectoryGeneratorXMC2.bTransition := TRUE;
+//			fbTrajectoryGeneratorXMC3.bTransition := TRUE;
+//			fbTrajectoryGeneratorXMC4.bTransition := TRUE;
+			
+			//optional AirGap Check to go back into Transition		
+			IF fActualLevDistanceForFmag[0] <> fDesiredLevDistance THEN
+				fbTrajectoryGeneratorXMC1.bTransition := TRUE;
+			ELSE
+				fbTrajectoryGeneratorXMC1.bTransition := FALSE;
+			END_IF
+			IF fActualLevDistanceForFmag[1] <> fDesiredLevDistance THEN
+				fbTrajectoryGeneratorXMC2.bTransition := TRUE;
+			ELSE
+				fbTrajectoryGeneratorXMC2.bTransition := FALSE;
+			END_IF
+			IF fActualLevDistanceForFmag[2] <> fDesiredLevDistance THEN
+				fbTrajectoryGeneratorXMC3.bTransition := TRUE;
+			ELSE
+				fbTrajectoryGeneratorXMC3.bTransition := FALSE;
+			END_IF
+			IF fActualLevDistanceForFmag[3] <> fDesiredLevDistance THEN
+				fbTrajectoryGeneratorXMC4.bTransition := TRUE;
+			ELSE
+				fbTrajectoryGeneratorXMC4.bTransition := FALSE;
+			END_IF
+			
+			fbEqualizingControl.bActive := FALSE;
+			
+			fbTrajectoryGeneratorXMC1();
+			fbTrajectoryGeneratorXMC2();
+			fbTrajectoryGeneratorXMC3();
+			fbTrajectoryGeneratorXMC4();
+			fbEqualizingControl();
+			
+			
+		LevitationSystemSTM.HoldingAirGap:
+			bEnableCurrentController := FALSE;
+			fbTrajectoryGeneratorXMC1.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC2.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC3.bTransition := FALSE;
+			fbTrajectoryGeneratorXMC4.bTransition := FALSE;
+			
+			fbEqualizingControl.bActive := TRUE;
+			
+			doCalculateFmagValuesForEC(	fActualLevDistance := fActualLevDistanceForFmag,			//to be implemented
+										fActualCurrent := fActualLevCurrentForFmag);
+			
+			fbTrajectoryGeneratorXMC1();
+			fbTrajectoryGeneratorXMC2();
+			fbTrajectoryGeneratorXMC3();
+			fbTrajectoryGeneratorXMC4();
+			fbEqualizingControl();
+			
+			
+		LevitationSystemSTM.TransitioningToZero:
+			bEnableCurrentController := TRUE;
+			fbTrajectoryGeneratorXMC1.bTransition := TRUE;
+			fbTrajectoryGeneratorXMC2.bTransition := TRUE;
+			fbTrajectoryGeneratorXMC3.bTransition := TRUE;
+			fbTrajectoryGeneratorXMC4.bTransition := TRUE;
+			
+			fbEqualizingControl.bActive := FALSE;
+			
+			doSetPresetTGValuesForBackToGround();		//to be implemented with Controller structure
+			
+			fbTrajectoryGeneratorXMC1();
+			fbTrajectoryGeneratorXMC2();
+			fbTrajectoryGeneratorXMC3();
+			fbTrajectoryGeneratorXMC4();
+			fbEqualizingControl();
+			
+	END_CASE	
+
+END_IF]]></ST>
+    </Implementation>
+    <Property Name="aECOutputZVector" Id="{e8532ec2-c741-4b7b-8b34-a86b44b03236}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aECOutputZVector : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{2886c540-a581-41eb-8c41-547e16ec48e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aECOutputZVector[0] := fbEqualizingControl.fdzVector[0];
+aECOutputZVector[1] := fbEqualizingControl.fdzVector[1];
+aECOutputZVector[2] := fbEqualizingControl.fdzVector[2];
+aECOutputZVector[3] := fbEqualizingControl.fdzVector[3];]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGActualLevAcceleration" Id="{223323b8-5081-4179-94ac-03d2f14d212b}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGActualLevAcceleration : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{f676f675-5f6c-4f32-b4c4-e7b1269bc728}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.fInitialAcceleration := aTGActualLevAcceleration[0];
+fbTrajectoryGeneratorXMC2.fInitialAcceleration := aTGActualLevAcceleration[1];
+fbTrajectoryGeneratorXMC3.fInitialAcceleration := aTGActualLevAcceleration[2];
+fbTrajectoryGeneratorXMC4.fInitialAcceleration := aTGActualLevAcceleration[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aTGActualLevCurrent" Id="{0be7462b-6573-4a02-be7b-93c70a347544}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGActualLevCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{132d2861-3048-430b-857b-95e8d2935efc}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fActualLevCurrentForFmag := aTGActualLevCurrent;
+
+fbTrajectoryGeneratorXMC1.fInitialCurrent := aTGActualLevCurrent[0];
+fbTrajectoryGeneratorXMC2.fInitialCurrent := aTGActualLevCurrent[1];
+fbTrajectoryGeneratorXMC3.fInitialCurrent := aTGActualLevCurrent[2];
+fbTrajectoryGeneratorXMC4.fInitialCurrent := aTGActualLevCurrent[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aTGActualLevDistance" Id="{5046c194-c4c2-41f8-a8a8-e78e72a7ded7}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGActualLevDistance : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{61ed663e-d7d3-40b2-80c2-79b58851bac4}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fActualLevDistanceForFmag := aTGActualLevDistance;
+
+fbTrajectoryGeneratorXMC1.fInitialAirGap := aTGActualLevDistance[0];
+fbTrajectoryGeneratorXMC2.fInitialAirGap := aTGActualLevDistance[1];
+fbTrajectoryGeneratorXMC3.fInitialAirGap := aTGActualLevDistance[2];
+fbTrajectoryGeneratorXMC4.fInitialAirGap := aTGActualLevDistance[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aTGActualLevVelocity" Id="{99a5e28f-d915-4b7f-a983-09fd068b463c}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGActualLevVelocity : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{676cfcdf-1f41-4709-b49d-6ae3ae2112c3}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.fInitialVelocity := aTGActualLevVelocity[0];
+fbTrajectoryGeneratorXMC2.fInitialVelocity := aTGActualLevVelocity[1];
+fbTrajectoryGeneratorXMC3.fInitialVelocity := aTGActualLevVelocity[2];
+fbTrajectoryGeneratorXMC4.fInitialVelocity := aTGActualLevVelocity[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aTGOutputLevAcceleration" Id="{9ff96936-9d92-4742-abdd-c6e2b715dfde}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevAcceleration : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{609f8081-1b06-494e-8cf3-373463df83c1}">
+        <Declaration><![CDATA[
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevAcceleration[0] := fbTrajectoryGeneratorXMC1.fNewReferenceValueForAcceleration;
+aTGOutputLevAcceleration[1] := fbTrajectoryGeneratorXMC2.fNewReferenceValueForAcceleration;
+aTGOutputLevAcceleration[2] := fbTrajectoryGeneratorXMC3.fNewReferenceValueForAcceleration;
+aTGOutputLevAcceleration[3] := fbTrajectoryGeneratorXMC4.fNewReferenceValueForAcceleration;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGOutputLevCurrent" Id="{749215b4-0f25-4f3a-a13e-6b0f9e0bc0db}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{3926eec6-ff0d-4850-9e8b-8f4721874900}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevCurrent[0] := fbTrajectoryGeneratorXMC1.fNewReferenceValueForCurrent;
+aTGOutputLevCurrent[1] := fbTrajectoryGeneratorXMC2.fNewReferenceValueForCurrent;
+aTGOutputLevCurrent[2] := fbTrajectoryGeneratorXMC3.fNewReferenceValueForCurrent;
+aTGOutputLevCurrent[3] := fbTrajectoryGeneratorXMC4.fNewReferenceValueForCurrent;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGOutputLevDistance" Id="{a525620f-a95c-4310-9ef4-b0706473d2dd}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevDistance : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{3f50377b-baf2-4b15-a593-ac09cb9accd1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevDistance[0] := fbTrajectoryGeneratorXMC1.fNewReferenceValueForAirGap;
+aTGOutputLevDistance[1] := fbTrajectoryGeneratorXMC2.fNewReferenceValueForAirGap;
+aTGOutputLevDistance[2] := fbTrajectoryGeneratorXMC3.fNewReferenceValueForAirGap;
+aTGOutputLevDistance[3] := fbTrajectoryGeneratorXMC4.fNewReferenceValueForAirGap;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGOutputLevForce" Id="{2edc9ced-0973-4a0f-b84f-0f8c31152fde}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevForce : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{98ec0235-6da3-4c91-a90d-c02da730a3da}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevForce[0] := fbTrajectoryGeneratorXMC1.fNewReferenceValueForForce;
+aTGOutputLevForce[1] := fbTrajectoryGeneratorXMC2.fNewReferenceValueForForce;
+aTGOutputLevForce[2] := fbTrajectoryGeneratorXMC3.fNewReferenceValueForForce;
+aTGOutputLevForce[3] := fbTrajectoryGeneratorXMC4.fNewReferenceValueForForce;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGOutputLevVelocity" Id="{3c1275c5-baab-44c5-80b7-7cd712ea869d}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevVelocity : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{b99a3ab7-405d-46c8-9f7d-bd439061c6ee}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevVelocity[0] := fbTrajectoryGeneratorXMC1.fNewReferenceVaueForVelocity;
+aTGOutputLevVelocity[1] := fbTrajectoryGeneratorXMC2.fNewReferenceVaueForVelocity;
+aTGOutputLevVelocity[2] := fbTrajectoryGeneratorXMC3.fNewReferenceVaueForVelocity;
+aTGOutputLevVelocity[3] := fbTrajectoryGeneratorXMC4.fNewReferenceVaueForVelocity;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aTGOutputLevVoltage" Id="{b58819ab-83fe-4f1f-80fa-54ccace675d6}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aTGOutputLevVoltage : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{b1fb6c7c-e8ca-41d6-96e3-9cd73edc1693}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aTGOutputLevVoltage[0] := fbTrajectoryGeneratorXMC1.fNewReferenceValueForVoltage;
+aTGOutputLevVoltage[1] := fbTrajectoryGeneratorXMC2.fNewReferenceValueForVoltage;
+aTGOutputLevVoltage[2] := fbTrajectoryGeneratorXMC3.fNewReferenceValueForVoltage;
+aTGOutputLevVoltage[3] := fbTrajectoryGeneratorXMC4.fNewReferenceValueForVoltage;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="bTrajectoryCompleted" Id="{9ef7b94f-3f1b-49c8-a2d6-5d9ceff37f18}">
+      <Declaration><![CDATA[PROPERTY PUBLIC bTrajectoryCompleted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5f45c12e-ba03-4b17-a7ef-cf1d1da31a42}">
+        <Declaration><![CDATA[VAR
+	bTrajectoryCompletedXMC1 : BOOL;
+	bTrajectoryCompletedXMC2 : BOOL;
+	bTrajectoryCompletedXMC3 : BOOL;
+	bTrajectoryCompletedXMC4 : BOOL;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTrajectoryCompletedXMC1 := fbTrajectoryGeneratorXMC1.bTrajectoryCompleted;
+bTrajectoryCompletedXMC2 := fbTrajectoryGeneratorXMC2.bTrajectoryCompleted;
+bTrajectoryCompletedXMC3 := fbTrajectoryGeneratorXMC3.bTrajectoryCompleted;
+bTrajectoryCompletedXMC4 := fbTrajectoryGeneratorXMC4.bTrajectoryCompleted;
+
+IF bTrajectoryCompletedXMC1 AND bTrajectoryCompletedXMC2 AND bTrajectoryCompletedXMC3 AND bTrajectoryCompletedXMC4 THEN
+	bTrajectoryCompleted := TRUE;
+ELSE
+	bTrajectoryCompleted := FALSE;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="doCalculateFmagValuesForEC" Id="{e883aacb-677e-4abe-ae24-fd1b7b2de366}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateFmagValuesForEC
+VAR_INPUT
+	fActualLevDistance : ARRAY [0..3] OF REAL;
+	fActualCurrent		: ARRAY [0..3] OF REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbEqualizingControl.fActualDeltaFmag := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetOperationMode" Id="{04abb227-7b23-46c2-a2f2-c815e00ae789}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetOperationMode
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nTGControlOption.0 THEN
+	fbTrajectoryGeneratorXMC1.eMode := TGControllerMode.IControl;
+	fbTrajectoryGeneratorXMC2.eMode := TGControllerMode.IControl;
+	fbTrajectoryGeneratorXMC3.eMode := TGControllerMode.IControl;
+	fbTrajectoryGeneratorXMC4.eMode := TGControllerMode.IControl;
+	
+	bEnableIControl := TRUE;
+	bEnablePControl := FALSE;
+END_IF
+
+IF nTGControlOption.1 THEN
+	fbTrajectoryGeneratorXMC1.eMode := TGControllerMode.PControl;
+	fbTrajectoryGeneratorXMC2.eMode := TGControllerMode.PControl;
+	fbTrajectoryGeneratorXMC3.eMode := TGControllerMode.PControl;
+	fbTrajectoryGeneratorXMC4.eMode := TGControllerMode.PControl;
+	
+	bEnableIControl := FALSE;
+	bEnablePControl := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetPresetTGValuesForBackToGround" Id="{9ef85455-36d9-41a4-9ec5-09b3d4f02c32}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetPresetTGValuesForBackToGround
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{01bd39e6-00b0-4a87-b944-8315fa4050a7}">
+      <Declaration><![CDATA[PROPERTY eCondition : HighLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{eabfe548-b26e-444c-9a2c-8dd71b94c621}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF eActivationStatus = ActivationStatus.Disabled THEN
+	eCondition := HighLevelCondition.SLEEP;
+ELSE
+	IF fbTrajectoryGeneratorXMC1.eCondition = SubLevelCondition.RUN AND fbTrajectoryGeneratorXMC2.eCondition = SubLevelCondition.RUN AND fbTrajectoryGeneratorXMC3.eCondition = SubLevelCondition.RUN AND fbTrajectoryGeneratorXMC4.eCondition = SubLevelCondition.RUN AND fbEqualizingControl.eCondition = SubLevelCondition.RUN THEN
+		eCondition := HighLevelCondition.RUN;
+	ELSE
+		eCondition := HighLevelCondition.INIT;
+	END_IF
+END_IF
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fTGDesiredLevAcceleration" Id="{c6c0ecad-e32b-4ac9-b8a8-a8279cf4720d}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevAcceleration : REAL]]></Declaration>
+      <Set Name="Set" Id="{b95cf893-e7a9-4b53-967d-79cdcb7aebb0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.fDesiredAccelerationAfterTransitioning := fTGDesiredLevAcceleration;
+fbTrajectoryGeneratorXMC2.fDesiredAccelerationAfterTransitioning := fTGDesiredLevAcceleration;
+fbTrajectoryGeneratorXMC3.fDesiredAccelerationAfterTransitioning := fTGDesiredLevAcceleration;
+fbTrajectoryGeneratorXMC4.fDesiredAccelerationAfterTransitioning := fTGDesiredLevAcceleration;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevDistance" Id="{a6febd5f-3b05-4eb1-9d9d-5e4337d07380}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevDistance : REAL]]></Declaration>
+      <Set Name="Set" Id="{fc744593-7ca5-461c-a06d-5180702e0bb4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.fDesiredAirGapAfterTransitioning := fTGDesiredLevDistance;
+fbTrajectoryGeneratorXMC2.fDesiredAirGapAfterTransitioning := fTGDesiredLevDistance;
+fbTrajectoryGeneratorXMC3.fDesiredAirGapAfterTransitioning := fTGDesiredLevDistance;
+fbTrajectoryGeneratorXMC4.fDesiredAirGapAfterTransitioning := fTGDesiredLevDistance;
+
+fDesiredLevDistance := fTGDesiredLevDistance;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevTime" Id="{6d90bcae-d970-4748-8bfb-dfd813e9b1d1}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevTime : REAL]]></Declaration>
+      <Set Name="Set" Id="{b09ee043-50b8-42f4-91a1-a1ca1123d64b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.tDesiredTimeForTransitioning := REAL_TO_TIME(fTGDesiredLevTime);
+fbTrajectoryGeneratorXMC2.tDesiredTimeForTransitioning := REAL_TO_TIME(fTGDesiredLevTime);
+fbTrajectoryGeneratorXMC3.tDesiredTimeForTransitioning := REAL_TO_TIME(fTGDesiredLevTime);
+fbTrajectoryGeneratorXMC4.tDesiredTimeForTransitioning := REAL_TO_TIME(fTGDesiredLevTime);]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="fTGDesiredLevVelocity" Id="{8c6cc0bf-9f9b-48ea-a429-1827f8b47d30}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fTGDesiredLevVelocity : REAL]]></Declaration>
+      <Set Name="Set" Id="{86213a2a-051b-4fe4-a239-c088a9b8c020}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbTrajectoryGeneratorXMC1.fDesiredVelocityAfterTransitioning := fTGDesiredLevVelocity;
+fbTrajectoryGeneratorXMC2.fDesiredVelocityAfterTransitioning := fTGDesiredLevVelocity;
+fbTrajectoryGeneratorXMC3.fDesiredVelocityAfterTransitioning := fTGDesiredLevVelocity;
+fbTrajectoryGeneratorXMC4.fDesiredVelocityAfterTransitioning := fTGDesiredLevVelocity;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="nErrorID" Id="{139cbef2-6b76-4dea-9e3e-a0544066e7ca}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{551a494a-7956-4b5e-8fe2-d72ed847ef0c}">
+        <Declaration><![CDATA[VAR
+	nErrorBitsTG1 : UDINT;
+	nErrorBitsTG2 : UDINT;
+	nErrorBitsTG3 : UDINT;
+	nErrorBitsTG4 : UDINT;
+	nErrorBitsEC	: UDINT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorBitsTG1 := fbTrajectoryGeneratorXMC1.nErrorID;
+nErrorBitsTG2 := fbTrajectoryGeneratorXMC2.nErrorID;
+nErrorBitsTG3 := fbTrajectoryGeneratorXMC3.nErrorID;
+nErrorBitsTG4 := fbTrajectoryGeneratorXMC4.nErrorID;
+nErrorBitsEC := fbEqualizingControl.nErrorID;
+
+
+nErrorID.0 := nErrorBitsEC.0;
+nErrorID.1 := nErrorBitsEC.1;
+nErrorID.2 := nErrorBitsTG1.0;
+nErrorID.3 := nErrorBitsTG1.1;
+nErrorID.4 := nErrorBitsTG1.2;
+nErrorID.5 := nErrorBitsTG1.3;
+nErrorID.6 := nErrorBitsTG1.4;
+nErrorID.7 := nErrorBitsTG1.5;
+nErrorID.8 := nErrorBitsTG2.0;
+nErrorID.9 := nErrorBitsTG2.1;
+nErrorID.10 := nErrorBitsTG2.2;
+nErrorID.11 := nErrorBitsTG2.3;
+nErrorID.12 := nErrorBitsTG2.4;
+nErrorID.13 := nErrorBitsTG2.5;
+nErrorID.14 := nErrorBitsTG3.0;
+nErrorID.15 := nErrorBitsTG3.1;
+nErrorID.16 := nErrorBitsTG3.2;
+nErrorID.17 := nErrorBitsTG3.3;
+nErrorID.18 := nErrorBitsTG3.4;
+nErrorID.19 := nErrorBitsTG3.5;
+nErrorID.20 := nErrorBitsTG4.0;
+nErrorID.21 := nErrorBitsTG4.1;
+nErrorID.22 := nErrorBitsTG4.2;
+nErrorID.23 := nErrorBitsTG4.3;
+nErrorID.24 := nErrorBitsTG4.4;
+nErrorID.25 := nErrorBitsTG4.5;
+
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_LevitationSystem">
+      <LineId Id="9" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="38" Count="3" />
+      <LineId Id="125" Count="3" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="87" Count="4" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="184" Count="3" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="175" Count="1" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="167" Count="1" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="170" Count="1" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="173" Count="1" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="121" Count="1" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="94" Count="2" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="53" Count="2" />
+      <LineId Id="97" Count="3" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="117" Count="1" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="101" Count="2" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="59" Count="2" />
+      <LineId Id="104" Count="3" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="119" Count="1" />
+      <LineId Id="115" Count="1" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="110" Count="2" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aECOutputZVector.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGActualLevAcceleration.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGActualLevCurrent.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="7" Count="3" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGActualLevDistance.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="7" Count="3" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGActualLevVelocity.Set">
+      <LineId Id="6" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevAcceleration.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevCurrent.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevDistance.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevForce.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevVelocity.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.aTGOutputLevVoltage.Get">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.bTrajectoryCompleted.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.doCalculateFmagValuesForEC">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.doSetOperationMode">
+      <LineId Id="5" Count="1" />
+      <LineId Id="8" Count="2" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="15" Count="8" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.doSetPresetTGValuesForBackToGround">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.eCondition.Get">
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevAcceleration.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevDistance.Set">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevTime.Set">
+      <LineId Id="5" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.fTGDesiredLevVelocity.Set">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LevitationSystem.nErrorID.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="19" Count="5" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="4" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="34" Count="4" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="40" Count="4" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

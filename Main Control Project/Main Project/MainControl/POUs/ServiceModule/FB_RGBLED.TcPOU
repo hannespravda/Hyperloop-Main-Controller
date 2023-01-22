@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RGBLED" Id="{469ae6ce-499d-4fa3-8525-1529c7798012}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RGBLED IMPLEMENTS ITF_SubSystem
+VAR_INPUT
+	eColor : LEDColor;
+END_VAR
+VAR
+	//Local
+	nRedLED : INT;
+	nGreenLED : INT;
+	nBlueLED : INT;
+	
+	aErrorTimer : ARRAY [0..5] OF TON;
+	
+	//ErrorBits
+	bRedTemperatureTooHigh : BIT;
+	bRedNoSupplyVoltage : BIT;
+	bGreenTemperatureTooHigh : BIT;
+	bGreenNoSupplyVoltage : BIT;
+	bBlueTemperatureTooHigh : BIT;
+	bBlueNoSupplyVoltage : BIT;	
+END_VAR
+VAR CONSTANT
+	nMax : INT := 32767;		//Maximum Intensity (100%)
+	nMin : INT := 0;			//Off (0%)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eColor OF
+	LEDColor.Off:
+		nRedLED := nMin;
+		nGreenLED := nMin;
+		nBlueLED := nMin;
+	LEDColor.Red:
+		nRedLED := nMax;
+		nGreenLED := nMin;
+		nBlueLED := nMin;
+	LEDColor.Green:
+		nRedLED := nMin;
+		nGreenLED := nMax;
+		nBlueLED := nMin;
+	LEDColor.Blue:
+		nRedLED := nMin;
+		nGreenLED := nMin;
+		nBlueLED := nMax;
+END_CASE
+
+
+
+doSetClampValues();
+doGetClampValues();
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="doGetClampValues" Id="{52eec7f2-2131-4ede-95da-3597bc5e0c67}">
+      <Declaration><![CDATA[METHOD PRIVATE doGetClampValues
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bRedTemperatureTooHigh := RGBLED.bRedWarning;
+bRedNoSupplyVoltage := RGBLED.bRedError;
+bGreenTemperatureTooHigh := RGBLED.bGreenWarning;
+bGreenNoSupplyVoltage := RGBLED.bGreenError;
+bBlueTemperatureTooHigh := RGBLED.bBlueWarning;
+bBlueNoSupplyVoltage := RGBLED.bBlueError;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doSetClampValues" Id="{dbe16808-2cac-4096-8234-89397ca2e1ed}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetClampValues
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RGBLED.nRed := nRedLED;
+RGBLED.nGreen := nGreenLED;
+RGBLED.nBlue := nBlueLED;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{07f8f374-c150-465f-b84c-fb20f0d2bc35}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{441c6c85-d8e3-4421-86d4-8b0d5eba7d41}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{45849282-d051-426c-bf8e-7a781e21e522}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{03514558-8035-44de-ad1f-1de4548a1c2e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorID.0 := aErrorTimer[0].Q;
+nErrorID.1 := aErrorTimer[1].Q;
+nErrorID.2 := aErrorTimer[2].Q;
+nErrorID.3 := aErrorTimer[3].Q;
+nErrorID.4 := aErrorTimer[4].Q;
+nErrorID.5 := aErrorTimer[5].Q;
+
+aErrorTimer[0](IN:=bRedTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[1](IN:=bRedNoSupplyVoltage, PT:=T#5S);
+aErrorTimer[2](IN:=bGreenTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[3](IN:=bGreenNoSupplyVoltage, PT:=T#5S);
+aErrorTimer[4](IN:=bBlueTemperatureTooHigh, PT:=T#5S);
+aErrorTimer[5](IN:=bBlueNoSupplyVoltage, PT:=T#5S);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_RGBLED">
+      <LineId Id="356" Count="0" />
+      <LineId Id="361" Count="0" />
+      <LineId Id="363" Count="13" />
+      <LineId Id="378" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="191" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.doGetClampValues">
+      <LineId Id="14" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.doSetClampValues">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_RGBLED.nErrorID.Get">
+      <LineId Id="5" Count="4" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="4" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

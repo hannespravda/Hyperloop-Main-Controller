@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="runIpcFsm" Id="{9d43fade-2d0a-42bd-9fd4-9cf55cf7934b}" SpecialFunc="None">
+    <Declaration><![CDATA[//Funktion, die in MAIN aufgerufen wird und Fehlermeldungen loggt
+//außerdem schreibt sie in eFsmErrorStatus (MAIN) in welchen State der Fehler erfolgt
+FUNCTION runIpcFsm : E_FsmError
+VAR_INPUT
+	eFsmState : REFERENCE TO E_FsmState; 
+	eNextFsmState : REFERENCE TO E_FsmState;
+	fbTimer: REFERENCE TO TON;
+	bTimerStart: REFERENCE TO BOOL; 
+END_VAR
+
+VAR_STAT
+    eFsmErrorStatus : E_FsmError := E_FsmError.NO_ERR;
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[runIpcFsm:=E_FsmError.NO_ERR;// TO DO
+fbTimer(IN := bTimerStart);
+bTimerStart := TRUE;
+CASE eFsmState OF
+	E_FsmState.ERR:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.INIT;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+				 	  msgFmtStr := TO_STRING(eFsmState),
+				  	  strArg := ''); // Switch it to log file
+		END_IF	
+		
+	  
+	E_FsmState.INIT:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.STAT;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState),
+					  strArg := ''); // Switch it to log file
+		END_IF				  
+		
+		IF 	eFsmErrorStatus <> E_FsmError.NO_ERR THEN
+			eFsmState := E_FsmState.ERR;
+		END_IF
+	E_FsmState.STAT:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.STAT_TR;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState),
+					  strArg := ''); // Switch it to log file
+		END_IF			  
+				  
+	E_FsmState.STAT_TR:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.NOM_LEV;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState ),
+					  strArg := ''); // Switch it to log file
+		END_IF
+
+	E_FsmState.NOM_LEV:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.INTER_TR;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState),
+					  strArg := ''); // Switch it to log file		
+		END_IF	
+	
+	E_FsmState.INTER_TR:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.END_TR;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState),
+					  strArg := ''); // Switch it to log file	
+		END_IF
+				  
+	E_FsmState.END_TR:
+		IF fbTimer.Q THEN
+			bTimerStart := FALSE;
+			eFsmState  := E_FsmState.ERR;
+			// Log state 
+			ADSLOGSTR(msgCtrlMask := ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_LOG,
+					  msgFmtStr := TO_STRING(eFsmState),
+					  strArg := ''); // Switch it to log file	
+		END_IF
+				  
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="runIpcFsm">
+      <LineId Id="87" Count="0" />
+      <LineId Id="8" Count="12" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="21" Count="9" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="31" Count="49" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

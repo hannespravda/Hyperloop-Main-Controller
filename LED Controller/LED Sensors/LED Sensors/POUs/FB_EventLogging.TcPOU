@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EventLogging" Id="{6133e5cc-f215-48f7-a5f6-8d3cdf8379fc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EventLogging
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbEventMessage : FB_TcMessage;
+	fbEventLogger : FB_TcEventLogger;
+	
+	eMode : LEDMode;
+	eColor : LEDColor;
+	
+	sColorAsString : STRING;
+	sModeAsString : STRING;
+	
+	nCounter : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sModeAsString := TO_STRING(MAIN.eMode);
+IF eMode <> MAIN.eMode THEN
+	eMode := MAIN.eMode; 
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.LEDEvents.Mode, 0);
+	fbEventMessage.ipArguments.AddString(sModeAsString);
+	fbEventMessage.Send(0);
+END_IF
+
+sColorAsString := TO_STRING(MAIN.eColor);
+IF eColor <> MAIN.eColor THEN
+	eColor := MAIN.eColor; 
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.LEDEvents.Color, 0);
+	fbEventMessage.ipArguments.AddString(sColorAsString);
+	fbEventMessage.Send(0);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_EventLogging">
+      <LineId Id="14" Count="5" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="6" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

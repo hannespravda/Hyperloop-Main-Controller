@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<TcEventSources Version="2">
+	<Source>
+		<GUID>{BF1D14F9-BB67-4B9C-994C-0D784E537C59}</GUID>
+		<Name LcId="1033">Main Control Events</Name>
+		<Event>
+			<Id>1</Id>
+			<Message LcId="1033">Error occured in {0} state. Error Message: {1}</Message>
+		</Event>
+		<Event>
+			<Id>2</Id>
+			<Message LcId="1033">Warning Message: {0}</Message>
+		</Event>
+		<Event>
+			<Id>4</Id>
+			<Message LcId="1033">{0} STM changed to {1} state</Message>
+		</Event>
+		<Event>
+			<Id>5</Id>
+			<Message LcId="1033">All Errors acknowledged and cleared by Operation Control</Message>
+		</Event>
+	</Source>
+</TcEventSources>

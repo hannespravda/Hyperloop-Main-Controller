@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_GuidanceController" Id="{b762347b-0b73-4a03-97c5-dc8d2cb401ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceController IMPLEMENTS ITF_SubSystem
+VAR_INPUT
+	eOperationMode : GCControllerMode;
+	bActive : BOOL;
+	
+	fDesiredDeviationFromCenterLine : REAL;
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
+END_VAR
+VAR_OUTPUT
+	fNewReferenceValueForCurrent : REAL;
+	fNewRefrenceValueForForce : REAL;
+	fNewreferenceValueForVoltage : REAL;
+END_VAR
+VAR
+	//ErrorBits
+	bCurrentOutOfRange : BOOL;
+	bVoltageOutOfRange : BOOL;
+	bForceOutOfRange	: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eOperationMode OF
+	GCControllerMode.CurrentControlled:
+		IF bActive THEN //Implement Method with Controller Structure
+			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
+													fActualYDistance := fActualYDistance,
+													fActualYAcceleration := fActualYAcceleration,
+													fActualCurrent := fActualCurrent);
+		ELSE
+			fNewReferenceValueForCurrent := 0;
+			fNewRefrenceValueForForce := 0;
+			fNewreferenceValueForVoltage := 0;
+		END_IF
+
+	GCControllerMode.ForceControlled:
+		IF bActive THEN //Implement Method with Controller Structure
+			doCalculateNewReferenceValueForCurrent(fDesiredDeviationFromCenterLine := fDesiredDeviationFromCenterLine,
+													fActualYDistance := fActualYDistance,
+													fActualYAcceleration := fActualYAcceleration,
+													fActualCurrent := fActualCurrent);
+		ELSE
+			fNewReferenceValueForCurrent := 0;
+			fNewRefrenceValueForForce := 0;	
+			fNewreferenceValueForVoltage := 0;														
+		END_IF
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="doCalculateNewReferenceValueForCurrent" Id="{0266ba02-b1c4-4402-b0b0-9dcacc0680af}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrent
+VAR_INPUT
+	fDesiredDeviationFromCenterLine : REAL;
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fNewReferenceValueForCurrent := 0;
+fNewRefrenceValueForForce := 0;
+fNewreferenceValueForVoltage := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCalculateNewReferenceValueForCurrentandForce" Id="{0a2a5b17-8f04-42d3-8d30-42ae6c7495e1}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateNewReferenceValueForCurrentandForce
+VAR_INPUT
+	fDesiredDeviationFromCenterLine : REAL;
+	fActualYDistance : REAL;
+	fActualYAcceleration : REAL;
+	fActualCurrent	: REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fNewReferenceValueForCurrent := 0;
+fNewRefrenceValueForForce := 0;
+fNewreferenceValueForVoltage := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{42ce8d76-2444-4e2e-9c2b-69dafda1c213}">
+      <Declaration><![CDATA[PROPERTY PUBLIC eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{5f6e61b5-784b-4549-bf76-84d3b26a008c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{d5c14b2e-f433-4c47-aa2a-9638e3371bc7}">
+      <Declaration><![CDATA[PROPERTY PUBLIC nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{e3894b7e-9e1b-4973-a434-6fa91e4d3314}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[//RangeAbfrage to be implemented
+bCurrentOutOfRange := FALSE;
+bVoltageOutOfRange := FALSE;
+bForceOutOfRange := FALSE;
+
+nErrorID.0 := bCurrentOutOfRange;
+nErrorID.1 := bVoltageOutOfRange;
+nErrorID.2 := bForceOutOfRange;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_GuidanceController">
+      <LineId Id="9" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="177" Count="2" />
+      <LineId Id="130" Count="2" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="180" Count="2" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="44" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrent">
+      <LineId Id="19" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.doCalculateNewReferenceValueForCurrentandForce">
+      <LineId Id="20" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceController.nErrorID.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

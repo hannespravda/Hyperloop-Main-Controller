@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BoxLED" Id="{7417f049-9846-439d-bd3a-1b6848121830}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BoxLED
+VAR_INPUT
+	eMode : LEDMode;
+END_VAR
+VAR
+	//Local
+	iBoxLED : INT;
+	fbFlashingTimer : TON;
+	bOn : BOOL;
+	
+	//ErrorBits
+	bTemperatureTooHigh : BIT;
+	bNoSupplyVoltage : BIT;
+END_VAR
+VAR CONSTANT
+	iIntensity : INT := 32767;				//Intensity [0..32767]
+	rDimFactor : REAL := 0.01;				//Percentage (0..100%)
+	tSlowFlashingTime : TIME := T#1S;		
+	tFastFlashingTime : TIME := T#100MS;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eMode OF
+	LEDMode.Off:
+			doTurnOn(iBrightness := 0);
+	LEDMode.On:
+			doTurnOn(iBrightness := iIntensity);
+	LEDMode.Dimmed:
+			doDimming(rDimmingFactor:=rDimFactor);
+	LEDMode.SlowFlashing:
+			doFlashing(FlashingTime:=tSlowFlashingTime);
+	LEDMode.FastFlashing:
+			doFlashing(FlashingTime:=tFastFlashingTime);
+END_CASE
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <Method Name="doDimming" Id="{ef13b277-d6e0-4180-8bd3-5ca9a77d8ba4}">
+      <Declaration><![CDATA[METHOD PRIVATE doDimming
+VAR_INPUT
+	rDimmingFactor : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iBoxLED := REAL_TO_INT(rDimmingFactor * iIntensity);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doFlashing" Id="{a56a3bcf-ecb7-4bdc-afc1-de57457e0ffa}">
+      <Declaration><![CDATA[METHOD PRIVATE doFlashing
+VAR_INPUT
+	FlashingTime : TIME;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fbFlashingTimer(IN:=TRUE, PT:=FlashingTime);
+IF fbFlashingTimer.Q THEN
+	fbFlashingTimer(IN:=FALSE);
+	bOn := NOT bOn;	
+END_IF
+IF bOn THEN
+	iBoxLED := iIntensity;
+ELSE
+	iBoxLED := 0;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doTurnOn" Id="{ff9f7808-2e93-4ad9-ae70-22394be7f716}">
+      <Declaration><![CDATA[METHOD PRIVATE doTurnOn
+VAR_INPUT
+	iBrightness : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[iBoxLED := iBrightness;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_BoxLED">
+      <LineId Id="293" Count="0" />
+      <LineId Id="355" Count="1" />
+      <LineId Id="294" Count="8" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="306" Count="3" />
+      <LineId Id="226" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doDimming">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doFlashing">
+      <LineId Id="27" Count="2" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="36" Count="3" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BoxLED.doTurnOn">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

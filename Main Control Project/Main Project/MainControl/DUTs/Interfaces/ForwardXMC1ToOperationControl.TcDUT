@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ForwardXMC1ToOperationControl" Id="{93258a73-8f6c-4ebd-9d41-e77b39ccbd19}">
+    <Declaration><![CDATA[TYPE ForwardXMC1ToOperationControl :
+STRUCT
+	//Sensor Values
+	MO_origE_CurrentGuid						: REAL	;
+	MO_origE_CurrentLev							: REAL	;
+	MO_origE_DistanceRawLev11					: REAL	;
+	MO_origE_DistanceRawLev12					: REAL	;
+	MO_origE_DistanceRawLev21					: REAL	;
+	MO_origE_DistanceRawLev22					: REAL	;
+	MO_origE_DistanceRawGuid11					: REAL	;
+	MO_origE_DistanceRawGuid12					: REAL	;
+	MO_origE_DistanceGuidFiltered				: REAL	;
+	MO_origE_DistanceLevFiltered				: REAL	;
+	MO_origE_VelocityLevFiltered				: REAL	;
+	MO_origE_IMUX								: REAL	;
+	MO_origE_IMUY								: REAL	;
+	MO_origE_IMUZ								: REAL	;
+	MO_origE_PressureBox						: REAL	;
+	MO_origE_TemperatureBox						: REAL	;
+	MO_origE_TemperatureGuid					: REAL	;
+	MO_origE_TemperatureLev0					: REAL	;
+	MO_origE_TemperatureLev1					: REAL	;
+	
+	//System Status
+	MO_origE_ErrBits							: UDINT	;
+	MO_origE_SafetyCounter						: UDINT	;
+	MO_origE_State								: USINT	;
+	MO_origE_Timestamp							: UDINT	;
+	MO_origE_WarnBits							: UDINT	;
+	MO_origE_LoggingCounterIn					: USINT	;
+	MO_origE_LoggingCounterSize					: USINT	;
+	MO_origE_LoggingCounterBuf					: BYTE	;
+	
+	//Levitation
+	MO_origE_LevEstimatedFlux0					: REAL	;
+	MO_origE_LevEstimatedFlux1                  : REAL	;
+	MO_origE_LevEstimatedCurrent                : REAL	;
+	MO_origE_LevEstimatedResistance             : REAL	;
+	MO_origE_LevIntegratedControlError          : REAL	;
+	MO_origE_LevReferenceVoltage                : REAL	;
+	
+	//Guidance                                 
+	MO_origE_GuidEstimatedFlux0                 : REAL	;
+	MO_origE_GuidEstimatedFlux1					: REAL	;
+	MO_origE_GuidEstimatedCurrent				: REAL	;
+	MO_origE_GuidEstimatedResistance			: REAL	;
+	MO_origE_GuidIntegratedControlError			: REAL	;
+	MO_origE_GuidReferenceVoltage				: REAL	;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

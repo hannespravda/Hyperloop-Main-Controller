@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EqualizingController" Id="{1b93f9fb-b1f3-4cac-8dde-1961920761d2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EqualizingController IMPLEMENTS ITF_SubSystem
+VAR_INPUT
+	fActualDeltaFmag : REAL;
+	bActive : BOOL;
+END_VAR
+VAR_OUTPUT 
+	fdzVector : ARRAY [0..3] OF REAL;
+END_VAR
+VAR
+	//Local
+	fbPIDController : FB_BasicPID;
+	fPIDOutput : LREAL;
+	nPIDErrorID : UINT;
+
+	//Error Bits
+	bInvalidParamters : BIT;
+	bInvalidCycleTime : BIT;
+END_VAR
+VAR CONSTANT
+	//PID paramters
+	fSetpointValue : REAL := 0; 			// Reference delta F = 0 N
+	fCtrlCycleTime : REAL := 0.1; 			// Update cycle time of PID block
+	fKp : REAL := 0.001;  					// Proportional gain of PID block
+	fTn : REAL := 1/INT_TO_REAL(150); 
+	fTv : REAL := 0;
+	fTd : REAL := 0;
+	//Saturation parameters
+	fdzMax : REAL := 0.001;
+	fdzMin : REAL := -0.001;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bActive THEN
+	fbPIDController(fSetpointValue := fSetpointValue,
+					fActualValue := fActualDeltaFmag,
+					bReset := NOT bActive,
+					fCtrlCycleTime := fCtrlCycleTime,
+					fKp := fKp,
+					fTn := fTn,
+					fTv := fTv,
+					fTd := fTd,
+					fCtrlOutput => fPIDOutput, nErrorStatus => nPIDErrorID);
+
+					
+	// Update the dz output vector
+	fdzVector[0] := (-1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[1] := (1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[2] := (-1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);
+	fdzVector[3] := (1/INT_TO_REAL(7900))* LREAL_TO_REAL(fPIDOutput);	  
+	
+	
+	// Saturate the dz output vector
+	IF fdzVector[0] > fdzMax THEN
+		fdzVector[0] := fdzMax;
+	ELSIF fdzVector[0] < fdzMin THEN
+		fdzVector[0] := fdzMin;
+	END_IF
+	
+	IF fdzVector[1] > fdzMax THEN
+		fdzVector[1] := fdzMax;
+	ELSIF fdzVector[1] < fdzMin THEN
+		fdzVector[1] := fdzMin;
+	END_IF
+	
+	IF fdzVector[2] > fdzMax THEN
+		fdzVector[2] := fdzMax;
+	ELSIF fdzVector[2] < fdzMin THEN
+		fdzVector[2] := fdzMin;
+	END_IF
+	
+	IF fdzVector[3] > fdzMax THEN
+		fdzVector[3] := fdzMax;
+	ELSIF fdzVector[3] < fdzMin THEN
+		fdzVector[3] := fdzMin;
+	END_IF
+	
+ELSE
+	fdzVector[0] := 0;
+	fdzVector[1] := 0;
+	fdzVector[2] := 0;
+	fdzVector[3] := 0;
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Property Name="eCondition" Id="{b286dd6a-a52d-42bb-b776-208a00151f44}">
+      <Declaration><![CDATA[PROPERTY eCondition : SubLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{d6087541-7107-4953-8817-d43b53e1aebb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF nErrorID <> 0 THEN
+	eCondition := SubLevelCondition.ERROR;
+ELSE
+	eCondition := SubLevelCondition.RUN;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{fa5a0585-8143-424c-a922-976b48458daf}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{6b94e298-283a-4f22-92d7-5e9d9e75e2bd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CASE nPIDErrorID OF
+	0: 	bInvalidCycleTime := FALSE;
+		bInvalidParamters := FALSE;
+	1:	bInvalidParamters := TRUE;
+	2:	bInvalidCycleTime := TRUE;
+END_CASE
+nErrorID.0 := bInvalidParamters;
+nErrorID.1 := bInvalidCycleTime;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_EqualizingController">
+      <LineId Id="788" Count="0" />
+      <LineId Id="791" Count="7" />
+      <LineId Id="789" Count="0" />
+      <LineId Id="808" Count="0" />
+      <LineId Id="790" Count="0" />
+      <LineId Id="810" Count="29" />
+      <LineId Id="809" Count="0" />
+      <LineId Id="875" Count="0" />
+      <LineId Id="840" Count="1" />
+      <LineId Id="843" Count="2" />
+      <LineId Id="842" Count="0" />
+      <LineId Id="701" Count="0" />
+      <LineId Id="293" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.eCondition.Get">
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EqualizingController.nErrorID.Get">
+      <LineId Id="5" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

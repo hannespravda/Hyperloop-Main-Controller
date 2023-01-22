@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ServiceModule" Id="{c2b68249-78b4-4ae5-91f5-9de9a918b256}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ServiceModule EXTENDS FB_HighLevelSystem
+VAR_INPUT
+	eState : ServiceModuleSTM;
+	//eActivationStatus : ActivationStatus;
+END_VAR
+VAR
+	//Components
+	fbDistanceSensor : FB_DistanceSensor;
+	fbBoxLED : FB_BoxLED;
+	fbRGBLED : FB_RGBLED;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF eActivationStatus = ActivationStatus.Enabled THEN
+	//High Level State Machine
+	CASE eState OF
+		ServiceModuleSTM.Idling:
+				fbDistanceSensor();
+				fbRGBLED(eColor:=LEDColor.Off);
+				fbBoxLED(eMode:=LEDMode.Off);
+	
+		ServiceModuleSTM.Waiting:
+				fbRGBLED.eColor := LEDColor.Blue;
+				fbBoxLED.eMode := LEDMode.SlowFlashing;
+				fbDistanceSensor();
+				fbRGBLED();
+				fbBoxLED();
+				
+	
+		ServiceModuleSTM.Running:
+				fbRGBLED.eColor := LEDColor.Green;
+				fbBoxLED.eMode := LEDMode.On;
+				fbDistanceSensor();
+				fbRGBLED();
+				fbBoxLED();
+	
+		ServiceModuleSTM.PostRunning:
+				fbRGBLED.eColor := LEDColor.Red;
+				fbBoxLED.eMode := LEDMode.Dimmed;
+				fbDistanceSensor();
+				fbRGBLED();
+				fbBoxLED();
+	
+		ServiceModuleSTM.PreparingForError:
+				fbRGBLED.eColor := LEDColor.Red;
+				fbBoxLED.eMode := LEDMode.FastFlashing;
+				fbRGBLED();
+				fbBoxLED();
+	END_CASE
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Property Name="eCondition" Id="{03d6c99f-9fe7-48bb-9be9-856045bd0ea5}">
+      <Declaration><![CDATA[PROPERTY eCondition : HighLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{22fe9ecb-9bc7-4656-9b17-083413642828}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF eActivationStatus = ActivationStatus.Disabled THEN
+	eCondition := HighLevelCondition.SLEEP;
+ELSE
+	IF fbDistanceSensor.eCondition = SubLevelCondition.RUN AND fbBoxLED.eCondition = SubLevelCondition.RUN AND fbRGBLED.eCondition = SubLevelCondition.RUN THEN
+		eCondition := HighLevelCondition.RUN;
+	ELSE
+		eCondition := HighLevelCondition.INIT;
+	END_IF
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fDistance" Id="{2fac17f2-5502-4e29-a71f-8cb1ada492f0}">
+      <Declaration><![CDATA[PROPERTY fDistance : REAL]]></Declaration>
+      <Get Name="Get" Id="{75a6997a-d806-4312-8a14-3897a8c10414}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fDistance := LREAL_TO_REAL(fbDistanceSensor.fDistance);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{97aa3801-83f3-44ee-a163-8a0a9d0cd484}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{d89937e4-7eed-4270-86bb-e6f88ee828c8}">
+        <Declaration><![CDATA[VAR
+	nErrorBitsDS : UDINT;
+	nErrorBitsBox : UDINT;
+	nErrorBitsRGB : UDINT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorBitsDS := fbDistanceSensor.nErrorID;
+nErrorBitsBox:= fbBoxLED.nErrorID;
+nErrorBitsRGB := fbRGBLED.nErrorID;
+
+nErrorID.0 := nErrorBitsDS.0;
+nErrorID.1 := nErrorBitsDS.1;
+nErrorID.2 := nErrorBitsBox.0;
+nErrorID.3 := nErrorBitsBox.1;
+nErrorID.4 := nErrorBitsRGB.0;
+nErrorID.5 := nErrorBitsRGB.1;
+nErrorID.6 := nErrorBitsRGB.2;
+nErrorID.7 := nErrorBitsRGB.3;
+nErrorID.8 := nErrorBitsRGB.4;
+nErrorID.9 := nErrorBitsRGB.5;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_ServiceModule">
+      <LineId Id="413" Count="1" />
+      <LineId Id="421" Count="5" />
+      <LineId Id="433" Count="6" />
+      <LineId Id="445" Count="6" />
+      <LineId Id="456" Count="6" />
+      <LineId Id="469" Count="3" />
+      <LineId Id="474" Count="3" />
+      <LineId Id="480" Count="0" />
+      <LineId Id="45" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ServiceModule.eCondition.Get">
+      <LineId Id="12" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="5" Count="3" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ServiceModule.fDistance.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ServiceModule.nErrorID.Get">
+      <LineId Id="17" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="5" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

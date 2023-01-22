@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="RGBLED" Id="{43ebbbac-30a0-4414-8b43-c77b57a7845c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	nRed AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 1 (PWM output)**
+	nGreen AT %Q* : INT;			//**To EL2564 PWM Outputs Channel 2 (PWM output)**
+	nBlue AT %Q* : INT;				//**To EL2564 PWM Outputs Channel 3 (PWM output)**
+	
+	bRedError AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 1 (Status -> Error)**
+	bRedWarning AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 1 (Status -> Warning)**
+	bGreenError AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 2 (Status -> Error)**
+	bGreenWarning AT %I* : BOOL;	//**To EL2564 PWM Inputs Channel 2 (Status -> Warning)**
+	bBlueError AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 3 (Status -> Error)**
+	bBlueWarning AT %I* : BOOL;		//**To EL2564 PWM Inputs Channel 3 (Status -> Warning)**
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

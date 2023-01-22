@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_GuidanceSystem" Id="{f33f1b41-c667-4ee8-81c9-ea9b824242db}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_GuidanceSystem EXTENDS FB_HighLevelSystem
+VAR_INPUT
+	eState : GuidanceSystemSTM;
+	nGCControlOption : USINT;
+	//eActivationStatus : ActivationStatus;
+END_VAR
+VAR
+	fbAccelerationSensor1 : FB_AccelerationSensor;
+	fbAccelerationSensor2 : FB_AccelerationSensor;
+	fbGuidanceControllerXMC1 : FB_GuidanceController;
+	fbGuidanceControllerXMC2 : FB_GuidanceController;
+	fbGuidanceControllerXMC3 : FB_GuidanceController;
+	fbGuidanceControllerXMC4 : FB_GuidanceController;
+END_VAR
+VAR_OUTPUT
+	bEnableCurrentController : BOOL;
+	bEnableIControl			: BOOL;
+	bEnablePControl			: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF eActivationStatus = ActivationStatus.Enabled THEN
+	//High Level State Machine
+	CASE eState OF
+		GuidanceSystemSTM.Idling:
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
+		
+		GuidanceSystemSTM.PreRunning:
+				bEnableCurrentController := FALSE;
+				fbGuidanceControllerXMC1.bActive := FALSE;
+				fbGuidanceControllerXMC2.bActive := FALSE;
+				fbGuidanceControllerXMC3.bActive := FALSE;
+				fbGuidanceControllerXMC4.bActive := FALSE;
+				
+				doSetOperationMode();
+
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
+				fbGuidanceControllerXMC1();
+				fbGuidanceControllerXMC2();
+				fbGuidanceControllerXMC3();
+				fbGuidanceControllerXMC4();	
+		
+		
+		GuidanceSystemSTM.Running:
+				bEnableCurrentController := TRUE;
+				fbGuidanceControllerXMC1.bActive := TRUE;
+				fbGuidanceControllerXMC2.bActive := TRUE;
+				fbGuidanceControllerXMC3.bActive := TRUE;
+				fbGuidanceControllerXMC4.bActive := TRUE;
+
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
+				fbGuidanceControllerXMC1();
+				fbGuidanceControllerXMC2();
+				fbGuidanceControllerXMC3();
+				fbGuidanceControllerXMC4();		
+
+		GuidanceSystemSTM.PostRunning:
+				bEnableCurrentController := FALSE;
+				fbGuidanceControllerXMC1.bActive := FALSE;
+				fbGuidanceControllerXMC2.bActive := FALSE;
+				fbGuidanceControllerXMC3.bActive := FALSE;
+				fbGuidanceControllerXMC4.bActive := FALSE;
+				
+				fbAccelerationSensor1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
+				fbAccelerationSensor2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU2);
+				fbGuidanceControllerXMC1();
+				fbGuidanceControllerXMC2();
+				fbGuidanceControllerXMC3();
+				fbGuidanceControllerXMC4();			
+	END_CASE
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <Property Name="aGCActualGuidAcceleration" Id="{50ef049f-d04e-4160-aa8f-759304a0e478}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCActualGuidAcceleration : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{02a9edb8-2f92-4ddd-82ba-d7b8a5f1d6f2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbGuidanceControllerXMC1.fActualYAcceleration := aGCActualGuidAcceleration[0];
+fbGuidanceControllerXMC2.fActualYAcceleration := aGCActualGuidAcceleration[1];
+fbGuidanceControllerXMC3.fActualYAcceleration := aGCActualGuidAcceleration[2];
+fbGuidanceControllerXMC4.fActualYAcceleration := aGCActualGuidAcceleration[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aGCActualGuidCurrent" Id="{d1d75f4c-de5e-4edd-b23c-e2299f3ee5c9}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCActualGuidCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{e897c502-87ea-40ef-a11b-7b58d80912d2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbGuidanceControllerXMC1.fActualCurrent := aGCActualGuidCurrent[0];
+fbGuidanceControllerXMC2.fActualCurrent := aGCActualGuidCurrent[1];
+fbGuidanceControllerXMC3.fActualCurrent := aGCActualGuidCurrent[2];
+fbGuidanceControllerXMC4.fActualCurrent := aGCActualGuidCurrent[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aGCActualGuidDistance" Id="{c4680183-d1f5-4b7e-bfb6-9cc5eec92931}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCActualGuidDistance : ARRAY [0..3] OF REAL]]></Declaration>
+      <Set Name="Set" Id="{a3fe579a-6e9f-4932-bb02-d36798227109}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbGuidanceControllerXMC1.fActualYDistance := aGCActualGuidDistance[0];
+fbGuidanceControllerXMC2.fActualYDistance := aGCActualGuidDistance[1];
+fbGuidanceControllerXMC3.fActualYDistance := aGCActualGuidDistance[2];
+fbGuidanceControllerXMC4.fActualYDistance := aGCActualGuidDistance[3];]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aGCOutputGuidCurrent" Id="{f9b9b387-cd33-4a0c-9051-187e4861c041}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCOutputGuidCurrent : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{658df739-eac8-4c06-8550-f0a57655a7e1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aGCOutputGuidCurrent[0] := fbGuidanceControllerXMC1.fNewReferenceValueForCurrent;
+aGCOutputGuidCurrent[1] := fbGuidanceControllerXMC2.fNewReferenceValueForCurrent;
+aGCOutputGuidCurrent[2] := fbGuidanceControllerXMC3.fNewReferenceValueForCurrent;
+aGCOutputGuidCurrent[3] := fbGuidanceControllerXMC4.fNewReferenceValueForCurrent;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aGCOutputGuidForce" Id="{6807a8ec-a68a-4f62-83c5-b1875dd50002}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCOutputGuidForce : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{b1e1e70e-496f-4e91-a07a-580c756b018f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aGCOutputGuidForce[0] := fbGuidanceControllerXMC1.fNewRefrenceValueForForce;
+aGCOutputGuidForce[1] := fbGuidanceControllerXMC2.fNewRefrenceValueForForce;
+aGCOutputGuidForce[2] := fbGuidanceControllerXMC3.fNewRefrenceValueForForce;
+aGCOutputGuidForce[3] := fbGuidanceControllerXMC4.fNewRefrenceValueForForce;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aGCOutputGuidVoltage" Id="{786a695b-7ef5-4e4b-9a0a-d28af41c4a96}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCOutputGuidVoltage : ARRAY [0..3] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{a13fbcfd-83c0-48f5-9cc8-d5358855f974}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aGCOutputGuidVoltage[0] := fbGuidanceControllerXMC1.fNewreferenceValueForVoltage;
+aGCOutputGuidVoltage[1] := fbGuidanceControllerXMC2.fNewreferenceValueForVoltage;
+aGCOutputGuidVoltage[2] := fbGuidanceControllerXMC3.fNewreferenceValueForVoltage;
+aGCOutputGuidVoltage[3] := fbGuidanceControllerXMC4.fNewreferenceValueForVoltage;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aGCReferenceYSignal" Id="{315060d2-d961-478e-ab2d-1c6a1e6d7fef}">
+      <Declaration><![CDATA[PROPERTY PUBLIC aGCReferenceYSignal : REAL]]></Declaration>
+      <Set Name="Set" Id="{22b21363-0bc6-4c27-96bd-13c3bba80b3f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbGuidanceControllerXMC1.fDesiredDeviationFromCenterLine := aGCReferenceYSignal;
+fbGuidanceControllerXMC2.fDesiredDeviationFromCenterLine := aGCReferenceYSignal;
+fbGuidanceControllerXMC3.fDesiredDeviationFromCenterLine := aGCReferenceYSignal;
+fbGuidanceControllerXMC4.fDesiredDeviationFromCenterLine := aGCReferenceYSignal;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="aIMU1Acceleration" Id="{d02b525a-bc1b-492a-a816-47305250732e}">
+      <Declaration><![CDATA[PROPERTY aIMU1Acceleration : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{a44a823d-8479-4c86-a9d4-e6594c5cc29d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aIMU1Acceleration := fbAccelerationSensor1.aAccelerationValues;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="aIMU2Acceleration" Id="{77f151eb-f5be-47a3-8ffb-b31bed26cce9}">
+      <Declaration><![CDATA[PROPERTY aIMU2Acceleration : ARRAY [0..2] OF REAL]]></Declaration>
+      <Get Name="Get" Id="{dc8e6747-1f97-4ee1-9ae5-87cfe2fd9cb4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[aIMU2Acceleration := fbAccelerationSensor2.aAccelerationValues;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="doSetOperationMode" Id="{d2edf195-51be-4cef-b8d2-15ddb0b36582}">
+      <Declaration><![CDATA[METHOD PRIVATE doSetOperationMode
+VAR
+END_VAR
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nGCControlOption.0 THEN
+	fbGuidanceControllerXMC1.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC2.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC3.eOperationMode := GCControllerMode.CurrentControlled;
+	fbGuidanceControllerXMC4.eOperationMode := GCControllerMode.CurrentControlled;
+	
+	bEnableIControl := TRUE;
+	bEnablePControl := FALSE;
+END_IF
+
+IF nGCControlOption.1 THEN
+	fbGuidanceControllerXMC1.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC2.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC3.eOperationMode := GCControllerMode.ForceControlled;
+	fbGuidanceControllerXMC4.eOperationMode := GCControllerMode.ForceControlled;
+	
+	bEnableIControl := FALSE;
+	bEnablePControl := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eCondition" Id="{3adb4534-3e01-4acc-ac7e-71736dcca723}">
+      <Declaration><![CDATA[PROPERTY eCondition : HighLevelCondition
+]]></Declaration>
+      <Get Name="Get" Id="{e8a79d02-6646-46d0-90f1-c5b4226277cf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF eActivationStatus = ActivationStatus.Disabled THEN
+	eCondition := HighLevelCondition.SLEEP;
+ELSE
+	IF fbAccelerationSensor1.eCondition = SubLevelCondition.RUN AND fbAccelerationSensor2.eCondition = SubLevelCondition.RUN AND fbGuidanceControllerXMC1.eCondition = SubLevelCondition.RUN AND fbGuidanceControllerXMC2.eCondition = SubLevelCondition.RUN AND fbGuidanceControllerXMC3.eCondition = SubLevelCondition.RUN AND fbGuidanceControllerXMC4.eCondition = SubLevelCondition.RUN THEN
+		eCondition := HighLevelCondition.RUN;
+	ELSE
+		eCondition := HighLevelCondition.INIT;
+	END_IF
+END_IF
+
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nErrorID" Id="{2b44044c-3e52-4895-8a43-413a23ecd304}">
+      <Declaration><![CDATA[PROPERTY nErrorID : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{4e75dc01-1205-4771-a577-916f014dc2dc}">
+        <Declaration><![CDATA[VAR
+	nErrorBitsIMU1 : UDINT;
+	nErrorBitsIMU2 : UDINT;
+	nErrorBitsGCXMC1 : UDINT;
+	nErrorBitsGCXMC2 : UDINT;
+	nErrorBitsGCXMC3 : UDINT;
+	nErrorBitsGCXMC4 : UDINT;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nErrorBitsIMU1 := fbAccelerationSensor1.nErrorID;
+nErrorBitsIMU2 := fbAccelerationSensor2.nErrorID;
+nErrorBitsGCXMC1 := fbGuidanceControllerXMC1.nErrorID;
+nErrorBitsGCXMC2 := fbGuidanceControllerXMC2.nErrorID;
+nErrorBitsGCXMC3 := fbGuidanceControllerXMC3.nErrorID;
+nErrorBitsGCXMC4 := fbGuidanceControllerXMC4.nErrorID;
+
+//ErrorBits
+nErrorID.0 := nErrorBitsIMU1.0;
+nErrorID.1 := nErrorBitsIMU1.1;
+nErrorID.2 := nErrorBitsIMU2.0;
+nErrorID.3 := nErrorBitsIMU2.1;
+nErrorID.4 := nErrorBitsGCXMC1.0;
+nErrorID.5 := nErrorBitsGCXMC1.1;
+nErrorID.6 := nErrorBitsGCXMC1.2;
+nErrorID.7 := nErrorBitsGCXMC2.0;
+nErrorID.8 := nErrorBitsGCXMC2.1;
+nErrorID.9 := nErrorBitsGCXMC2.2;
+nErrorID.10 := nErrorBitsGCXMC3.0;
+nErrorID.11 := nErrorBitsGCXMC3.1;
+nErrorID.12 := nErrorBitsGCXMC3.2;
+nErrorID.13 := nErrorBitsGCXMC4.0;
+nErrorID.14 := nErrorBitsGCXMC4.1;
+nErrorID.15 := nErrorBitsGCXMC4.2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_GuidanceSystem">
+      <LineId Id="186" Count="2" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="217" Count="1" />
+      <LineId Id="225" Count="1" />
+      <LineId Id="372" Count="0" />
+      <LineId Id="376" Count="2" />
+      <LineId Id="375" Count="0" />
+      <LineId Id="379" Count="1" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="309" Count="2" />
+      <LineId Id="308" Count="0" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="282" Count="2" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="286" Count="0" />
+      <LineId Id="400" Count="0" />
+      <LineId Id="288" Count="3" />
+      <LineId Id="285" Count="0" />
+      <LineId Id="235" Count="1" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="298" Count="2" />
+      <LineId Id="297" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="305" Count="2" />
+      <LineId Id="304" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="77" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCActualGuidAcceleration.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCActualGuidCurrent.Set">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCActualGuidDistance.Set">
+      <LineId Id="5" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCOutputGuidCurrent.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCOutputGuidForce.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCOutputGuidVoltage.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aGCReferenceYSignal.Set">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aIMU1Acceleration.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.aIMU2Acceleration.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.doSetOperationMode">
+      <LineId Id="6" Count="4" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="11" Count="6" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.eCondition.Get">
+      <LineId Id="15" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GuidanceSystem.nErrorID.Get">
+      <LineId Id="25" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="21" Count="3" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="45" Count="2" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="54" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

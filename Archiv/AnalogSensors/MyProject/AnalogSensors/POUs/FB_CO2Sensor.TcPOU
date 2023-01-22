@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_CO2Sensor" Id="{61dcd89e-b219-4cf8-a2a7-d3d6a665d332}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CO2Sensor
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	rCO2Value : REAL;
+	iRange : INT := 32767;
+	iVmax : INT := 10;
+	iCorrespondenceFactor : INT := 1000;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rCO2Value := (INT_TO_REAL(MyGVL.iInput1)/iRange)*iVmax * iCorrespondenceFactor;]]></ST>
+    </Implementation>
+    <Property Name="getCO2Value" Id="{4d729839-0a25-468b-a73b-6ded05b62662}">
+      <Declaration><![CDATA[PROPERTY getCO2Value : REAL]]></Declaration>
+      <Get Name="Get" Id="{8fbc6863-1d7a-4ff0-9640-75f589acb27c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[getCO2Value := rCO2Value;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_CO2Sensor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CO2Sensor.getCO2Value.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

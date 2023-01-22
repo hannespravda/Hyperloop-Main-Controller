@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="OperationControlData" Id="{67032179-2cd1-4fa3-81d3-4f6015a326d7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stFromOCToMC 			AT %I* : FromOperationControlToMainControl;
+	
+	stFromMCToOC 			AT %Q* : FromMainControlToOperationControl;
+	stForwardXMC1ToOC 		AT %Q* : ForwardXMC1ToOperationControl;
+	stForwardXMC2ToOC 		AT %Q* : ForwardXMC2ToOperationControl;
+	stForwardXMC3ToOC 		AT %Q* : ForwardXMC3ToOperationControl;
+	stForwardXMC4ToOC 		AT %Q* : ForwardXMC4ToOperationControl;
+END_VAR
+
+
+//From Operation Control or To Operation Control]]></Declaration>
+  </GVL>
+</TcPlcObject>

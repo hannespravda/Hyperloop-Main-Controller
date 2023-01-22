@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Trajectory" Id="{68c493ce-3b98-4d44-a34c-c8fa7f8e8450}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Trajectory
+VAR
+	// Reference vector
+	x_ref : ARRAY[1..3] OF REAL := [0.01, 0, 32.5]; // [z_nom, v_des, I_nom]
+	// Nominal air gap
+	z_nom : REAL := x_ref[1];
+	// Desired vertical velocity at nominal state
+	v_des : REAL := x_ref[2];
+	// Nominal current
+	I_nom: REAL := x_ref[3];
+END_VAR
+VAR CONSTANT
+	Z_MAX : REAL := 0.025; // 25 mm
+	Z_MIN : REAL := 0.002; // 2 mm
+	I_MAX : REAL := 100; // 100 A
+	I_MIN : REAL := 0; // 0 A
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GenerateTrajectory" Id="{d9e0fc68-7c0b-44eb-b03a-4e67634297c8}">
+      <Declaration><![CDATA[METHOD PUBLIC GenerateTrajectory
+
+VAR_INPUT
+	z_meas : REAL;
+	v_meas : REAL;
+	I_meas : REAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="Trajectory">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="Trajectory.GenerateTrajectory">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

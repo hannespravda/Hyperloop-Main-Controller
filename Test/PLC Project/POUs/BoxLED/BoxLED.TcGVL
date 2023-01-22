@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="BoxLED" Id="{e85a1bfa-4b02-40c7-a6a6-ebce071ad22f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	iWhite AT %Q* : INT;					//**To EL2564 PWM Outputs Channel 4 (PWM output)**
+	
+	bWhiteError AT %I* : BOOL;				//**To EL2564 PWM Inputs Channel 4 (Status -> Error)**
+	bWhiteWarning AT %I* : BOOL;			//**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

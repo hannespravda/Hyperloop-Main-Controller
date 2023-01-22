@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="LevitationEqualizingController" Id="{bf86a80d-a85a-47bc-a5bf-df6659343b99}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK LevitationEqualizingController
+VAR_INPUT
+	// Actual delta F value
+	fActualdF : LREAL;
+END_VAR
+
+VAR
+	// PID function block	
+	fbPID : FB_BasicPID;
+	// PID parameters
+	fSetpointValue : LREAL;
+	bReset : BOOL;
+	fCtrlCycleTime : LREAL;
+	fKp : LREAL;
+	fTn : LREAL;
+	fTv : LREAL;
+	fTd : LREAL;
+	// PID outputs	
+	fCtrlOutput : LREAL;
+	// Saturation parameter
+	fdzMax : LREAL := 0.001;
+	fdzMin : LREAL := -0.001;
+END_VAR
+VAR_OUTPUT
+	// dz output vector
+	fdz : ARRAY[1..4] OF LREAL;
+	nErrorStatus : UINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbPID(fSetpointValue := fSetpointValue,
+	  fActualValue := fActualdF,
+	  bReset := bReset,
+	  fCtrlCycleTime := fCtrlCycleTime,
+	  fKp := fKp,
+	  fTn := fTn,
+	  fTv := fTv,
+	  fTd := fTd,
+	  fCtrlOutput => fCtrlOutput, nErrorStatus => nErrorStatus);
+	  
+// Update the dz output vector
+fdz[1] := -1/7900*fCtrlOutput; // TO DO : change it to lookup table function F_inv(F)
+fdz[2] := 1/7900*fCtrlOutput;
+fdz[3] := -1/7900*fCtrlOutput;
+fdz[4] := 1/7900*fCtrlOutput;	  
+
+// Saturate the dz output vector
+IF fdz[1] > fdzMax THEN
+	fdz[1] := fdzMax;
+ELSIF fdz[1] < fdzMin THEN
+	fdz[1] := fdzMin;
+END_IF
+
+IF fdz[2] > fdzMax THEN
+	fdz[2] := fdzMax;
+ELSIF fdz[2] < fdzMin THEN
+	fdz[2] := fdzMin;
+END_IF
+
+IF fdz[3] > fdzMax THEN
+	fdz[3] := fdzMax;
+ELSIF fdz[3] < fdzMin THEN
+	fdz[3] := fdzMin;
+END_IF
+
+IF fdz[4] > fdzMax THEN
+	fdz[4] := fdzMax;
+ELSIF fdz[4] < fdzMin THEN
+	fdz[4] := fdzMin;
+END_IF
+
+]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{482ee31a-e300-4819-9a24-f26f4af1074f}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	fSetpointValue : LREAL;
+	bReset : BOOL;
+	fCtrlCycleTime : LREAL;
+	fKp : LREAL;
+	fTn : LREAL;
+	fTv : LREAL;
+	fTd : LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.fSetpointValue := fSetpointValue;
+THIS^.bReset := bReset;
+THIS^.fCtrlCycleTime := fCtrlCycleTime;
+THIS^.fKp := fKp;
+THIS^.fTn := fTn;
+THIS^.fTv := fTv;
+THIS^.fTd := fTd;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="LevitationEqualizingController">
+      <LineId Id="9" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="87" Count="1" />
+      <LineId Id="92" Count="2" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="125" Count="2" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="163" Count="1" />
+      <LineId Id="169" Count="1" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="172" Count="3" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="177" Count="4" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="183" Count="4" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="188" Count="0" />
+    </LineIds>
+    <LineIds Name="LevitationEqualizingController.FB_init">
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="4" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
