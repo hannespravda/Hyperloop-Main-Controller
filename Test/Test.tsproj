@@ -136,11 +136,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{528554B7-4DE1-4168-AF4F-C9F58AAD6544}" Name="PLC Project" PrjFilePath="PLC Project\PLC Project.plcproj" TmcFilePath="PLC Project\PLC Project.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-<<<<<<< HEAD
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{19241CA8-2809-C802-7FC3-243D88CDB90C}">
-=======
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC Project\PLC Project.tmc" TmcHash="{7C3C08BE-B869-DF42-A769-684D5AA96BAF}">
->>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 					<Name>PLC Project Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -209,7 +205,6 @@
 							<Type>INT</Type>
 						</Var>
 						<Var>
-<<<<<<< HEAD
 							<Name>RGBLED.iRed</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
 							<Type>INT</Type>
@@ -220,8 +215,6 @@
 							<Type>INT</Type>
 						</Var>
 						<Var>
-=======
->>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 							<Name>AccelerationSensor.stEL6001OutIMU1</Name>
 							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
@@ -237,19 +230,6 @@
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
 						</Var>
 						<Var>
-<<<<<<< HEAD
-=======
-							<Name>RGBLED.iRed</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.iGreen</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 2 (PWM output)**]]></Comment>
-							<Type>INT</Type>
-						</Var>
-						<Var>
->>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 							<Name>RGBLED.iBlue</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 3 (PWM output)**]]></Comment>
 							<Type>INT</Type>

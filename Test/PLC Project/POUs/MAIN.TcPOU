@@ -8,21 +8,17 @@ VAR
 	fbIMU2 : FB_AccelerationSensor;
 	fbRGBLED : FB_RGBLED;
 	fbBoxLED : FB_BoxLED;
-<<<<<<< HEAD
 	
 	aIMU1 : ARRAY [0..2] OF REAL;
 	aIMU2 : ARRAY [0..2] OF REAL;
 	fDistance : REAL;
 	
-=======
->>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbIMU1(stRS232Inputs:=AccelerationSensor.stEL6001InIMU1, stRS232Outputs:=AccelerationSensor.stEL6001OutIMU1);
 fbIMU2(stRS232Inputs:=AccelerationSensor.stEL6001InIMU2, stRS232Outputs := AccelerationSensor.stEL6001OutIMU2);
 fbDistanceSensor();
-<<<<<<< HEAD
 fbBoxLED();
 fbRGBLED();
 
@@ -38,14 +34,6 @@ fDistance := LREAL_TO_REAL(fbDistanceSensor.fDistance);]]></ST>
       <LineId Id="68" Count="0" />
       <LineId Id="67" Count="0" />
       <LineId Id="69" Count="1" />
-=======
-fbRGBLED();
-fbBoxLED();]]></ST>
-    </Implementation>
-    <LineIds Name="MAIN">
-      <LineId Id="38" Count="0" />
-      <LineId Id="49" Count="3" />
->>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
     </LineIds>
   </POU>
 </TcPlcObject>
