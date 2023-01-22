@@ -12,6 +12,8 @@ VAR
 	aIMU1 : ARRAY [0..2] OF REAL;
 	aIMU2 : ARRAY [0..2] OF REAL;
 	fDistance : REAL;
+	eColor : LEDColor;
+	eMode : LEDMode;
 	
 END_VAR
 ]]></Declaration>
@@ -24,7 +26,9 @@ fbRGBLED();
 
 aIMU1 := fbIMU1.aAccelerationValues;
 aIMU2 := fbIMU2.aAccelerationValues;
-fDistance := LREAL_TO_REAL(fbDistanceSensor.fDistance);]]></ST>
+fDistance := LREAL_TO_REAL(fbDistanceSensor.fDistance);
+fbBoxLED.eMode := eMode;
+fbRGBLED.eColor := eColor;]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="38" Count="0" />
@@ -34,6 +38,7 @@ fDistance := LREAL_TO_REAL(fbDistanceSensor.fDistance);]]></ST>
       <LineId Id="68" Count="0" />
       <LineId Id="67" Count="0" />
       <LineId Id="69" Count="1" />
+      <LineId Id="86" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>
