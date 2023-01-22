@@ -3207,7 +3207,11 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+<<<<<<< HEAD
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{ED489A9C-AEA2-BE0E-F5C9-928B99EAF945}">
+=======
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{9E3878D0-D483-81E5-8813-44657A9225F4}">
+>>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
@@ -3295,11 +3299,14 @@
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask Outputs</Name>
 						<Var>
+<<<<<<< HEAD
 							<Name>BoxLED.nBoxGreen</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
+=======
+>>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 							<Name>OperationControlData.stFromMCToOC</Name>
 							<Type GUID="{1E03E858-6AC4-A6B8-1463-2E40786C0360}">FromMainControlToOperationControl</Type>
 						</Var>
@@ -3351,6 +3358,14 @@
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
 						</Var>
 						<Var>
+<<<<<<< HEAD
+=======
+							<Name>BoxLED.nBoxGreen</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+>>>>>>> 5a7ce6122151d8d7e174c70f6ef9e92a59e1feea
 							<Name>RGBLED.nRed</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
 							<Type>INT</Type>
