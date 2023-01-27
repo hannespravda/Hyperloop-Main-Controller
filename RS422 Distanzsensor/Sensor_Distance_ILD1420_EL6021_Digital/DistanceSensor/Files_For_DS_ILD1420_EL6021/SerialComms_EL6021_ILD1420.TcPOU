@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
   <POU Name="SerialComms_EL6021_ILD1420" Id="{16fc184f-810c-4eff-9dfe-508ee9d55ca4}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM SerialComms_EL6021_ILD1420
 VAR
@@ -34,8 +34,8 @@ which have a small process image (3 or 5 data bytes only)
 *)
 FOR nCounter := 0 TO GVL_SerialBuffers.dNumOfSensors-1 DO
 	
-	clearComBuff[nCounter](Buffer := GVL_SerialBuffers.RxBufferEL[nCounter]);	// resetcom
-	clearComBuff[nCounter](Buffer := GVL_SerialBuffers.TxBufferEL[nCounter]);	// resetcom
+	clearComBuff[nCounter](Buffer := GVL_SerialBuffers.RxBufferEL);	// resetcom
+	clearComBuff[nCounter](Buffer := GVL_SerialBuffers.TxBufferEL);	// resetcom
 	
 	(* background communication with the EL6021 terminal *)
 	fbEL6021Ctrl[nCounter](
@@ -45,8 +45,8 @@ FOR nCounter := 0 TO GVL_SerialBuffers.dNumOfSensors-1 DO
 		SizeComIn:= SIZEOF(stIn_EL6021[nCounter]),
 		Error=> Error[nCounter],
 		ErrorID=> ErrorID[nCounter],
-		TxBuffer:= GVL_SerialBuffers.TxBufferEL[nCounter],
-		RxBuffer:= GVL_SerialBuffers.RxBufferEL[nCounter]);
+		TxBuffer:= GVL_SerialBuffers.TxBufferEL,
+		RxBuffer:= GVL_SerialBuffers.RxBufferEL);
 		
 		
 	IF fbEL6021Ctrl[nCounter].Error THEN

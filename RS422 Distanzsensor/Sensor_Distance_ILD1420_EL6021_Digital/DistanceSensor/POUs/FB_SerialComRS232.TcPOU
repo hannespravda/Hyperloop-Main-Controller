@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_SerialComRS232" Id="{181e7c70-138b-446a-a6f5-34e588388885}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SerialComRS232
+VAR_IN_OUT
+	stEL6001In : EL6inData22B;
+	stEL6001Out : EL6outData22B;
+END_VAR
+VAR_OUTPUT
+	aAcceleration : ARRAY [0..2] OF REAL;
+	eReceiveErrorID	: ComError_t;
+	nReceiveCounter	: UDINT;
+END_VAR
+VAR
+	//Receive Buffer
+	fbEL6001Ctrl		: SerialLineControl;
+	TxBuffer	: ComBuffer;
+	RxBuffer	: ComBuffer;
+	//Receive Data
+	fbReceive		: ReceiveData;
+	nPrefix : ARRAY[0..1] OF BYTE;
+	aReceiveData : ARRAY [0..15] OF BYTE;
+	nPacketID : BYTE := 37;
+	nPacketLength : BYTE := 12;	
+	
+	nCRC : WORD;
+	nCheckCRC : WORD;
+	nPointerCRC : POINTER TO WORD;
+	aCRC : ARRAY [0..1] OF BYTE;	
+	aDataArray : ARRAY[0..11] OF BYTE;
+	i : USINT;
+	aAccX : ARRAY [0..3] OF BYTE;
+	aAccY : ARRAY [0..3] OF BYTE;
+	aAccZ : ARRAY [0..3] OF BYTE;
+	fPointerToX : POINTER TO REAL;
+    fAccX : REAL;
+	fPointerToY : POINTER TO REAL;
+    fAccY : REAL;
+	fPointerToZ : POINTER TO REAL;
+    fAccZ : REAL;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbEL6001Ctrl(
+	Mode:= SERIALLINEMODE_EL6_22B, 
+	pComIn:= ADR(stEL6001In), 
+	pComOut:= ADR(stEL6001Out), 
+	SizeComIn:= SIZEOF(stEL6001In), 
+	Error=> , 
+	ErrorID=> , 
+	TxBuffer:= TxBuffer, 
+	RxBuffer:= RxBuffer);
+
+nPrefix[0] := nPacketID;
+nPrefix[1] := nPacketLength;
+
+fbReceive(
+	RXbuffer:= RxBuffer,
+	pPrefix := ADR(nPrefix),
+	LenPrefix := 2,
+	pReceiveData := ADR(aReceiveData),
+	SizeReceiveData  := 16,								
+	Error => eReceiveErrorID,
+	DataReceived=>);
+		
+IF fbReceive.DataReceived THEN							
+	nReceiveCounter := nReceiveCounter + 1;
+END_IF
+
+doCRC16Check();
+doCalculateAccValues();
+
+
+	]]></ST>
+    </Implementation>
+    <Method Name="doCalculateAccValues" Id="{752dfdc0-a0a9-4925-a6a6-e26264e0e3c3}">
+      <Declaration><![CDATA[METHOD PRIVATE doCalculateAccValues
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nCheckCRC = nCRC THEN
+	aAccX[0] := aReceiveData[4];
+	aAccX[1] := aReceiveData[5];
+	aAccX[2] := aReceiveData[6];
+	aAccX[3] := aReceiveData[7];
+	fPointerToX := ADR(aAccX);
+	fAccX := fPointerToX^;
+	
+	aAccY[0] := aReceiveData[8];
+	aAccY[1] := aReceiveData[9];
+	aAccY[2] := aReceiveData[10];
+	aAccY[3] := aReceiveData[11];
+	fPointerToY := ADR(aAccY);
+	fAccY := fPointerToY^;
+	
+	aAccZ[0] := aReceiveData[12];
+	aAccZ[1] := aReceiveData[13];
+	aAccZ[2] := aReceiveData[14];
+	aAccZ[3] := aReceiveData[15];
+	fPointerToZ := ADR(aAccZ);
+	fAccZ := fPointerToZ^;
+END_IF
+
+aAcceleration[0] := fAccX;
+aAcceleration[1] := fAccY;
+aAcceleration[2] := fAccZ;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="doCRC16Check" Id="{402d79e6-a8fb-4a7c-8d55-db08bc01f1c2}">
+      <Declaration><![CDATA[METHOD PRIVATE doCRC16Check : BOOL
+VAR_INPUT
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i:=0 TO 11 DO
+	aDataArray[i] := aReceiveData[i+4];
+END_FOR
+
+
+nCRC := F_DATA_TO_CRC16_CCITT(
+	pData := ADR(aDataArray),
+	cbData := BYTE_TO_UDINT(nPacketLength),
+	crc := 16#FFFF);
+
+aCRC[0] := aReceiveData[2];
+aCRC[1] := aReceiveData[3];
+nPointerCRC := ADR(aCRC);
+nCheckCRC := nPointerCRC^;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_SerialComRS232">
+      <LineId Id="341" Count="26" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="369" Count="0" />
+      <LineId Id="368" Count="0" />
+      <LineId Id="247" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialComRS232.doCalculateAccValues">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="5" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="4" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_SerialComRS232.doCRC16Check">
+      <LineId Id="6" Count="12" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

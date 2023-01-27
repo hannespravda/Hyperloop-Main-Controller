@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-00000000003D}" TcBaseType="true" HideType="true">USINTARR6</Name>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000002}">USINT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
+	</DataTypes>
+	<Project ProjectGUID="{6B6A1A99-92C1-492C-A84F-4B70DC27962F}" TargetNetId="5.93.125.76.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
+		<System>
+			<Settings MaxCpus="4" NonWinCpus="1">
+				<Cpu CpuId="3"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{CF2B78FC-E1F3-4B14-B1CD-907684AD216D}" Name="CX2040 PLC" PrjFilePath="CX2040 PLC\CX2040 PLC.plcproj" TmcFilePath="CX2040 PLC\CX2040 PLC.tmc" ReloadTmc="true" AmsPort="853" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502080" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="CX2040 PLC\CX2040 PLC.tmc" TmcHash="{CFE86C61-620C-D536-54EF-F9F6CDF064BE}">
+					<Name>CX2040 PLC Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="1">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL.bIn</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL.iIn</Name>
+							<Type>USINT</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>GVL.bOut</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL.iOut</Name>
+							<Type>USINT</Type>
+						</Var>
+					</Vars>
+					<Contexts>
+						<Context>
+							<Id NeedCalleeCall="true">0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>1000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502081"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+		<Io>
+			<Device Id="4" DevType="130" AmsNetId="5.93.125.76.5.255" RemoteName="Gerät 4 (EtherCAT Slave)">
+				<Name>Gerät 4 (EtherCAT Slave)</Name>
+				<AddressInfo>
+					<Ccat>
+						<Address>-268435456</Address>
+						<Offset>65536</Offset>
+						<Size>65536</Size>
+						<BaseAddr>0</BaseAddr>
+						<BusNo>4</BusNo>
+						<SlotNo>0</SlotNo>
+						<VendorId>5612</VendorId>
+						<DeviceId>20480</DeviceId>
+						<TimeSize>128</TimeSize>
+						<TimeOffs>1024</TimeOffs>
+						<GpioSize>32</GpioSize>
+						<GpioOffs>768</GpioOffs>
+					</Ccat>
+				</AddressInfo>
+				<Vars VarGrpType="1" InsertType="1">
+					<Name>Eingänge</Name>
+					<Var>
+						<Name>Var 5</Name>
+						<Type>BOOL</Type>
+					</Var>
+				</Vars>
+				<Vars VarGrpType="2" InsertType="1">
+					<Name>Ausgänge</Name>
+					<Var>
+						<Name>Var 6</Name>
+						<Type>BOOL</Type>
+					</Var>
+				</Vars>
+				<Vars VarGrpType="3">
+					<Name>InfoData</Name>
+					<Var>
+						<Name>State</Name>
+						<Comment><![CDATA[0x___1 = Slave is in 'INIT' state
+0x___2 = Slave is in 'PREOP' state
+0x___4 = Slave is in 'SAFEOP' state
+0x___8 = Slave is in 'OP' state]]></Comment>
+						<Type>UINT</Type>
+						<BitOffs>8</BitOffs>
+						<InOut>0</InOut>
+					</Var>
+					<Var>
+						<Name>NetId</Name>
+						<Type GUID="{18071995-0000-0000-0000-00000000003D}">USINTARR6</Type>
+						<BitOffs>24</BitOffs>
+						<InOut>0</InOut>
+					</Var>
+				</Vars>
+				<Image Id="4" AddrType="1" ImageType="2">
+					<Name>Prozessabbild</Name>
+				</Image>
+				<EtherCATSlave GpioValueFromEsc="1"/>
+			</Device>
+		</Io>
+	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2081-0850-8020-500840000403}" Id="#x02030010"/>
+		<OwnerA Name="TIPC^CX2040 PLC^CX2040 PLC Instance">
+			<OwnerB Name="TIID^Device 4 (EtherCAT Slave)">
+				<Link VarA="PlcTask Inputs^GVL.bIn" VarB="Inputs^Var 5"/>
+				<Link VarA="PlcTask Outputs^GVL.bOut" VarB="Outputs^Var 6"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
+</TcSmProject>

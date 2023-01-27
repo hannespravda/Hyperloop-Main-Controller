@@ -3,7 +3,7 @@
   <GVL Name="TEST" Id="{65599d5c-dd91-47d2-a3a2-823ea159d2f5}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	iTest AT %I* : INT;
+	iTest AT %I* : BOOL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

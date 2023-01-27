@@ -3207,28 +3207,23 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{9E3878D0-D483-81E5-8813-44657A9225F4}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{43D82E5D-9448-D587-28A2-5ABBDDCADFE0}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>TEST.iTest</Name>
+							<Type>BOOL</Type>
+						</Var>
 						<Var>
 							<Name>BoxLED.bBoxGreenError</Name>
 							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>TEST.iTest</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
 							<Name>BoxLED.bBoxGreenWarning</Name>
 							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.bRedError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -3267,6 +3262,11 @@
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
 						</Var>
 						<Var>
+							<Name>RGBLED.bRedError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>RGBLED.bRedWarning</Name>
 							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 1 (Status -> Warning)**]]></Comment>
 							<Type>BOOL</Type>
@@ -3294,6 +3294,16 @@
 					</Vars>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>BoxLED.nBoxGreen</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.nRed</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
 						<Var>
 							<Name>OperationControlData.stFromMCToOC</Name>
 							<Type GUID="{1E03E858-6AC4-A6B8-1463-2E40786C0360}">FromMainControlToOperationControl</Type>
@@ -3344,16 +3354,6 @@
 							<Name>DistanceSensor.stEL6021Out</Name>
 							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.nBoxGreen</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.nRed</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
-							<Type>INT</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.nGreen</Name>
@@ -6606,7 +6606,7 @@
 								<Entry Name="Status__">
 									<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
 								</Entry>
-								<Entry Name="Status__TxPDO Toggle" Index="#x6030" Sub="#x10" Flags="#x00008020">
+								<Entry Name="Status__TxPDO Toggle" Index="#x6030" Sub="#x10">
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
@@ -6692,15 +6692,19 @@
 					<EtherCAT SlaveType="3" AdsServerAddress="0ab742880207ee03" PdiType="#x0c08" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="55" EoeType="1" VendorId="#x00000002" ProductCode="#x07f86034" RevisionNo="#x00121b82" InfoDataAddr="true" InfoDataNetId="true" GenerateOwnNetId="true" InitializeOwnNetId="true" PortPhys="17" IdentificationAdo="308" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="CX2040 EtherCAT slave" Desc="CX2040 EtherCAT slave" PortABoxInfo="#x02000001">
 						<SyncMan>001000022600010001000000400000040002001026010000</SyncMan>
 						<SyncMan>001200022200010002000000400000040002001222010000</SyncMan>
-						<SyncMan>001a00006400000003000000000000000000001a64000000</SyncMan>
-						<SyncMan>001402002000010004000000000000000000001420000000</SyncMan>
-						<Fmmu>0000000000000000000000020000000001000000000000000000000000000000</Fmmu>
+						<SyncMan>001a01006400010003000000000000000000001a64000000</SyncMan>
+						<SyncMan>001403002000010004000000000000000000001420000000</SyncMan>
+						<Fmmu>0000000000000000001a00020100000001000000000000000000000000000000</Fmmu>
 						<Fmmu>0000000000000000001400010100000002000000000000000000000000000000</Fmmu>
 						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
 						<SwitchPortData>00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</SwitchPortData>
 						<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
-						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3"/>
+						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3">
+							<Entry Name="Pdo Entry 1" Index="#x6000" Sub="#x01">
+								<Type>USINT</Type>
+							</Entry>
+						</Pdo>
 						<Pdo Name="Device Status Mapping" Index="#x1a80" Flags="#x0010" SyncMan="3">
 							<Entry>
 								<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
@@ -6708,14 +6712,18 @@
 							<Entry>
 								<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
 							</Entry>
-							<Entry Name="TxPdoState" Index="#xf100" Sub="#x0f">
+							<Entry Name="TxPDO State" Index="#xf100" Sub="#x0f">
 								<Type>BIT</Type>
 							</Entry>
-							<Entry Name="TxPdoToggle" Index="#xf100" Sub="#x10">
+							<Entry Name="TxPDO Toggle" Index="#xf100" Sub="#x10">
 								<Type>BIT</Type>
 							</Entry>
 						</Pdo>
-						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2"/>
+						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2">
+							<Entry Name="Pdo Entry 1" Index="#x7000" Sub="#x01">
+								<Type>USINT</Type>
+							</Entry>
+						</Pdo>
 					</EtherCAT>
 				</Box>
 				<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
