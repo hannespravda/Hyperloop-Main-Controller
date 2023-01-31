@@ -41,48 +41,6 @@
     <Compile Include="DUTs\OperationControlCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\ForwardXMC1ToOperationControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\ForwardXMC2ToOperationControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\ForwardXMC3ToOperationControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\ForwardXMC4ToOperationControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromMainControlToOperationControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromMainControlToXMC1.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromMainControlToXMC2.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromMainControlToXMC3.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromMainControlToXMC4.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromOperationControlToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromXMC1ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromXMC2ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromXMC3ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\FromXMC4ToMainControl.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\TGControllerMode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -99,10 +57,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\OperationControlData.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
-    </Compile>
-    <Compile Include="GVLs\TEST.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
@@ -238,6 +192,22 @@
     <None Include="MainControl.tmc">
       <SubType>Content</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PinnedGlobalDataType Include="ForwardXMC1ToOperationControl" />
+    <PinnedGlobalDataType Include="ForwardXMC2ToOperationControl" />
+    <PinnedGlobalDataType Include="ForwardXMC3ToOperationControl" />
+    <PinnedGlobalDataType Include="ForwardXMC4ToOperationControl" />
+    <PinnedGlobalDataType Include="FromMainControlToOperationControl" />
+    <PinnedGlobalDataType Include="FromMainControlToXMC1" />
+    <PinnedGlobalDataType Include="FromMainControlToXMC2" />
+    <PinnedGlobalDataType Include="FromMainControlToXMC3" />
+    <PinnedGlobalDataType Include="FromMainControlToXMC4" />
+    <PinnedGlobalDataType Include="FromOperationControlToMainControl" />
+    <PinnedGlobalDataType Include="FromXMC1ToMainControl" />
+    <PinnedGlobalDataType Include="FromXMC2ToMainControl" />
+    <PinnedGlobalDataType Include="FromXMC3ToMainControl" />
+    <PinnedGlobalDataType Include="FromXMC4ToMainControl" />
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

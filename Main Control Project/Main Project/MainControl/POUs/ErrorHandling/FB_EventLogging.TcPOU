@@ -48,9 +48,9 @@ END_IF
 //InfoMessages
 //*Add New Info Messages Here*
 aInfoArray[0] := PRG_ErrorHandling.bAllErrorsAcknowledged;
-aInfoArray[1] := NOT TO_BOOL(PRG_MainController.fbServiceModule.eActivationStatus);
-aInfoArray[2] := NOT TO_BOOL(PRG_MainController.fbLevitationSystem.eActivationStatus);
-aInfoArray[3] := NOT TO_BOOL(PRG_MainController.fbGuidanceSystem.eActivationStatus);
+aInfoArray[1] := (NOT TO_BOOL(PRG_MainController.fbServiceModule.eActivationStatus) AND PRG_MainController.stOperationControlCommands.nOperationMode.0);
+aInfoArray[2] := (NOT TO_BOOL(PRG_MainController.fbLevitationSystem.eActivationStatus) AND PRG_MainController.stOperationControlCommands.nOperationMode.1);
+aInfoArray[3] := (NOT TO_BOOL(PRG_MainController.fbGuidanceSystem.eActivationStatus) AND PRG_MainController.stOperationControlCommands.nOperationMode.2);
 
 aInfoMessagesAsStrings[0] := 'All Errors Acknowledged and Cleared by Operation Control';
 aInfoMessagesAsStrings[1] := 'Service Module disabled';

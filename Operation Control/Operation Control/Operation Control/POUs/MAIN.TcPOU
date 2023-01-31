@@ -3,29 +3,47 @@
   <POU Name="MAIN" Id="{3bb257a0-98dd-45b9-85d1-04557b3160eb}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	bIn : BOOL;
-	bOut : BOOL;
+	aIMU0 : ARRAY [0..2] OF REAL;
+	aIMU1 : ARRAY [0..2] OF REAL;
+	fDistance : REAL;
 	
-	iTest : INT;
+	stCommands : OperationControlCommands;
+	bSMDisable : BOOL;
+	bLSDisable : BOOL;
+	bGSDisable : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL.bIn := bIn;
+      <ST><![CDATA[aIMU0[0] := GVL.stFromMCToOC.MO_origM_GuidanceIMUX0;
+aIMU0[1] := GVL.stFromMCToOC.MO_origM_GuidanceIMUY0;
+aIMU0[2] := GVL.stFromMCToOC.MO_origM_GuidanceIMUZ0;
 
-GVL.bOut := bOut;
+aIMU1[0] := GVL.stFromMCToOC.MO_origM_GuidanceIMUX1;
+aIMU1[1] := GVL.stFromMCToOC.MO_origM_GuidanceIMUY1;
+aIMU1[2] := GVL.stFromMCToOC.MO_origM_GuidanceIMUZ1;
 
+fDistance := GVL.stFromMCToOC.MO_origM_DistanceServiceModule;
 
-
-iTest := GVL.iTest;]]></ST>
+GVL.stFromOCToMC.OM_origO_StartOperational := stCommands.bStartOperational;
+GVL.stFromOCToMC.OM_origO_StopOperational := stCommands.bStopOperational;
+GVL.stFromOCToMC.OM_origO_EndShutdown := stCommands.bEndShutdown;
+GVL.stFromOCToMC.OM_origO_GoToError := stCommands.bGoToError;
+GVL.stFromOCToMC.OM_origO_AckError := stCommands.bAckError;
+GVL.stFromOCToMC.OM_origG_ServiceModuleDisable := bSMDisable;
+GVL.stFromOCToMC.OM_origG_LevitationDisable := bLSDisable;
+GVL.stFromOCToMC.OM_origG_GuidanceDisable := bGSDisable;]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="2" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="10" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="73" Count="2" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="100" Count="4" />
     </LineIds>
   </POU>
 </TcPlcObject>

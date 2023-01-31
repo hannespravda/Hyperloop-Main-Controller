@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <GVL Name="TEST" Id="{65599d5c-dd91-47d2-a3a2-823ea159d2f5}">
-    <Declaration><![CDATA[{attribute 'qualified_only'}
-VAR_GLOBAL
-	iTest AT %I* : BOOL;
-END_VAR]]></Declaration>
-  </GVL>
-</TcPlcObject>

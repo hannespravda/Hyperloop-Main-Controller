@@ -3,10 +3,8 @@
   <GVL Name="GVL" Id="{6a7924c9-ad45-4856-a589-50627d8de83c}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	bIn AT %I* : BOOL;
-	bOut AT %Q* : BOOL;
-	
-	iTest AT %I* : INT;
+	stFromMCToOC AT %I* : FromMainControlToOperationControl;
+	stFromOCToMC AT %Q* : FromOperationControlToMainControl;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
