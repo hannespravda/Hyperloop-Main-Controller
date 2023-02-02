@@ -17,34 +17,30 @@
     <LibraryReferences>{87024c8a-dce9-448a-851b-b75c1123e373}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Files_For_DS_ILD1420_EL6021\A_README.TcGVL">
+    <Compile Include="DistanceSensor\DistanceSensor.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DistanceSensor\FB_DistanceSensor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DistanceSensor\FB_SerialComRS422.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Outdated\A_README.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="Files_For_DS_ILD1420_EL6021\ILD1420.TcPOU">
+    <Compile Include="Outdated\ILD1420.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Files_For_DS_ILD1420_EL6021\GVL_SerialBuffers.TcGVL">
+    <Compile Include="Outdated\GVL_SerialBuffers.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
-    <Compile Include="Files_For_DS_ILD1420_EL6021\SerialComms_EL6021_ILD1420.TcPOU">
+    <Compile Include="Outdated\SerialComms_EL6021_ILD1420.TcPOU">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GVLs\GVL_HMI.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\DistanceSensor.TcGVL">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_SerialComRS232.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_SerialComRS422.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -54,7 +50,8 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
-    <Folder Include="Files_For_DS_ILD1420_EL6021" />
+    <Folder Include="DistanceSensor" />
+    <Folder Include="Outdated" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>

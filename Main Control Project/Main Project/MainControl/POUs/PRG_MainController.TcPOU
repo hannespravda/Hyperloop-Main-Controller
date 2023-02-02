@@ -39,6 +39,7 @@ CASE eState OF
 		fbLevitationSystem.eState := LevitationSystemSTM.Stationary;
 		fbGuidanceSystem.eState := GuidanceSystemSTM.PreRunning;
 		stXMCCommands.bStopOperational := FALSE;
+		stOperationControlCommands.bShutdownFinished := FALSE;
 		
 		fbServiceModule();
 		fbLevitationSystem();
@@ -635,6 +636,7 @@ END_IF
       <LineId Id="80" Count="2" />
       <LineId Id="213" Count="1" />
       <LineId Id="325" Count="0" />
+      <LineId Id="357" Count="0" />
       <LineId Id="167" Count="0" />
       <LineId Id="169" Count="0" />
       <LineId Id="215" Count="1" />

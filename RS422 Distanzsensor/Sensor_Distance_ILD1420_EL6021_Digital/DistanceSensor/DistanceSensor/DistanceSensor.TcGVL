@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="DistanceSensor" Id="{beacc62f-2da2-4cbd-b019-96a36caeeb9f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	stEL6021In  AT %I*	: EL6inData22B;		//**To EL6021 Inputs**
+	stEL6021Out AT %Q*	: EL6outData22B;	//**To EL6021 Outputs**
+END_VAR
+
+// How to use ILD1420 Distance Sensor (digital Output) with El6021 clamp:
+//
+// 1. Add 'Tc2_SerialCom' to references 
+// 2. Map EL6021 Inputs (including status) with stEL6021In in GVL DistanceSensor
+// 3. Map EL6021 Outputs (including ctrl) with stEL6021Out in GVL DistanceSensor
+// 4. Call FB_DistanceSensor in MAIN
+// 5. Make sure Task cycle time is small enough (recommended 1 ms)
+// 6. Make sure Baud rates of Sensor and Clamp align (115200) (CoE Online Settings)
+// 7. Outdated folder contains original version with background program]]></Declaration>
+  </GVL>
+</TcPlcObject>

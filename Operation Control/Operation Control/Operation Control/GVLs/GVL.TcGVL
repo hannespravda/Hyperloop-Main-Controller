@@ -5,6 +5,8 @@
 VAR_GLOBAL
 	stFromMCToOC AT %I* : FromMainControlToOperationControl;
 	stFromOCToMC AT %Q* : FromOperationControlToMainControl;
+	
+	iTest AT %I* : INT;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

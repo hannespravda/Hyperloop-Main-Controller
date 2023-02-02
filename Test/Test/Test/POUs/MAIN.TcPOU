@@ -1,13 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{c11d7ff9-beaa-489d-8d9b-5b990bba7637}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{c11d7ff9-beaa-489d-8d9b-5b990bba7637}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbEventMessage : FB_TcMessage;
+	fbEventLogger : FB_TcEventLogger;
+	fbCsvExport : FB_TcEventCsvExportSettings;
+	fbCsvClear : FB_TcClearLoggedEventsSettings;
+	
+	bSend : BOOL;
+	bLog : BOOL;
 END_VAR
-]]>
-    </Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[IF bSend THEN
+	fbEventMessage.CreateEx(stEventEntry:=TC_Events.TcSystemEventClass.InternalError, 0);
+	fbEventMessage.Send(0);	
+END_IF
+
+IF bLog THEN
+	fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\hanne\Hannes\Studium\Bachelorarbeit\TwinCAT Projekte\Test\Log.csv', ipExportSettings := fbCsvExport);	
+END_IF
+]]></ST>
     </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="16" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>

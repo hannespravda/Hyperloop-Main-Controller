@@ -122,12 +122,12 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF NOT bCount THEN
 	bCount := TRUE;
-	fbFrameCounter(sNetId := '10.183.66.136.2.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
+	fbFrameCounter(sNetId := '5.93.125.76.4.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
 END_IF
 
 IF bCount THEN
 	bCount := FALSE;
-	fbFrameCounter(sNetId := '10.183.66.136.2.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
+	fbFrameCounter(sNetId := '5.93.125.76.4.1', bExecute := bCount, fFramesPerSecond => fFramesPerSecond);
 END_IF
 
 IF fFramesPerSecond <> 0 THEN

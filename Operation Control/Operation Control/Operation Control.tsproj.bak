@@ -443,6 +443,33 @@
 			</Hides>
 		</DataType>
 		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-0003000000E0}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..223] OF BYTE</Name>
+			<BitSize>1792</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>224</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-0020000000F0}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..29] OF BYTE</Name>
+			<BitSize>240</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>30</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000070}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..13] OF BYTE</Name>
+			<BitSize>112</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>14</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-002000000008}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BYTE</Name>
 			<BitSize>8</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
@@ -452,7 +479,7 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
 			<BitSize>6</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -461,44 +488,22 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{0369E746-10F1-462E-9211-CC5D83A300FB}" PersistentType="true">MainControlEventClass</Name>
-			<DisplayName TxtId=""><![CDATA[Main Control Events]]></DisplayName>
-			<EventId>
-				<Name Id="1">Error</Name>
-				<DisplayName TxtId=""><![CDATA[Error occured in {0} state. Error Message: {1}]]></DisplayName>
-				<Severity>Error</Severity>
-			</EventId>
-			<EventId>
-				<Name Id="2">Warning</Name>
-				<DisplayName TxtId=""><![CDATA[Warning Message: {0}]]></DisplayName>
-				<Severity>Warning</Severity>
-			</EventId>
-			<EventId>
-				<Name Id="4">STMTransition</Name>
-				<DisplayName TxtId=""><![CDATA[{0} STM changed to {1} state]]></DisplayName>
-				<Severity>Info</Severity>
-			</EventId>
-			<EventId>
-				<Name Id="5">AckErr</Name>
-				<DisplayName TxtId=""><![CDATA[All Errors acknowledged and cleared by Operation Control]]></DisplayName>
-				<Severity>Info</Severity>
-			</EventId>
-			<EventId>
-				<Name Id="6">DisableSystem</Name>
-				<DisplayName TxtId=""><![CDATA[{0} disabled]]></DisplayName>
-				<Severity>Info</Severity>
-			</EventId>
-			<EventId>
-				<Name Id="7">Info</Name>
-				<DisplayName TxtId=""><![CDATA[{0}]]></DisplayName>
-				<Severity>Info</Severity>
-			</EventId>
-			<Hides>
-				<Hide GUID="{53BBCEF5-A2E4-4539-AE3C-A6749215CE6B}"/>
-				<Hide GUID="{874E9EF6-9BB7-41E1-9D01-89D5F5675370}"/>
-				<Hide GUID="{BF1D14F9-BB67-4B9C-994C-0D784E537C59}"/>
-				<Hide GUID="{8DC4CC84-8D6F-4732-B73A-E5823C1B7B9B}"/>
-			</Hides>
+			<Name GUID="{18071995-0000-0000-0000-000300000028}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..39] OF BYTE</Name>
+			<BitSize>320</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>40</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000050}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..9] OF BYTE</Name>
+			<BitSize>80</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>10</Elements>
+			</ArrayInfo>
 		</DataType>
 		<DataType>
 			<Name GUID="{D8DD290A-9DFE-4311-A3AB-6E7FCCD455BA}" PersistentType="true">ForwardXMC1ToOperationControl</Name>
@@ -3128,6 +3133,46 @@
 				<Hide GUID="{27BC9709-D360-C097-D7D3-8ACCF0662043}"/>
 			</Hides>
 		</DataType>
+		<DataType>
+			<Name GUID="{0369E746-10F1-462E-9211-CC5D83A300FB}" PersistentType="true">MainControlEventClass</Name>
+			<DisplayName TxtId=""><![CDATA[Main Control Events]]></DisplayName>
+			<EventId>
+				<Name Id="1">Error</Name>
+				<DisplayName TxtId=""><![CDATA[Error occured in {0} state. Error Message: {1}]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="2">Warning</Name>
+				<DisplayName TxtId=""><![CDATA[Warning Message: {0}]]></DisplayName>
+				<Severity>Warning</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="4">STMTransition</Name>
+				<DisplayName TxtId=""><![CDATA[{0} STM changed to {1} state]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="5">AckErr</Name>
+				<DisplayName TxtId=""><![CDATA[All Errors acknowledged and cleared by Operation Control]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="6">DisableSystem</Name>
+				<DisplayName TxtId=""><![CDATA[{0} disabled]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="7">Info</Name>
+				<DisplayName TxtId=""><![CDATA[{0}]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{53BBCEF5-A2E4-4539-AE3C-A6749215CE6B}"/>
+				<Hide GUID="{874E9EF6-9BB7-41E1-9D01-89D5F5675370}"/>
+				<Hide GUID="{BF1D14F9-BB67-4B9C-994C-0D784E537C59}"/>
+				<Hide GUID="{8DC4CC84-8D6F-4732-B73A-E5823C1B7B9B}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
 	<ImageDatas>
 		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e00000001001800000000000000000074120000741200000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc404040dcdcdc404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffff00dcdcdcdcdcdc474747404040404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc424242404040404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd9d9d94a4a4a444444404040dcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc0000ffdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</ImageData>
@@ -3148,7 +3193,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{2895AA3F-53BB-4612-B994-D57092303466}" Name="Operation Control" PrjFilePath="Operation Control\Operation Control.plcproj" TmcFilePath="Operation Control\Operation Control.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="Operation Control\Operation Control.tmc" TmcHash="{716D1A91-C4D7-1914-ED3B-EC19B2DC93E8}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="Operation Control\Operation Control.tmc" TmcHash="{BCAC8038-5106-07E7-FC46-FA0EEC927A42}">
 					<Name>Operation Control Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -3156,6 +3201,10 @@
 						<Var>
 							<Name>GVL.stFromMCToOC</Name>
 							<Type GUID="{D142C163-BAA9-4CEB-AB29-B67810342442}">FromMainControlToOperationControl</Type>
+						</Var>
+						<Var>
+							<Name>GVL.iTest</Name>
+							<Type>INT</Type>
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -3194,9 +3243,9 @@
 				<Name>Gerät 1 (EtherCAT)</Name>
 				<AddressInfo>
 					<Pnp>
-						<DeviceDesc></DeviceDesc>
-						<DeviceName></DeviceName>
-						<DeviceData>000000000000</DeviceData>
+						<DeviceDesc>Ethernet 4 (ASIX AX88179 USB 3.0 to Gigabit Etherne</DeviceDesc>
+						<DeviceName>\DEVICE\{984C341E-2C2E-414D-A8BC-01E44CBCE067}</DeviceName>
+						<DeviceData>a0cec872eb44</DeviceData>
 					</Pnp>
 				</AddressInfo>
 				<Image Id="1" AddrType="9" ImageType="3">
@@ -3209,7 +3258,7 @@
 						<SyncMan>001000022600010001000000400000040002001026010000</SyncMan>
 						<SyncMan>001200022200010002000000400000040002001222010000</SyncMan>
 						<SyncMan>001a28006400010003000000000000000000001a64000000</SyncMan>
-						<SyncMan>0014e2002000010004000000000000000000001420000000</SyncMan>
+						<SyncMan>0014e0002000010004000000000000000000001420000000</SyncMan>
 						<Fmmu>0000000000000000001a00020100000001000000000000000000000000000000</Fmmu>
 						<Fmmu>0000000000000000001400010100000002000000000000000000000000000000</Fmmu>
 						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -3217,27 +3266,51 @@
 						<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3">
-							<Entry Name="FromMCToOC" Index="#x6000" Sub="#x01">
-								<Type GUID="{D142C163-BAA9-4CEB-AB29-B67810342442}">FromMainControlToOperationControl</Type>
+							<Entry Name="Pdo Entry 1" Index="#x6000" Sub="#x01">
+								<Type GUID="{18071995-0000-0000-0000-0003000000E0}">ARRAY [0..223] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000070}">ARRAY [0..13] OF BYTE</Type>
 							</Entry>
 						</Pdo>
-						<Pdo Name="Device Status Mapping" Index="#x1a80" Flags="#x0010" SyncMan="3">
+						<Pdo Name="Device Status Mapping" Index="#x1a80" Flags="#x0010">
 							<Entry>
 								<Type GUID="{18071995-0000-0000-0000-002000000008}">ARRAY [0..0] OF BYTE</Type>
 							</Entry>
 							<Entry>
 								<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
 							</Entry>
-							<Entry Name="TxPdoState" Index="#xf100" Sub="#x0f">
+							<Entry Name="TxPDO State" Index="#xf100" Sub="#x0f">
 								<Type>BIT</Type>
 							</Entry>
-							<Entry Name="TxPdoToggle" Index="#xf100" Sub="#x10">
+							<Entry Name="TxPDO Toggle" Index="#xf100" Sub="#x10">
 								<Type>BIT</Type>
 							</Entry>
 						</Pdo>
 						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2">
-							<Entry Name="FromOCToMC" Index="#x7000" Sub="#x01">
-								<Type GUID="{DBE6AFD4-AD42-468D-9E5D-FD1DF17F9ED1}">FromOperationControlToMainControl</Type>
+							<Entry Name="Pdo Entry 1" Index="#x7000" Sub="#x01">
+								<Type GUID="{18071995-0000-0000-0000-000300000028}">ARRAY [0..39] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000050}">ARRAY [0..9] OF BYTE</Type>
 							</Entry>
 						</Pdo>
 					</EtherCAT>
@@ -3250,8 +3323,8 @@
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^Operation Control^Operation Control Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Box 1 (CX2040 EtherCAT slave)">
-				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^FromMCToOC"/>
-				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^FromOCToMC"/>
+				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^Pdo Entry 1"/>
+				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^Pdo Entry 1"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

@@ -3,39 +3,16 @@
   <POU Name="MAIN" Id="{62e43a78-46c8-44c8-9f1f-e8406f48095f}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	ILD1420_Sensor1	: ILD1420;	// instance of ILD1420 Distance Senor
-	ILD1420_Sensor2 : ILD1420;	// instance of ILD1420 Distance Senor
+	fbDistanceSensor : FB_DistanceSensor;
 	
-	lrDistance1 	: LREAL;		// var for distance 1 (could also be GVL)
-	lrDistance2 	: LREAL;		// var for distance 1 (could also be GVL)
-	
-	fbSerialComRS422 : FB_SerialComRS422;
+	fDistance : LREAL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//SerialComms_EL6021_ILD1420();		
-
-//ILD1420_Sensor1(RxBuffer := GVL_SerialBuffers.RxBufferEL);		// init sensor 1
-////ILD1420_Sensor2(RxBuffer := GVL_SerialBuffers.RxBufferEL[1]);		// init sensor 2
-
-
-//lrDistance1 := ILD1420_Sensor1.lrDistance;
-////lrDistance2 := ILD1420_Sensor2.lrDistance;
-
-//GVL_HMI.rDist1 := lrDistance1; 
-
-fbSerialComRS422(stReceiveData:=DistanceSensor.stEL6021In, stTransmitData:=DistanceSensor.stEL6021Out);
-lrDistance1 := fbSerialComRS422.fDistance;]]></ST>
+      <ST><![CDATA[fbDistanceSensor();
+fDistance := fbDistanceSensor.fDistance;]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="246" Count="3" />
-      <LineId Id="251" Count="0" />
-      <LineId Id="271" Count="0" />
-      <LineId Id="253" Count="0" />
-      <LineId Id="220" Count="0" />
-      <LineId Id="270" Count="0" />
-      <LineId Id="269" Count="0" />
-      <LineId Id="280" Count="0" />
-      <LineId Id="279" Count="0" />
+      <LineId Id="293" Count="0" />
       <LineId Id="261" Count="0" />
     </LineIds>
   </POU>

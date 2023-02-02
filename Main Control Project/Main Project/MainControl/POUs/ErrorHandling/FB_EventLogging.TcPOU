@@ -30,7 +30,9 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//CSV-Export
-fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\hanne\Hannes\Studium\Bachelorarbeit\TwinCAT Projekte\Main Control Project\Log.csv', ipExportSettings := fbCsvExport);
+IF PRG_MainController.stOperationControlCommands.bShutdownFinished THEN
+	fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\Administrator\Desktop\Log.csv', ipExportSettings := fbCsvExport);
+END_IF
 //CSV-Clear
 IF bClearLoggedEvents THEN
 	fbEventLogger.ClearLoggedEvents(ipClearSettings:=fbCsvClear);	
@@ -258,7 +260,11 @@ END_FOR]]></ST>
       </Set>
     </Property>
     <LineIds Name="FB_EventLogging">
-      <LineId Id="761" Count="4" />
+      <LineId Id="761" Count="0" />
+      <LineId Id="831" Count="0" />
+      <LineId Id="834" Count="0" />
+      <LineId Id="833" Count="0" />
+      <LineId Id="763" Count="2" />
       <LineId Id="757" Count="0" />
       <LineId Id="797" Count="7" />
       <LineId Id="796" Count="0" />

@@ -7,6 +7,9 @@
     <PouCall>
       <Name>PRG_MainController</Name>
     </PouCall>
+    <PouCall>
+      <Name>PRG_ErrorHandling</Name>
+    </PouCall>
     <TaskFBGuid>{69d564c9-0e6c-4e4f-851a-044087c73c09}</TaskFBGuid>
     <Fb_init>{eb0bfbaf-f446-4afc-8fd2-aafd03916a68}</Fb_init>
     <Fb_exit>{01160d83-d28c-4d23-a31d-26b99dc10688}</Fb_exit>
