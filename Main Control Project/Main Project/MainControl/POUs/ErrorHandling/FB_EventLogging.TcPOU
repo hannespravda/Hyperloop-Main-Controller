@@ -21,6 +21,7 @@ VAR
 	sMainControllerStateAsString : STRING;
 	
 	bClearLoggedEvents : BOOL;
+	fbExportTimer : TON;
 END_VAR
 VAR CONSTANT
 	nCounterMax : USINT := 255; //max value for USINT data type
@@ -30,8 +31,10 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//CSV-Export
-IF PRG_MainController.stOperationControlCommands.bShutdownFinished THEN
+fbExportTimer(IN:=TRUE, PT:=T#5S);
+IF fbExportTimer.Q THEN
 	fbEventLogger.ExportLoggedEvents(sFileName:='C:\Users\Administrator\Desktop\Log.csv', ipExportSettings := fbCsvExport);
+	fbExportTimer(IN := FALSE);
 END_IF
 //CSV-Clear
 IF bClearLoggedEvents THEN
@@ -261,9 +264,9 @@ END_FOR]]></ST>
     </Property>
     <LineIds Name="FB_EventLogging">
       <LineId Id="761" Count="0" />
-      <LineId Id="831" Count="0" />
-      <LineId Id="834" Count="0" />
-      <LineId Id="833" Count="0" />
+      <LineId Id="862" Count="2" />
+      <LineId Id="866" Count="0" />
+      <LineId Id="865" Count="0" />
       <LineId Id="763" Count="2" />
       <LineId Id="757" Count="0" />
       <LineId Id="797" Count="7" />

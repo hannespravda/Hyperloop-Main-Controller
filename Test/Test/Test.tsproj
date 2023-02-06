@@ -3498,6 +3498,18 @@
 				<BitOffs>176</BitOffs>
 			</SubItem>
 		</DataType>
+		<DataType>
+			<Name GUID="{CD3AC88A-E5A1-4046-92F5-67E1052C8F8C}" PersistentType="true">MyEvents</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<EventId>
+				<Name Id="1">Event</Name>
+				<DisplayName TxtId=""><![CDATA[Event_DisplayText]]></DisplayName>
+				<Severity>Info</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{66CDA687-A80B-4A6C-8A60-E005AF5EABF1}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
 	<Project ProjectGUID="{6A8DE5AD-AA60-43F5-89B6-DF1EB0364022}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
@@ -3512,7 +3524,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8E22E3BA-F07D-4082-893C-583264E18715}" Name="Test" PrjFilePath="Test\Test.plcproj" TmcFilePath="Test\Test.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Test\Test.tmc" TmcHash="{9B033C92-6D8F-582F-F694-840DB50A2D8E}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Test\Test.tmc" TmcHash="{771B4185-4E6F-41FB-A000-1B2B11C42E16}">
 					<Name>Test Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
