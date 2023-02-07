@@ -3,15 +3,15 @@
   <GVL Name="XMCData" Id="{1c119e14-0ca5-456d-9182-55fcd518a368}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 VAR_GLOBAL
-	stFromXMC1ToMC 			AT %I* : FromXMC1ToMainControl;
-	stFromXMC2ToMC 			AT %I* : FromXMC2ToMainControl;
-	stFromXMC3ToMC 			AT %I* : FromXMC3ToMainControl;
-	stFromXMC4ToMC 			AT %I* : FromXMC4ToMainControl;
+	stFromXMC1ToMC 			AT %I* : FromXMCToMainControl;
+	stFromXMC2ToMC 			AT %I* : FromXMCToMainControl;
+	stFromXMC3ToMC 			AT %I* : FromXMCToMainControl;
+	stFromXMC4ToMC 			AT %I* : FromXMCToMainControl;
 	
-	stFromMCToXMC1			AT %Q* : FromMainControlToXMC1;
-	stFromMCToXMC2			AT %Q* : FromMainControlToXMC2;
-	stFromMCToXMC3			AT %Q* : FromMainControlToXMC3;
-	stFromMCToXMC4			AT %Q* : FromMainControlToXMC4;
+	stFromMCToXMC1			AT %Q* : FromMainControlToXMC;
+	stFromMCToXMC2			AT %Q* : FromMainControlToXMC;
+	stFromMCToXMC3			AT %Q* : FromMainControlToXMC;
+	stFromMCToXMC4			AT %Q* : FromMainControlToXMC;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

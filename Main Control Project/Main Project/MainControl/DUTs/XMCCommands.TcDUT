@@ -8,6 +8,10 @@ STRUCT
 	nSafetyCounterXMC2 			: UDINT	;
 	nSafetyCounterXMC3 			: UDINT	;
 	nSafetyCounterXMC4 			: UDINT	;
+	nStateXMC1					: USINT	;
+	nStateXMC2					: USINT	;
+	nStateXMC3					: USINT	;
+	nStateXMC4					: USINT	;
 	
 	//Outputs
 	bStartOperational : BOOL;

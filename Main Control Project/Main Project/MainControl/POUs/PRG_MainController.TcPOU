@@ -23,10 +23,10 @@ CASE eState OF
 		doCheckSystem();
 		
 		
-		IF PRG_ErrorHandling.bStartUpCheck AND NOT stOperationControlCommands.bGoToError THEN
+		IF PRG_ErrorHandling.bStartUpCheck AND NOT PRG_ErrorHandling.bGoToError THEN
 			eState := TopLevelSTM.READY;
 		ELSE
-			IF PRG_ErrorHandling.bErrorInStartUp OR stOperationControlCommands.bGoToError THEN
+			IF PRG_ErrorHandling.bErrorInStartUp OR PRG_ErrorHandling.bGoToError THEN
 				fbServiceModule(eState:=ServiceModuleSTM.PreparingForError);
 				eState := TopLevelSTM.ERROR;
 			ELSE
@@ -46,7 +46,7 @@ CASE eState OF
 		fbGuidanceSystem();
 
 
-		IF PRG_ErrorHandling.bErrorInReady OR stOperationControlCommands.bGoToError THEN
+		IF PRG_ErrorHandling.bErrorInReady OR PRG_ErrorHandling.bGoToError THEN
 			fbServiceModule(eState := ServiceModuleSTM.PreparingForError);
 			eState := TopLevelSTM.ERROR;
 		ELSIF stOperationControlCommands.bStartOperational THEN
@@ -75,7 +75,7 @@ CASE eState OF
 		fbGuidanceSystem();
 		
 		
-		IF PRG_ErrorHandling.bErrorInOperational OR stOperationControlCommands.bGoToError OR stOperationControlCommands.bStopOperational THEN
+		IF PRG_ErrorHandling.bErrorInOperational OR PRG_ErrorHandling.bGoToError OR stOperationControlCommands.bStopOperational THEN
 			eState := TopLevelSTM.SHUTDOWN;
 		END_IF
 	////
@@ -94,10 +94,10 @@ CASE eState OF
 		fbLevitationSystem();
 		fbGuidanceSystem();
 		
-		IF fbLevitationSystem.bTrajectoryCompleted THEN
+		IF fbLevitationSystem.bTrajectoryCompleted OR PRG_ErrorHandling.fbShutdownTimer.Q THEN
 			stOperationControlCommands.bShutdownFinished := TRUE;
 			
-			IF PRG_ErrorHandling.bErrorInOperational OR PRG_ErrorHandling.bErrorInShutdown OR stOperationControlCommands.bGoToError THEN
+			IF PRG_ErrorHandling.bErrorInOperational OR PRG_ErrorHandling.bErrorInShutdown OR PRG_ErrorHandling.bGoToError THEN
 				fbServiceModule(eState := ServiceModuleSTM.PreparingForError);
 				eState := TopLevelSTM.ERROR;
 			ELSIF stOperationControlCommands.bEndShutdown THEN
@@ -270,39 +270,43 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 //XMC Data
 	//From XMC to MC
 		//Sensor Values
-		aTempArray12[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceLevFiltered;					
-		aTempArray12[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceLevFiltered	;				
-		aTempArray12[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceLevFiltered	;				
-		aTempArray12[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceLevFiltered	;		
-		aTempArray13[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_VelocityLevFiltered	;				
-		aTempArray13[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_VelocityLevFiltered	;				
-		aTempArray13[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_VelocityLevFiltered	;				
-		aTempArray13[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_VelocityLevFiltered	;	
+		aTempArray12[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceLevitationFiltered;					
+		aTempArray12[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceLevitationFiltered	;				
+		aTempArray12[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceLevitationFiltered	;				
+		aTempArray12[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceLevitationFiltered	;		
+		aTempArray13[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_VelocityZFiltered	;				
+		aTempArray13[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_VelocityZFiltered	;				
+		aTempArray13[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_VelocityZFiltered	;				
+		aTempArray13[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_VelocityZFiltered	;	
 		aTempArray14[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_IMUZ				;			
 		aTempArray14[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_IMUZ				;			
 		aTempArray14[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_IMUZ				;			
 		aTempArray14[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_IMUZ				;	
-		aTempArray15[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_CurrentLev			;				
-		aTempArray15[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_CurrentLev			;				
-		aTempArray15[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_CurrentLev			;				
-		aTempArray15[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_CurrentLev			;		
-		aTempArray16[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidFiltered;				
-		aTempArray16[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidFiltered;				
-		aTempArray16[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidFiltered;				
-		aTempArray16[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidFiltered;		
+		aTempArray15[0]															:=			DINT_TO_REAL(XMCData.stFromXMC1ToMC.EM_origE_CurrentLev)			;				
+		aTempArray15[1]															:=			DINT_TO_REAL(XMCData.stFromXMC2ToMC.EM_origE_CurrentLev)			;				
+		aTempArray15[2]															:=			DINT_TO_REAL(XMCData.stFromXMC3ToMC.EM_origE_CurrentLev	)		;				
+		aTempArray15[3]															:=			DINT_TO_REAL(XMCData.stFromXMC4ToMC.EM_origE_CurrentLev	)		;		
+		aTempArray16[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidanceFiltered;				
+		aTempArray16[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidanceFiltered;				
+		aTempArray16[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidanceFiltered;				
+		aTempArray16[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidanceFiltered;		
 		aTempArray17[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_IMUY				;			
 		aTempArray17[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_IMUY				;			
 		aTempArray17[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_IMUY				;			
 		aTempArray17[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_IMUY				;	
-		aTempArray18[0]															:=			XMCData.stFromXMC1ToMC.EM_origE_CurrentGuid			;				
-		aTempArray18[1]															:=			XMCData.stFromXMC2ToMC.EM_origE_CurrentGuid			;				
-		aTempArray18[2]															:=			XMCData.stFromXMC3ToMC.EM_origE_CurrentGuid			;				
-		aTempArray18[3]															:=			XMCData.stFromXMC4ToMC.EM_origE_CurrentGuid			;	
+		aTempArray18[0]															:=			DINT_TO_REAL(XMCData.stFromXMC1ToMC.EM_origE_CurrentGuid)			;				
+		aTempArray18[1]															:=			DINT_TO_REAL(XMCData.stFromXMC2ToMC.EM_origE_CurrentGuid)			;				
+		aTempArray18[2]															:=			DINT_TO_REAL(XMCData.stFromXMC3ToMC.EM_origE_CurrentGuid)			;				
+		aTempArray18[3]															:=			DINT_TO_REAL(XMCData.stFromXMC4ToMC.EM_origE_CurrentGuid)			;	
 		//System Status
 		PRG_MainController.stXMCCommands.nSafetyCounterXMC1						:=			XMCData.stFromXMC1ToMC.EM_origE_SafetyCounter		;					 			
 		PRG_MainController.stXMCCommands.nSafetyCounterXMC2						:=			XMCData.stFromXMC2ToMC.EM_origE_SafetyCounter		;					 			
 		PRG_MainController.stXMCCommands.nSafetyCounterXMC3						:=			XMCData.stFromXMC3ToMC.EM_origE_SafetyCounter		;					 			
 		PRG_MainController.stXMCCommands.nSafetyCounterXMC4			        	:=			XMCData.stFromXMC4ToMC.EM_origE_SafetyCounter	;
+		PRG_MainController.stXMCCommands.nStateXMC1								:=			XMCData.stFromXMC1ToMC.EM_origE_State;
+		PRG_MainController.stXMCCommands.nStateXMC2								:=			XMCData.stFromXMC2ToMC.EM_origE_State;
+		PRG_MainController.stXMCCommands.nStateXMC3								:=			XMCData.stFromXMC3ToMC.EM_origE_State;
+		PRG_MainController.stXMCCommands.nStateXMC4								:=			XMCData.stFromXMC4ToMC.EM_origE_State;
 		
 	//From MC to XMC
 		//Control
@@ -322,10 +326,10 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		XMCData.stFromMCToXMC2.ME_origM_AckError								:=			PRG_MainController.stXMCCommands.bAckError;
 		XMCData.stFromMCToXMC3.ME_origM_AckError								:=			PRG_MainController.stXMCCommands.bAckError;
 		XMCData.stFromMCToXMC4.ME_origM_AckError								:=			PRG_MainController.stXMCCommands.bAckError;	
-		XMCData.stFromMCToXMC1.ME_origM_DebugPWMSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
-		XMCData.stFromMCToXMC2.ME_origM_DebugPWMSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
-		XMCData.stFromMCToXMC3.ME_origM_DebugPWMSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
-		XMCData.stFromMCToXMC4.ME_origM_DebugPWMSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;			
+		XMCData.stFromMCToXMC1.ME_origM_DebugSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
+		XMCData.stFromMCToXMC2.ME_origM_DebugSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
+		XMCData.stFromMCToXMC3.ME_origM_DebugSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;
+		XMCData.stFromMCToXMC4.ME_origM_DebugSel								:=			PRG_MainController.stXMCCommands.nDebugPWMSel;			
 		XMCData.stFromMCToXMC1.ME_origM_DebugPWMLev								:=			PRG_MainController.stXMCCommands.nDebugPWMLev;
 		XMCData.stFromMCToXMC2.ME_origM_DebugPWMLev								:=			PRG_MainController.stXMCCommands.nDebugPWMLev;
 		XMCData.stFromMCToXMC3.ME_origM_DebugPWMLev								:=			PRG_MainController.stXMCCommands.nDebugPWMLev;
@@ -335,18 +339,18 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		XMCData.stFromMCToXMC3.ME_origM_DebugPWMGuid							:=			PRG_MainController.stXMCCommands.nDebugPWMGuid;
 		XMCData.stFromMCToXMC4.ME_origM_DebugPWMGuid							:=			PRG_MainController.stXMCCommands.nDebugPWMGuid;			
 		//Guidance
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidCurrent					:=			aTempArray9[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidForce					:=			aTempArray11[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidForce					:=			aTempArray11[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidForce					:=			aTempArray11[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidForce					:=			aTempArray11[3];
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceGuidVoltage					:=			aTempArray10[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredGuidCurrent					:=			aTempArray9[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredGuidCurrent					:=			aTempArray9[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredGuidCurrent					:=			aTempArray9[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredGuidCurrent					:=			aTempArray9[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredGuidForce					:=			aTempArray11[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredGuidForce					:=			aTempArray11[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredGuidForce					:=			aTempArray11[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredGuidForce					:=			aTempArray11[3];
+		XMCData.stFromMCToXMC1.ME_origM_DesiredGuidVoltage					:=			aTempArray10[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredGuidVoltage					:=			aTempArray10[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredGuidVoltage					:=			aTempArray10[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredGuidVoltage					:=			aTempArray10[3];		
 		XMCData.stFromMCToXMC1.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC2.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC3.ME_origM_GuidEnableCurrentController				:=			PRG_MainController.fbGuidanceSystem.bEnableCurrentController;
@@ -360,30 +364,30 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		XMCData.stFromMCToXMC3.ME_origM_GuidEnablePControl						:=			PRG_MainController.fbGuidanceSystem.bEnableIControl;
 		XMCData.stFromMCToXMC4.ME_origM_GuidEnablePControl						:=			PRG_MainController.fbGuidanceSystem.bEnableIControl;			
 		//Levitation
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevDistance					:=			aTempArray3[0] + aTempArray2[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevDistance					:=			aTempArray3[1] + aTempArray2[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevDistance					:=			aTempArray3[2] + aTempArray2[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevDistance					:=			aTempArray3[3] + aTempArray2[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVelocity					:=			aTempArray4[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevAcceleration				:=			aTempArray5[3];			
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevCurrent					:=			aTempArray6[3];	
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevVoltage					:=			aTempArray7[3];		
-		XMCData.stFromMCToXMC1.ME_origM_NewReferenceLevForce					:=			aTempArray8[0];
-		XMCData.stFromMCToXMC2.ME_origM_NewReferenceLevForce					:=			aTempArray8[1];
-		XMCData.stFromMCToXMC3.ME_origM_NewReferenceLevForce					:=			aTempArray8[2];
-		XMCData.stFromMCToXMC4.ME_origM_NewReferenceLevForce					:=			aTempArray8[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevDistance					:=			aTempArray3[0] + aTempArray2[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevDistance					:=			aTempArray3[1] + aTempArray2[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevDistance					:=			aTempArray3[2] + aTempArray2[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevDistance					:=			aTempArray3[3] + aTempArray2[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevVelocity					:=			aTempArray4[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevVelocity					:=			aTempArray4[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevVelocity					:=			aTempArray4[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevVelocity					:=			aTempArray4[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevAcceleration				:=			aTempArray5[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevAcceleration				:=			aTempArray5[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevAcceleration				:=			aTempArray5[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevAcceleration				:=			aTempArray5[3];			
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevCurrent					:=			aTempArray6[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevCurrent					:=			aTempArray6[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevCurrent					:=			aTempArray6[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevCurrent					:=			aTempArray6[3];	
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevVoltage					:=			aTempArray7[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevVoltage					:=			aTempArray7[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevVoltage					:=			aTempArray7[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevVoltage					:=			aTempArray7[3];		
+		XMCData.stFromMCToXMC1.ME_origM_DesiredLevForce					:=			aTempArray8[0];
+		XMCData.stFromMCToXMC2.ME_origM_DesiredLevForce					:=			aTempArray8[1];
+		XMCData.stFromMCToXMC3.ME_origM_DesiredLevForce					:=			aTempArray8[2];
+		XMCData.stFromMCToXMC4.ME_origM_DesiredLevForce					:=			aTempArray8[3];		
 		XMCData.stFromMCToXMC1.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC2.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
 		XMCData.stFromMCToXMC3.ME_origM_LevEnableCurrentController				:=			PRG_MainController.fbLevitationSystem.bEnableCurrentController;
@@ -424,9 +428,9 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceRawLev22		:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceRawLev22;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceRawGuid11		:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceRawGuid11;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceRawGuid12		:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceRawGuid12;		
-		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceGuidFiltered	:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidFiltered;		
-		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceLevFiltered		:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceLevFiltered;	
-		OperationControlData.stForwardXMC1ToOC.MO_origE_VelocityLevFiltered		:=			XMCData.stFromXMC1ToMC.EM_origE_VelocityLevFiltered;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceGuidanceFiltered	:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceGuidanceFiltered;		
+		OperationControlData.stForwardXMC1ToOC.MO_origE_DistanceLevitationFiltered		:=			XMCData.stFromXMC1ToMC.EM_origE_DistanceLevitationFiltered;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_VelocityZFiltered		:=			XMCData.stFromXMC1ToMC.EM_origE_VelocityZFiltered;	
 		OperationControlData.stForwardXMC1ToOC.MO_origE_IMUX					:=			XMCData.stFromXMC1ToMC.EM_origE_IMUX;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_IMUY					:=			XMCData.stFromXMC1ToMC.EM_origE_IMUY;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_IMUZ					:=			XMCData.stFromXMC1ToMC.EM_origE_IMUZ;		
@@ -443,7 +447,16 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC1ToOC.MO_origE_WarnBits				:=			XMCData.stFromXMC1ToMC.EM_origE_WarnBits;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterIn		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterIn;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterSize		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterSize;		
-		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf;		
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf0		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf0;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf1		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf1;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf2		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf2;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf3		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf3;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf4		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf4;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf5		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf5;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf6		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf6;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf7		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf7;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf8		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf8;
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf9		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf9;			
 		//Levitation
 		OperationControlData.stForwardXMC1ToOC.MO_origE_LevEstimatedFlux0		:=			XMCData.stFromXMC1ToMC.EM_origE_LevEstimatedFlux0;		
 		OperationControlData.stForwardXMC1ToOC.MO_origE_LevEstimatedFlux1       :=			XMCData.stFromXMC1ToMC.EM_origE_LevEstimatedFlux1;       
@@ -468,9 +481,9 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceRawLev22		:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceRawLev22;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceRawGuid11		:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceRawGuid11;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceRawGuid12		:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceRawGuid12;		
-		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceGuidFiltered	:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidFiltered;		
-		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceLevFiltered		:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceLevFiltered;	
-		OperationControlData.stForwardXMC2ToOC.MO_origE_VelocityLevFiltered		:=			XMCData.stFromXMC2ToMC.EM_origE_VelocityLevFiltered;	
+		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceGuidanceFiltered	:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceGuidanceFiltered;		
+		OperationControlData.stForwardXMC2ToOC.MO_origE_DistanceLevitationFiltered		:=			XMCData.stFromXMC2ToMC.EM_origE_DistanceLevitationFiltered;	
+		OperationControlData.stForwardXMC2ToOC.MO_origE_VelocityZFiltered		:=			XMCData.stFromXMC2ToMC.EM_origE_VelocityZFiltered;	
 		OperationControlData.stForwardXMC2ToOC.MO_origE_IMUX					:=			XMCData.stFromXMC2ToMC.EM_origE_IMUX;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_IMUY					:=			XMCData.stFromXMC2ToMC.EM_origE_IMUY;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_IMUZ					:=			XMCData.stFromXMC2ToMC.EM_origE_IMUZ;		
@@ -487,7 +500,16 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC2ToOC.MO_origE_WarnBits				:=			XMCData.stFromXMC2ToMC.EM_origE_WarnBits;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_LoggingCounterIn		:=			XMCData.stFromXMC2ToMC.EM_origE_LoggingCounterIn;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_LoggingCounterSize		:=			XMCData.stFromXMC2ToMC.EM_origE_LoggingCounterSize;		
-		OperationControlData.stForwardXMC2ToOC.MO_origE_LoggingCounterBuf		:=			XMCData.stFromXMC2ToMC.EM_origE_LoggingCounterBuf;		
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf0		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf0;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf1		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf1;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf2		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf2;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf3		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf3;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf4		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf4;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf5		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf5;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf6		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf6;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf7		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf7;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf8		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf8;
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf9		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf9;		
 		//Levitation
 		OperationControlData.stForwardXMC2ToOC.MO_origE_LevEstimatedFlux0		:=			XMCData.stFromXMC2ToMC.EM_origE_LevEstimatedFlux0;		
 		OperationControlData.stForwardXMC2ToOC.MO_origE_LevEstimatedFlux1       :=			XMCData.stFromXMC2ToMC.EM_origE_LevEstimatedFlux1;       
@@ -512,9 +534,9 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceRawLev22		:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceRawLev22;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceRawGuid11		:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceRawGuid11;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceRawGuid12		:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceRawGuid12;		
-		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceGuidFiltered	:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidFiltered;		
-		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceLevFiltered		:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceLevFiltered;	
-		OperationControlData.stForwardXMC3ToOC.MO_origE_VelocityLevFiltered		:=			XMCData.stFromXMC3ToMC.EM_origE_VelocityLevFiltered;	
+		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceGuidanceFiltered	:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceGuidanceFiltered;		
+		OperationControlData.stForwardXMC3ToOC.MO_origE_DistanceLevitationFiltered		:=			XMCData.stFromXMC3ToMC.EM_origE_DistanceLevitationFiltered;	
+		OperationControlData.stForwardXMC3ToOC.MO_origE_VelocityZFiltered		:=			XMCData.stFromXMC3ToMC.EM_origE_VelocityZFiltered;	
 		OperationControlData.stForwardXMC3ToOC.MO_origE_IMUX					:=			XMCData.stFromXMC3ToMC.EM_origE_IMUX;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_IMUY					:=			XMCData.stFromXMC3ToMC.EM_origE_IMUY;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_IMUZ					:=			XMCData.stFromXMC3ToMC.EM_origE_IMUZ;		
@@ -531,7 +553,16 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC3ToOC.MO_origE_WarnBits				:=			XMCData.stFromXMC3ToMC.EM_origE_WarnBits;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_LoggingCounterIn		:=			XMCData.stFromXMC3ToMC.EM_origE_LoggingCounterIn;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_LoggingCounterSize		:=			XMCData.stFromXMC3ToMC.EM_origE_LoggingCounterSize;		
-		OperationControlData.stForwardXMC3ToOC.MO_origE_LoggingCounterBuf		:=			XMCData.stFromXMC3ToMC.EM_origE_LoggingCounterBuf;		
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf0		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf0;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf1		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf1;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf2		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf2;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf3		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf3;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf4		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf4;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf5		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf5;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf6		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf6;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf7		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf7;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf8		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf8;
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf9		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf9;		
 		//Levitation
 		OperationControlData.stForwardXMC3ToOC.MO_origE_LevEstimatedFlux0		:=			XMCData.stFromXMC3ToMC.EM_origE_LevEstimatedFlux0;		
 		OperationControlData.stForwardXMC3ToOC.MO_origE_LevEstimatedFlux1       :=			XMCData.stFromXMC3ToMC.EM_origE_LevEstimatedFlux1;       
@@ -556,9 +587,9 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceRawLev22		:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceRawLev22;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceRawGuid11		:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceRawGuid11;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceRawGuid12		:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceRawGuid12;		
-		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceGuidFiltered	:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidFiltered;		
-		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceLevFiltered		:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceLevFiltered;	
-		OperationControlData.stForwardXMC4ToOC.MO_origE_VelocityLevFiltered		:=			XMCData.stFromXMC4ToMC.EM_origE_VelocityLevFiltered;	
+		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceGuidanceFiltered	:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceGuidanceFiltered;		
+		OperationControlData.stForwardXMC4ToOC.MO_origE_DistanceLevitationFiltered		:=			XMCData.stFromXMC4ToMC.EM_origE_DistanceLevitationFiltered;	
+		OperationControlData.stForwardXMC4ToOC.MO_origE_VelocityZFiltered		:=			XMCData.stFromXMC4ToMC.EM_origE_VelocityZFiltered;	
 		OperationControlData.stForwardXMC4ToOC.MO_origE_IMUX					:=			XMCData.stFromXMC4ToMC.EM_origE_IMUX;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_IMUY					:=			XMCData.stFromXMC4ToMC.EM_origE_IMUY;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_IMUZ					:=			XMCData.stFromXMC4ToMC.EM_origE_IMUZ;		
@@ -575,7 +606,16 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC4ToOC.MO_origE_WarnBits				:=			XMCData.stFromXMC4ToMC.EM_origE_WarnBits;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_LoggingCounterIn		:=			XMCData.stFromXMC4ToMC.EM_origE_LoggingCounterIn;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_LoggingCounterSize		:=			XMCData.stFromXMC4ToMC.EM_origE_LoggingCounterSize;		
-		OperationControlData.stForwardXMC4ToOC.MO_origE_LoggingCounterBuf		:=			XMCData.stFromXMC4ToMC.EM_origE_LoggingCounterBuf;		
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf0		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf0;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf1		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf1;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf2		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf2;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf3		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf3;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf4		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf4;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf5		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf5;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf6		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf6;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf7		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf7;	
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf8		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf8;
+		OperationControlData.stForwardXMC1ToOC.MO_origE_LoggingCounterBuf9		:=			XMCData.stFromXMC1ToMC.EM_origE_LoggingCounterBuf9;		
 		//Levitation
 		OperationControlData.stForwardXMC4ToOC.MO_origE_LevEstimatedFlux0		:=			XMCData.stFromXMC4ToMC.EM_origE_LevEstimatedFlux0;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_LevEstimatedFlux1       :=			XMCData.stFromXMC4ToMC.EM_origE_LevEstimatedFlux1;       
@@ -589,7 +629,9 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidEstimatedCurrent	:=			XMCData.stFromXMC4ToMC.EM_origE_GuidEstimatedCurrent;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidEstimatedResistance	:=			XMCData.stFromXMC4ToMC.EM_origE_GuidEstimatedResistance;	
 		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidIntegratedControlError :=		XMCData.stFromXMC4ToMC.EM_origE_GuidIntegratedControlError;		
-		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidReferenceVoltage	:=			XMCData.stFromXMC4ToMC.EM_origE_GuidReferenceVoltage;	]]></ST>
+		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidReferenceVoltage	:=			XMCData.stFromXMC4ToMC.EM_origE_GuidReferenceVoltage;	
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="doEnableSystems" Id="{4402bbf9-07a3-41dd-916a-44a19b1d489b}">
@@ -741,72 +783,9 @@ END_IF
       <LineId Id="412" Count="0" />
       <LineId Id="488" Count="0" />
       <LineId Id="502" Count="1" />
-      <LineId Id="413" Count="0" />
-      <LineId Id="504" Count="0" />
-      <LineId Id="506" Count="0" />
-      <LineId Id="905" Count="31" />
-      <LineId Id="527" Count="0" />
-      <LineId Id="500" Count="1" />
-      <LineId Id="547" Count="1" />
-      <LineId Id="528" Count="0" />
-      <LineId Id="549" Count="1" />
-      <LineId Id="529" Count="1" />
-      <LineId Id="551" Count="4" />
-      <LineId Id="531" Count="0" />
-      <LineId Id="556" Count="2" />
-      <LineId Id="532" Count="0" />
-      <LineId Id="559" Count="2" />
-      <LineId Id="533" Count="0" />
-      <LineId Id="562" Count="2" />
-      <LineId Id="534" Count="0" />
-      <LineId Id="565" Count="2" />
-      <LineId Id="535" Count="1" />
-      <LineId Id="568" Count="0" />
-      <LineId Id="537" Count="0" />
-      <LineId Id="569" Count="4" />
-      <LineId Id="538" Count="0" />
-      <LineId Id="574" Count="2" />
-      <LineId Id="539" Count="2" />
-      <LineId Id="577" Count="1" />
-      <LineId Id="542" Count="1" />
-      <LineId Id="579" Count="4" />
-      <LineId Id="544" Count="2" />
-      <LineId Id="584" Count="0" />
-      <LineId Id="594" Count="1" />
-      <LineId Id="585" Count="1" />
-      <LineId Id="596" Count="4" />
-      <LineId Id="587" Count="0" />
-      <LineId Id="601" Count="2" />
-      <LineId Id="588" Count="0" />
-      <LineId Id="604" Count="2" />
-      <LineId Id="589" Count="0" />
-      <LineId Id="607" Count="2" />
-      <LineId Id="590" Count="2" />
-      <LineId Id="610" Count="2" />
-      <LineId Id="620" Count="0" />
-      <LineId Id="637" Count="4" />
-      <LineId Id="621" Count="1" />
-      <LineId Id="642" Count="0" />
-      <LineId Id="623" Count="0" />
-      <LineId Id="643" Count="4" />
-      <LineId Id="624" Count="2" />
-      <LineId Id="648" Count="1" />
-      <LineId Id="627" Count="1" />
-      <LineId Id="650" Count="1" />
-      <LineId Id="677" Count="0" />
-      <LineId Id="629" Count="0" />
-      <LineId Id="678" Count="0" />
-      <LineId Id="680" Count="18" />
-      <LineId Id="700" Count="8" />
-      <LineId Id="710" Count="6" />
-      <LineId Id="718" Count="6" />
-      <LineId Id="679" Count="0" />
-      <LineId Id="725" Count="41" />
-      <LineId Id="593" Count="0" />
-      <LineId Id="653" Count="0" />
-      <LineId Id="767" Count="41" />
-      <LineId Id="654" Count="1" />
-      <LineId Id="809" Count="41" />
+      <LineId Id="969" Count="35" />
+      <LineId Id="1354" Count="3" />
+      <LineId Id="1005" Count="323" />
       <LineId Id="656" Count="0" />
     </LineIds>
     <LineIds Name="PRG_MainController.doEnableSystems">

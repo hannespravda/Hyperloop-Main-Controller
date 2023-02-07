@@ -29,6 +29,21 @@
     <Compile Include="DUTs\HighLevelCondition.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Interfaces\ForwardXMCToOperationControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\FromMainControlToOperationControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\FromMainControlToXMC.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\FromOperationControlToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\FromXMCToMainControl.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\LEDColor.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -199,11 +214,13 @@
     <PinnedGlobalDataType Include="ForwardXMC3ToOperationControl" />
     <PinnedGlobalDataType Include="ForwardXMC4ToOperationControl" />
     <PinnedGlobalDataType Include="FromMainControlToOperationControl" />
+    <PinnedGlobalDataType Include="FromMainControlToOperationControl_IO" />
     <PinnedGlobalDataType Include="FromMainControlToXMC1" />
     <PinnedGlobalDataType Include="FromMainControlToXMC2" />
     <PinnedGlobalDataType Include="FromMainControlToXMC3" />
     <PinnedGlobalDataType Include="FromMainControlToXMC4" />
     <PinnedGlobalDataType Include="FromOperationControlToMainControl" />
+    <PinnedGlobalDataType Include="FromOperationControlToMainControl_IO" />
     <PinnedGlobalDataType Include="FromXMC1ToMainControl" />
     <PinnedGlobalDataType Include="FromXMC2ToMainControl" />
     <PinnedGlobalDataType Include="FromXMC3ToMainControl" />

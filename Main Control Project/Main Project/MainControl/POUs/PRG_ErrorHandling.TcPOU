@@ -7,11 +7,13 @@ VAR
 	nWarningBits 					: ULINT;
 	
 	fbStartUpTimer 					: TON := (PT := tStartUpTime);
+	fbShutdownTimer					: TON := (PT := tShutdownTime);
 	bStartUpCheck 					: BOOL;
 	bErrorInStartUp 				: BOOL;
 	bErrorInReady 					: BOOL;
 	bErrorInOperational 			: BOOL;
 	bErrorInShutdown 				: BOOL;
+	bGoToError						: BOOL;
 	bAllErrorsAcknowledged 			: BOOL;
 	
 	fbEventLogging 					: FB_EventLogging;
@@ -25,6 +27,7 @@ END_VAR
 VAR CONSTANT
 	tStartUpTime 					: TIME := T#10S;
 	tSafetyCounterTimeout 			: TIME := T#5S;
+	tShutdownTime					: TIME := T#30S;
 	
 	nNumberOfWarnings 				: USINT := 52;			//*set the number of Warnings here*
 	nNumberOfErrors 				: USINT := 6;			//*set the number of Errors here*
@@ -41,6 +44,8 @@ doSetErrorBits(		nErrorIDServiceModule := PRG_MainController.fbServiceModule.nEr
 					nErrorIDLevitationSystem := PRG_MainController.fbLevitationSystem.nErrorID,
 					nErrorIDGuidanceSystem := PRG_MainController.fbGuidanceSystem.nErrorID,
 					nErrorIDMainController := PRG_ErrorHandling.fbSafetyCounter.nErrorID);
+
+doCheckErrorStates();
 
 fbSafetyCounter();
 fbEventLogging();
@@ -65,6 +70,7 @@ CASE PRG_MainController.eState OF
 		END_IF	
 										
 	TopLevelSTM.READY:
+		fbShutdownTimer(IN:=FALSE);
 		IF nErrorBits <> 0 THEN
 			bErrorInReady := TRUE;
 		ELSE
@@ -79,6 +85,7 @@ CASE PRG_MainController.eState OF
 		END_IF
 		
 	TopLevelSTM.SHUTDOWN:
+		fbShutdownTimer(IN:=TRUE);
 		IF NOT bErrorInOperational THEN
 			IF nErrorBits <> 0 THEN
 				bErrorInShutdown := TRUE;
@@ -116,6 +123,17 @@ END_CASE
 
 ]]></ST>
     </Implementation>
+    <Method Name="doCheckErrorStates" Id="{0d2cbc92-a379-46e2-83e8-cbc73fd194b7}">
+      <Declaration><![CDATA[METHOD PRIVATE doCheckErrorStates
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF PRG_MainController.stXMCCommands.nStateXMC1 = 3 OR PRG_MainController.stXMCCommands.nStateXMC2 = 3 OR PRG_MainController.stXMCCommands.nStateXMC3 = 3 OR PRG_MainController.stXMCCommands.nStateXMC4 = 3 OR PRG_MainController.stOperationControlCommands.bGoToError THEN
+	bGoToError := TRUE;
+ELSE
+	bGoToError := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="doSetErrorBits" Id="{7ab45513-1aec-42bb-b9e7-dee8cdaad788}">
       <Declaration><![CDATA[METHOD PRIVATE doSetErrorBits
 VAR_INPUT
@@ -295,6 +313,8 @@ END_IF
       <LineId Id="39" Count="0" />
       <LineId Id="388" Count="0" />
       <LineId Id="193" Count="0" />
+      <LineId Id="511" Count="0" />
+      <LineId Id="509" Count="0" />
       <LineId Id="358" Count="0" />
       <LineId Id="271" Count="0" />
       <LineId Id="470" Count="0" />
@@ -312,7 +332,9 @@ END_IF
       <LineId Id="256" Count="0" />
       <LineId Id="239" Count="0" />
       <LineId Id="477" Count="1" />
-      <LineId Id="60" Count="3" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="519" Count="0" />
+      <LineId Id="62" Count="1" />
       <LineId Id="70" Count="1" />
       <LineId Id="64" Count="0" />
       <LineId Id="73" Count="0" />
@@ -320,6 +342,7 @@ END_IF
       <LineId Id="75" Count="3" />
       <LineId Id="23" Count="0" />
       <LineId Id="52" Count="1" />
+      <LineId Id="518" Count="0" />
       <LineId Id="80" Count="0" />
       <LineId Id="83" Count="3" />
       <LineId Id="81" Count="1" />
@@ -347,6 +370,10 @@ END_IF
       <LineId Id="284" Count="0" />
       <LineId Id="94" Count="1" />
       <LineId Id="93" Count="0" />
+    </LineIds>
+    <LineIds Name="PRG_ErrorHandling.doCheckErrorStates">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="PRG_ErrorHandling.doSetErrorBits">
       <LineId Id="203" Count="4" />

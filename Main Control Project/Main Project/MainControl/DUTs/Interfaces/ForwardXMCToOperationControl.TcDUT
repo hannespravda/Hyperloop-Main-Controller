@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ForwardXMCToOperationControl" Id="{d8dd290a-9dfe-4311-a3ab-6e7fccd455ba}">
+    <Declaration><![CDATA[TYPE ForwardXMCToOperationControl :
+STRUCT
+	MO_origE_State							:	USINT			;
+	MO_origE_LoggingCounterIn               :	USINT			;
+	MO_origE_LoggingCounterSize             :	USINT			;
+	MO_origE_LoggingCounterBuf0             :	BYTE			;
+	MO_origE_LoggingCounterBuf1             :	BYTE			;
+	MO_origE_LoggingCounterBuf2             :	BYTE			;
+	MO_origE_LoggingCounterBuf3             :	BYTE			;
+	MO_origE_LoggingCounterBuf4             :	BYTE			;
+	MO_origE_LoggingCounterBuf5             :	BYTE			;
+	MO_origE_LoggingCounterBuf6             :	BYTE			;
+	MO_origE_LoggingCounterBuf7             :	BYTE			;
+	MO_origE_LoggingCounterBuf8             :	BYTE			;
+	MO_origE_LoggingCounterBuf9             :	BYTE			;
+	MO_origE_SafetyCounter                  :	UDINT			;
+	MO_origE_Timestamp                      :	UDINT			;
+	MO_origE_WarnBits                       :	ULINT			;
+	MO_origE_ErrBits                        :	ULINT			;
+	MO_origE_DistanceLevitationFiltered     :	REAL			;
+	MO_origE_DistanceGuidanceFiltered       :	REAL			;
+	MO_origE_DistanceRawLev11               :	REAL			;
+	MO_origE_DistanceRawLev12               :	REAL			;
+	MO_origE_DistanceRawLev21               :	REAL			;
+	MO_origE_DistanceRawLev22               :	REAL			;
+	MO_origE_DistanceRawGuid11              :	REAL			;
+	MO_origE_DistanceRawGuid12              :	REAL			;
+	MO_origE_IMUX                           :	REAL			;
+	MO_origE_IMUY                           :	REAL			;
+	MO_origE_IMUZ                           :	REAL			;
+	MO_origE_VelocityZFiltered              :	REAL			;
+	MO_origE_TemperatureBox                 :	REAL			;
+	MO_origE_TemperatureLev0                :	REAL			;
+	MO_origE_TemperatureLev1                :	REAL			;
+	MO_origE_TemperatureGuid                :	REAL			;
+	MO_origE_PressureBox                    :	REAL			;
+	MO_origE_CurrentLev                     :	DINT			;
+	MO_origE_CurrentGuid                    :	DINT			;
+	MO_origE_GuidEstimatedFlux0             :	REAL			;
+	MO_origE_GuidEstimatedFlux1             :	REAL			;
+	MO_origE_GuidEstimatedCurrent           :	REAL			;
+	MO_origE_GuidEstimatedResistance        :	REAL			;
+	MO_origE_GuidIntegratedControlError     :	REAL			;
+	MO_origE_GuidReferenceVoltage           :	REAL			;
+	MO_origE_LevEstimatedFlux0              :	REAL			;
+	MO_origE_LevEstimatedFlux1              :	REAL			;
+	MO_origE_LevEstimatedCurrent            :	REAL			;
+	MO_origE_LevEstimatedResistance         :	REAL			;
+	MO_origE_LevIntegratedControlError      :	REAL			;
+	MO_origE_LevReferenceVoltage            :	REAL			;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

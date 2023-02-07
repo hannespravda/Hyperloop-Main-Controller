@@ -6,10 +6,10 @@ VAR_GLOBAL
 	stFromOCToMC 			AT %I* : FromOperationControlToMainControl;
 	
 	stFromMCToOC 			AT %Q* : FromMainControlToOperationControl;
-	stForwardXMC1ToOC 		AT %Q* : ForwardXMC1ToOperationControl;
-	stForwardXMC2ToOC 		AT %Q* : ForwardXMC2ToOperationControl;
-	stForwardXMC3ToOC 		AT %Q* : ForwardXMC3ToOperationControl;
-	stForwardXMC4ToOC 		AT %Q* : ForwardXMC4ToOperationControl;
+	stForwardXMC1ToOC 		AT %Q* : ForwardXMCToOperationControl;
+	stForwardXMC2ToOC 		AT %Q* : ForwardXMCToOperationControl;
+	stForwardXMC3ToOC 		AT %Q* : ForwardXMCToOperationControl;
+	stForwardXMC4ToOC 		AT %Q* : ForwardXMCToOperationControl;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

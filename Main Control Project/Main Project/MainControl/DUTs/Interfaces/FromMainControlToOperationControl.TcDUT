@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="FromMainControlToOperationControl" Id="{d142c163-baa9-4ceb-ab29-b67810342442}">
+    <Declaration><![CDATA[TYPE FromMainControlToOperationControl :
+STRUCT
+		//MainController
+		MO_origM_State 							: USINT		;
+		MO_origM_WarnBits 						: ULINT		;
+		MO_origM_ErrBits 						: ULINT		;
+		MO_origM_SafetyCounter 					: UDINT		;
+		MO_origM_ShutdownFinished 				: BIT		;
+		//ServiceModule                 		
+		MO_origM_DistanceServiceModule 			: REAL		;
+		
+		//LevitationSystem
+		MO_origM_ECOutputDistanceXMC1 			: REAL		;
+		MO_origM_ECOutputDistanceXMC2 			: REAL		;
+		MO_origM_ECOutputDistanceXMC3 			: REAL		;
+		MO_origM_ECOutputDistanceXMC4 			: REAL		;
+		MO_origM_TGOutputLevDistanceXMC1 		: REAL		;
+		MO_origM_TGOutputLevDistanceXMC2 		: REAL		;
+		MO_origM_TGOutputLevDistanceXMC3 		: REAL		;
+		MO_origM_TGOutputLevDistanceXMC4 		: REAL		;
+		MO_origM_TGOutputLevVelocityXMC1 		: REAL		;
+		MO_origM_TGOutputLevVelocityXMC2 		: REAL		;
+		MO_origM_TGOutputLevVelocityXMC3 		: REAL		;
+		MO_origM_TGOutputLevVelocityXMC4 		: REAL		;
+		MO_origM_TGOutputLevAccelerationXMC1 	: REAL		;
+		MO_origM_TGOutputLevAccelerationXMC2 	: REAL		;
+		MO_origM_TGOutputLevAccelerationXMC3 	: REAL		;
+		MO_origM_TGOutputLevAccelerationXMC4 	: REAL		;
+		MO_origM_TGOutputLevCurrentXMC1 		: REAL		;
+		MO_origM_TGOutputLevCurrentXMC2 		: REAL		;
+		MO_origM_TGOutputLevCurrentXMC3 		: REAL		;
+		MO_origM_TGOutputLevCurrentXMC4 		: REAL		;
+		MO_origM_TGOutputLevVoltageXMC1 		: REAL		;
+		MO_origM_TGOutputLevVoltageXMC2 		: REAL		;
+		MO_origM_TGOutputLevVoltageXMC3 		: REAL		;
+		MO_origM_TGOutputLevVoltageXMC4 		: REAL		;
+		MO_origM_TGOutputLevForceXMC1 			: REAL		;
+		MO_origM_TGOutputLevForceXMC2 			: REAL		;
+		MO_origM_TGOutputLevForceXMC3 			: REAL		;
+		MO_origM_TGOutputLevForceXMC4 			: REAL		;
+		
+		//GuidanceSystem
+		MO_origM_GuidanceIMUX0 					: REAL		;
+		MO_origM_GuidanceIMUX1 					: REAL		;
+		MO_origM_GuidanceIMUY0 					: REAL		;
+		MO_origM_GuidanceIMUY1 					: REAL		;
+		MO_origM_GuidanceIMUZ0 					: REAL		;
+		MO_origM_GuidanceIMUZ1 					: REAL		;
+		MO_origM_GCOutputGuidCurrentXMC1 		: REAL		;
+		MO_origM_GCOutputGuidCurrentXMC2 		: REAL		;
+		MO_origM_GCOutputGuidCurrentXMC3 		: REAL		;
+		MO_origM_GCOutputGuidCurrentXMC4 		: REAL		;
+		MO_origM_GCOutputGuidVoltageXMC1 		: REAL		;
+		MO_origM_GCOutputGuidVoltageXMC2 		: REAL		;
+		MO_origM_GCOutputGuidVoltageXMC3 		: REAL		;
+		MO_origM_GCOutputGuidVoltageXMC4 		: REAL		;
+		MO_origM_GCOutputGuidForceXMC1 			: REAL		;
+		MO_origM_GCOutputGuidForceXMC2 			: REAL		;
+		MO_origM_GCOutputGuidForceXMC3 			: REAL		;
+		MO_origM_GCOutputGuidForceXMC4 			: REAL		;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
