@@ -1398,6 +1398,9 @@
 				<BitSize>8</BitSize>
 				<BitOffs>288</BitOffs>
 			</SubItem>
+			<Hides>
+				<Hide GUID="{0D77D442-A1AE-0D57-0E27-3E96B226057D}"/>
+			</Hides>
 		</DataType>
 		<DataType>
 			<Name GUID="{D142C163-BAA9-4CEB-AB29-B67810342442}" PersistentType="true">FromMainControlToOperationControl</Name>
@@ -1718,6 +1721,9 @@
 				<BitSize>32</BitSize>
 				<BitOffs>1728</BitOffs>
 			</SubItem>
+			<Hides>
+				<Hide GUID="{34E9313C-96E7-8B9C-19BB-55DF9DB3BA8E}"/>
+			</Hides>
 		</DataType>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-00000000003D}" TcBaseType="true" HideType="true">USINTARR6</Name>
@@ -4857,11 +4863,21 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{999AB02B-9096-D32E-82F0-9E787B692E2A}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="MainControl\MainControl.tmc" TmcHash="{49868895-7B2B-F680-D0C8-05241924F609}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>BoxLED.bBoxGreenError</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>BoxLED.bBoxGreenWarning</Name>
+							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
 						<Var>
 							<Name>OperationControlData.stFromOCToMC</Name>
 							<Type GUID="{0D77D442-A1AE-0D57-0E27-3E96B226057D}">FromOperationControlToMainControl</Type>
@@ -4891,16 +4907,6 @@
 							<Name>AccelerationSensor.stEL6001InIMU2</Name>
 							<Comment><![CDATA[**To EL6001 Inputs incl. Status (Clamp 4)**]]></Comment>
 							<Type GUID="{0146173C-D895-D219-E209-CC005AC77636}" Namespace="Tc2_SerialCom">EL6inData22B</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bBoxGreenError</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Error)**]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>BoxLED.bBoxGreenWarning</Name>
-							<Comment><![CDATA[**To EL2564 PWM Inputs Channel 4 (Status -> Warning)**]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>DistanceSensor.stEL6021In</Name>
@@ -4943,6 +4949,11 @@
 						<Var>
 							<Name>BoxLED.nBoxGreen</Name>
 							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 4 (PWM output)**]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>RGBLED.nRed</Name>
+							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
 							<Type>INT</Type>
 						</Var>
 						<Var>
@@ -4995,11 +5006,6 @@
 							<Name>DistanceSensor.stEL6021Out</Name>
 							<Comment><![CDATA[**To EL6021 Outputs**]]></Comment>
 							<Type GUID="{D6B0A42D-897A-4B90-95E8-3C741C3CE3EE}" Namespace="Tc2_SerialCom">EL6outData22B</Type>
-						</Var>
-						<Var>
-							<Name>RGBLED.nRed</Name>
-							<Comment><![CDATA[**To EL2564 PWM Outputs Channel 1 (PWM output)**]]></Comment>
-							<Type>INT</Type>
 						</Var>
 						<Var>
 							<Name>RGBLED.nGreen</Name>
@@ -8646,6 +8652,7 @@
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0120-500820000403}" Id="#x02030010"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0120-500850000403}" Id="#x02030020"/>
 		<OwnerA Name="TIPC^MainControl^MainControl Instance">
 			<OwnerB Name="TIID^Device 3 (EtherCAT)^Box 11 (XMC_ESC)">
 				<Link VarA="PlcTask Inputs^XMCData.stFromXMC1ToMC^EM_origE_CurrentGuid" VarB="IN_GENERIC process data mapping^EM_origE_CurrentGuid"/>

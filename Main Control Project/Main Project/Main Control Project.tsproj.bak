@@ -8872,6 +8872,10 @@
 				<Link VarA="PlcTask Inputs^BoxLED.bBoxGreenWarning" VarB="PWM Inputs Channel 4^Status^Warning"/>
 				<Link VarA="PlcTask Outputs^BoxLED.nBoxGreen" VarB="PWM Outputs Channel 4^PWM output"/>
 			</OwnerB>
+			<OwnerB Name="TIID^Device 4 (EtherCAT Slave)">
+				<Link VarA="PlcTask Inputs^OperationControlData.stFromOCToMC" VarB="Inputs^FromOCToMC"/>
+				<Link VarA="PlcTask Outputs^OperationControlData.stFromMCToOC" VarB="Outputs^FromMCToOC"/>
+			</OwnerB>
 		</OwnerA>
 	</Mappings>
 </TcSmProject>

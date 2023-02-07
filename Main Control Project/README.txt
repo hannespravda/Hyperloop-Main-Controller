@@ -43,6 +43,8 @@ Dummy Methods:
 	If you need different/ more/ less inputs update the DataHandling
 	Dummy Models can work in different operation Modes according to nOperationMode (if not needed, only forward to XMCBoards)
 	Total levitation Height given back to OperationControl and XMCBoards is ActualLevDistance + EqualizingControl OutputVector
+	TrajectoryGenerator should contain predefined values for a trajectory back to ground level which can be called in SHUTDOWN
+		--> SHUTDOWN in case of error can be performed automatically
 	
 Hardware Setup:
 	EL6001:
