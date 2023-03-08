@@ -75,6 +75,10 @@
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
     </Compile>
+    <Compile Include="GVLs\Test.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="GVLs\XMCData.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
@@ -213,13 +217,17 @@
     <PinnedGlobalDataType Include="ForwardXMC2ToOperationControl" />
     <PinnedGlobalDataType Include="ForwardXMC3ToOperationControl" />
     <PinnedGlobalDataType Include="ForwardXMC4ToOperationControl" />
+    <PinnedGlobalDataType Include="ForwardXMCToOperationControl_1" />
     <PinnedGlobalDataType Include="FromMainControlToOperationControl" />
+    <PinnedGlobalDataType Include="FromMainControlToOperationControl_1" />
     <PinnedGlobalDataType Include="FromMainControlToOperationControl_IO" />
     <PinnedGlobalDataType Include="FromMainControlToXMC1" />
     <PinnedGlobalDataType Include="FromMainControlToXMC2" />
     <PinnedGlobalDataType Include="FromMainControlToXMC3" />
     <PinnedGlobalDataType Include="FromMainControlToXMC4" />
     <PinnedGlobalDataType Include="FromOperationControlToMainControl" />
+    <PinnedGlobalDataType Include="FromOperationControlToMainControl_1" />
+    <PinnedGlobalDataType Include="FromOperationControlToMainControl_2" />
     <PinnedGlobalDataType Include="FromOperationControlToMainControl_IO" />
     <PinnedGlobalDataType Include="FromXMC1ToMainControl" />
     <PinnedGlobalDataType Include="FromXMC2ToMainControl" />

@@ -3266,7 +3266,7 @@
 						<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3">
-							<Entry Name="Pdo Entry 1" Index="#x6000" Sub="#x01">
+							<Entry Name="FromMCToOC" Index="#x6000" Sub="#x01">
 								<Type GUID="{18071995-0000-0000-0000-0003000000E0}">ARRAY [0..223] OF BYTE</Type>
 							</Entry>
 							<Entry>
@@ -3306,7 +3306,7 @@
 							</Entry>
 						</Pdo>
 						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2">
-							<Entry Name="Pdo Entry 1" Index="#x7000" Sub="#x01">
+							<Entry Name="FromOCToMC" Index="#x7000" Sub="#x01">
 								<Type GUID="{18071995-0000-0000-0000-000300000028}">ARRAY [0..39] OF BYTE</Type>
 							</Entry>
 							<Entry>
@@ -3323,8 +3323,8 @@
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^Operation Control^Operation Control Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Box 1 (CX2040 EtherCAT slave)">
-				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^Pdo Entry 1"/>
-				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^Pdo Entry 1"/>
+				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^FromMCToOC"/>
+				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^FromOCToMC"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

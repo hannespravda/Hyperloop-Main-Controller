@@ -5,10 +5,10 @@
     <CycleTime>1000</CycleTime>
     <Priority>20</Priority>
     <PouCall>
-      <Name>PRG_MainController</Name>
+      <Name>PRG_ErrorHandling</Name>
     </PouCall>
     <PouCall>
-      <Name>PRG_ErrorHandling</Name>
+      <Name>PRG_MainController</Name>
     </PouCall>
     <TaskFBGuid>{69d564c9-0e6c-4e4f-851a-044087c73c09}</TaskFBGuid>
     <Fb_init>{eb0bfbaf-f446-4afc-8fd2-aafd03916a68}</Fb_init>

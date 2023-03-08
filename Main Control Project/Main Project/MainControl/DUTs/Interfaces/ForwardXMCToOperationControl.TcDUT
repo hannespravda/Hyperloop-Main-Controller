@@ -39,14 +39,14 @@ STRUCT
 	MO_origE_PressureBox                    :	REAL			;
 	MO_origE_CurrentLev                     :	DINT			;
 	MO_origE_CurrentGuid                    :	DINT			;
-	MO_origE_GuidEstimatedFlux0             :	REAL			;
-	MO_origE_GuidEstimatedFlux1             :	REAL			;
+	MO_origE_GuidEstimatedFlux0             :	ARRAY [0..1] OF REAL			;
+	MO_origE_GuidEstimatedFlux1             :	ARRAY [0..1] OF REAL			;
 	MO_origE_GuidEstimatedCurrent           :	REAL			;
 	MO_origE_GuidEstimatedResistance        :	REAL			;
 	MO_origE_GuidIntegratedControlError     :	REAL			;
 	MO_origE_GuidReferenceVoltage           :	REAL			;
-	MO_origE_LevEstimatedFlux0              :	REAL			;
-	MO_origE_LevEstimatedFlux1              :	REAL			;
+	MO_origE_LevEstimatedFlux0              :	ARRAY [0..1] OF REAL			;
+	MO_origE_LevEstimatedFlux1              :	ARRAY [0..1] OF REAL			;
 	MO_origE_LevEstimatedCurrent            :	REAL			;
 	MO_origE_LevEstimatedResistance         :	REAL			;
 	MO_origE_LevIntegratedControlError      :	REAL			;

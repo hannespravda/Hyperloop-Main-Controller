@@ -3071,6 +3071,15 @@
 			</Hides>
 		</DataType>
 		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-00000000003D}" TcBaseType="true" HideType="true">USINTARR6</Name>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000002}">USINT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{E97029C7-F299-4BA4-A9E1-67F9BBDF7C4E}" PersistentType="true">ActivationStatus</Name>
 			<BitSize>16</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
@@ -3511,10 +3520,10 @@
 			</Hides>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{6A8DE5AD-AA60-43F5-89B6-DF1EB0364022}" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{6A8DE5AD-AA60-43F5-89B6-DF1EB0364022}" TargetNetId="5.93.125.76.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
-			<Settings MaxCpus="12" NonWinCpus="1">
-				<Cpu CpuId="11"/>
+			<Settings MaxCpus="4" NonWinCpus="1">
+				<Cpu CpuId="3"/>
 			</Settings>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350" AdtTasks="true">
@@ -3524,7 +3533,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{8E22E3BA-F07D-4082-893C-583264E18715}" Name="Test" PrjFilePath="Test\Test.plcproj" TmcFilePath="Test\Test.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Test\Test.tmc" TmcHash="{771B4185-4E6F-41FB-A000-1B2B11C42E16}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Test\Test.tmc" TmcHash="{7DBCDF94-0DA8-6E4F-D0F3-8BF7955E4EC8}">
 					<Name>Test Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -3552,6 +3561,10 @@
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>Test.nTest</Name>
+							<Type>INT</Type>
+						</Var>
 						<Var>
 							<Name>OperationControlData.stFromMCToOC</Name>
 							<Type GUID="{D142C163-BAA9-4CEB-AB29-B67810342442}">FromMainControlToOperationControl</Type>
@@ -3606,5 +3619,66 @@
 				</Instance>
 			</Project>
 		</Plc>
+		<Io>
+			<Device Id="4" DevType="130" AmsNetId="5.93.125.76.5.255" RemoteName="Gerät 4 (EtherCAT Slave)">
+				<Name>Gerät 4 (EtherCAT Slave)</Name>
+				<AddressInfo>
+					<Ccat>
+						<Address>-268435456</Address>
+						<Offset>65536</Offset>
+						<Size>65536</Size>
+						<BaseAddr>0</BaseAddr>
+						<BusNo>4</BusNo>
+						<SlotNo>0</SlotNo>
+						<VendorId>5612</VendorId>
+						<DeviceId>20480</DeviceId>
+						<TimeSize>128</TimeSize>
+						<TimeOffs>1024</TimeOffs>
+						<GpioSize>32</GpioSize>
+						<GpioOffs>768</GpioOffs>
+					</Ccat>
+				</AddressInfo>
+				<Vars VarGrpType="1" InsertType="1">
+					<Name>Eingänge</Name>
+				</Vars>
+				<Vars VarGrpType="2" InsertType="1">
+					<Name>Ausgänge</Name>
+					<Var>
+						<Name>__FILENAME__</Name>
+						<Type>INT</Type>
+					</Var>
+				</Vars>
+				<Vars VarGrpType="3">
+					<Name>InfoData</Name>
+					<Var>
+						<Name>State</Name>
+						<Comment><![CDATA[0x___1 = Slave is in 'INIT' state
+0x___2 = Slave is in 'PREOP' state
+0x___4 = Slave is in 'SAFEOP' state
+0x___8 = Slave is in 'OP' state]]></Comment>
+						<Type>UINT</Type>
+						<InOut>0</InOut>
+					</Var>
+					<Var>
+						<Name>NetId</Name>
+						<Type GUID="{18071995-0000-0000-0000-00000000003D}">USINTARR6</Type>
+						<BitOffs>16</BitOffs>
+						<InOut>0</InOut>
+					</Var>
+				</Vars>
+				<Image Id="5" AddrType="1" ImageType="2">
+					<Name>Prozessabbild</Name>
+				</Image>
+				<EtherCATSlave GpioValueFromEsc="1"/>
+			</Device>
+		</Io>
 	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500850000403}" Id="#x02030010"/>
+		<OwnerA Name="TIPC^Test^Test Instance">
+			<OwnerB Name="TIID^Device 4 (EtherCAT Slave)">
+				<Link VarA="PlcTask Outputs^Test.nTest" VarB="Outputs^Test"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
 </TcSmProject>

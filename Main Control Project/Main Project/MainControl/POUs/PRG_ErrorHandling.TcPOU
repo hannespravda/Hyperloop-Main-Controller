@@ -22,7 +22,8 @@ VAR
 	
 	fbSafetyCounter 				: FB_SafetyCounter;
 	
-	bDebugMode 						: BOOL := TRUE;
+	bDebugMode 						: BOOL;
+	nTestMode						: USINT := 63;  //*see test modes table in README*
 END_VAR
 VAR CONSTANT
 	tStartUpTime 					: TIME := T#10S;
@@ -51,9 +52,7 @@ fbSafetyCounter();
 fbEventLogging();
 
 IF bDebugMode THEN
-	nWarningBits := 0;
 	nErrorBits := 0;
-	bStartUpCheck := TRUE;
 END_IF
 
 							
@@ -61,7 +60,7 @@ CASE PRG_MainController.eState OF
 	TopLevelSTM.STARTUP:
 		bAllErrorsAcknowledged := FALSE;
 		
-		IF NOT bDebugMode THEN
+		IF NOT bDebugMode AND NOT nTestMode.1 THEN
 			doStartUpCheck(	eConditionServiceModule := PRG_MainController.fbServiceModule.eCondition,
 							eConditionLevitationSystem := PRG_MainController.fbLevitationSystem.eCondition,
 							eConditionGuidanceSystem := PRG_MainController.fbGuidanceSystem.eCondition);
@@ -319,8 +318,7 @@ END_IF
       <LineId Id="271" Count="0" />
       <LineId Id="470" Count="0" />
       <LineId Id="469" Count="0" />
-      <LineId Id="471" Count="0" />
-      <LineId Id="473" Count="1" />
+      <LineId Id="473" Count="0" />
       <LineId Id="472" Count="0" />
       <LineId Id="278" Count="0" />
       <LineId Id="217" Count="0" />

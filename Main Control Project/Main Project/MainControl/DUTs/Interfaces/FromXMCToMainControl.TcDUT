@@ -39,14 +39,14 @@ STRUCT
 	EM_origE_PressureBox                    :	REAL			;
 	EM_origE_CurrentLev                     :	DINT			;
 	EM_origE_CurrentGuid                    :	DINT			;
-	EM_origE_GuidEstimatedFlux0             :	REAL			;
-	EM_origE_GuidEstimatedFlux1             :	REAL			;
+	EM_origE_GuidEstimatedFlux0             :	ARRAY [0..1] OF REAL;
+	EM_origE_GuidEstimatedFlux1             :	ARRAY [0..1] OF REAL			;
 	EM_origE_GuidEstimatedCurrent           :	REAL			;
 	EM_origE_GuidEstimatedResistance        :	REAL			;
 	EM_origE_GuidIntegratedControlError     :	REAL			;
 	EM_origE_GuidReferenceVoltage           :	REAL			;
-	EM_origE_LevEstimatedFlux0              :	REAL			;
-	EM_origE_LevEstimatedFlux1              :	REAL			;
+	EM_origE_LevEstimatedFlux0              :	ARRAY [0..1] OF REAL			;
+	EM_origE_LevEstimatedFlux1              :	ARRAY [0..1] OF REAL			;
 	EM_origE_LevEstimatedCurrent            :	REAL			;
 	EM_origE_LevEstimatedResistance         :	REAL			;
 	EM_origE_LevIntegratedControlError      :	REAL			;

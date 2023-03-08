@@ -470,6 +470,24 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-0003000000B8}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..183] OF BYTE</Name>
+			<BitSize>1472</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>184</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000020}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BYTE</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-002000000008}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BYTE</Name>
 			<BitSize>8</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
@@ -3243,9 +3261,9 @@
 				<Name>Gerät 1 (EtherCAT)</Name>
 				<AddressInfo>
 					<Pnp>
-						<DeviceDesc>Ethernet 4 (ASIX AX88179 USB 3.0 to Gigabit Etherne</DeviceDesc>
-						<DeviceName>\DEVICE\{984C341E-2C2E-414D-A8BC-01E44CBCE067}</DeviceName>
-						<DeviceData>a0cec872eb44</DeviceData>
+						<DeviceDesc>Ethernet 2 (Intel(R) Ethernet Connection (16) I219-</DeviceDesc>
+						<DeviceName>\DEVICE\{EDB4A0A2-F087-4C11-A458-C1F80493A5CD}</DeviceName>
+						<DeviceData>f4a80df6803f</DeviceData>
 					</Pnp>
 				</AddressInfo>
 				<Image Id="1" AddrType="9" ImageType="3">
@@ -3258,7 +3276,7 @@
 						<SyncMan>001000022600010001000000400000040002001026010000</SyncMan>
 						<SyncMan>001200022200010002000000400000040002001222010000</SyncMan>
 						<SyncMan>001a28006400010003000000000000000000001a64000000</SyncMan>
-						<SyncMan>0014e0002000010004000000000000000000001420000000</SyncMan>
+						<SyncMan>0014c0032000010004000000000000000000001420000000</SyncMan>
 						<Fmmu>0000000000000000001a00020100000001000000000000000000000000000000</Fmmu>
 						<Fmmu>0000000000000000001400010100000002000000000000000000000000000000</Fmmu>
 						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -3266,7 +3284,7 @@
 						<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3">
-							<Entry Name="FromMCToOC" Index="#x6000" Sub="#x01">
+							<Entry Name="Pdo Entry 1" Index="#x6000" Sub="#x01">
 								<Type GUID="{18071995-0000-0000-0000-0003000000E0}">ARRAY [0..223] OF BYTE</Type>
 							</Entry>
 							<Entry>
@@ -3290,6 +3308,90 @@
 							<Entry>
 								<Type GUID="{18071995-0000-0000-0000-002000000070}">ARRAY [0..13] OF BYTE</Type>
 							</Entry>
+							<Entry Name="Pdo Entry 9" Index="#x6000" Sub="#x02">
+								<Type GUID="{18071995-0000-0000-0000-0003000000B8}">ARRAY [0..183] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000020}">ARRAY [0..3] OF BYTE</Type>
+							</Entry>
+							<Entry Name="Pdo Entry 16" Index="#x6000" Sub="#x03">
+								<Type GUID="{18071995-0000-0000-0000-0003000000B8}">ARRAY [0..183] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000020}">ARRAY [0..3] OF BYTE</Type>
+							</Entry>
+							<Entry Name="Pdo Entry 23" Index="#x6000" Sub="#x04">
+								<Type GUID="{18071995-0000-0000-0000-0003000000B8}">ARRAY [0..183] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000020}">ARRAY [0..3] OF BYTE</Type>
+							</Entry>
+							<Entry Name="Pdo Entry 30" Index="#x6000" Sub="#x05">
+								<Type GUID="{18071995-0000-0000-0000-0003000000B8}">ARRAY [0..183] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-0020000000F0}">ARRAY [0..29] OF BYTE</Type>
+							</Entry>
+							<Entry>
+								<Type GUID="{18071995-0000-0000-0000-002000000020}">ARRAY [0..3] OF BYTE</Type>
+							</Entry>
 						</Pdo>
 						<Pdo Name="Device Status Mapping" Index="#x1a80" Flags="#x0010">
 							<Entry>
@@ -3306,7 +3408,7 @@
 							</Entry>
 						</Pdo>
 						<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2">
-							<Entry Name="FromOCToMC" Index="#x7000" Sub="#x01">
+							<Entry Name="Pdo Entry 1" Index="#x7000" Sub="#x01">
 								<Type GUID="{18071995-0000-0000-0000-000300000028}">ARRAY [0..39] OF BYTE</Type>
 							</Entry>
 							<Entry>
@@ -3323,8 +3425,8 @@
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^Operation Control^Operation Control Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Box 1 (CX2040 EtherCAT slave)">
-				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^FromMCToOC"/>
-				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^FromOCToMC"/>
+				<Link VarA="PlcTask Inputs^GVL.stFromMCToOC" VarB="IO Inputs^Pdo Entry 1"/>
+				<Link VarA="PlcTask Outputs^GVL.stFromOCToMC" VarB="IO Outputs^Pdo Entry 1"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

@@ -33,6 +33,23 @@ DebugMode:
 	apart from STARTUP check, all function blocks are fully functional
 	Use only in testing, if it is assured that errors do not cause harm to hardware
 	
+TestMode:
+	different test modes faciliate testing with a reduced system
+	MainController can be tested isolated, without connection to OC, without connection to coupler and/or without connection to XMC boards
+	set desired test mode by presetting nTestMode in PRG_ErrorHandling before activating the system
+	in case of selection of a test case, no connection checks with the regarding system will be performed
+	no errors concerning connection malfunction visible in nErrorBits and in event logging
+	special case: by selecting test case nTestMode.1 (no coupler) StartUpCheck will be automatically skipped since hardware is not available
+	Test Modes
+	000000	0		normal
+	000001	1		without OperationControl
+	000010	2		without Coupler (missing Ethernet Master Connection) (no hardware check at startup)
+	000100	4		without XMC1
+	001000	8		without XMC2
+	010000	16		without XMC3
+	100000	32		without XMC4
+	111111	63		isolated (only MainController PLC)
+	
 Dummy Methods:
 	TrajectoryGenerator and GuidanceController are implemented as dummies
 	They do not contain functionality yet!!!
@@ -43,8 +60,6 @@ Dummy Methods:
 	If you need different/ more/ less inputs update the DataHandling
 	Dummy Models can work in different operation Modes according to nOperationMode (if not needed, only forward to XMCBoards)
 	Total levitation Height given back to OperationControl and XMCBoards is ActualLevDistance + EqualizingControl OutputVector
-	TrajectoryGenerator should contain predefined values for a trajectory back to ground level which can be called in SHUTDOWN
-		--> SHUTDOWN in case of error can be performed automatically
 	
 Hardware Setup:
 	EL6001:
