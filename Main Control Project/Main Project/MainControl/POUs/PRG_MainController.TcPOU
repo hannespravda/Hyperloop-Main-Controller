@@ -172,17 +172,6 @@ aTempArray9 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidCurrent;
 aTempArray10 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidVoltage;
 aTempArray11 := PRG_MainController.fbGuidanceSystem.aGCOutputGuidForce;
 
-PRG_MainController.fbLevitationSystem.aTGActualLevDistance				:=		aTempArray12;
-PRG_MainController.fbLevitationSystem.aTGActualLevVelocity              :=      aTempArray13;
-PRG_MainController.fbLevitationSystem.aTGActualLevAcceleration          :=      aTempArray14;
-PRG_MainController.fbLevitationSystem.aTGActualLevCurrent               :=      aTempArray15;
-PRG_MainController.fbGuidanceSystem.aGCActualGuidDistance               :=      aTempArray16;
-PRG_MainController.fbGuidanceSystem.aGCActualGuidAcceleration           :=      aTempArray17;                                                             
-PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArray18;   
-
-
-
-
 
 //OperationControlData
 	//From OC to MC
@@ -647,7 +636,15 @@ PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArra
 		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidIntegratedControlError :=		XMCData.stFromXMC4ToMC.EM_origE_GuidIntegratedControlError;		
 		OperationControlData.stForwardXMC4ToOC.MO_origE_GuidReferenceVoltage	:=			XMCData.stFromXMC4ToMC.EM_origE_GuidReferenceVoltage;	
 
-]]></ST>
+		
+//ArrayHandling		
+PRG_MainController.fbLevitationSystem.aTGActualLevDistance				:=		aTempArray12;
+PRG_MainController.fbLevitationSystem.aTGActualLevVelocity              :=      aTempArray13;
+PRG_MainController.fbLevitationSystem.aTGActualLevAcceleration          :=      aTempArray14;
+PRG_MainController.fbLevitationSystem.aTGActualLevCurrent               :=      aTempArray15;
+PRG_MainController.fbGuidanceSystem.aGCActualGuidDistance               :=      aTempArray16;
+PRG_MainController.fbGuidanceSystem.aGCActualGuidAcceleration           :=      aTempArray17;                                                             
+PRG_MainController.fbGuidanceSystem.aGCActualGuidCurrent			    :=      aTempArray18; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="doEnableSystems" Id="{4402bbf9-07a3-41dd-916a-44a19b1d489b}">
@@ -764,9 +761,7 @@ END_IF
       <LineId Id="872" Count="2" />
       <LineId Id="882" Count="1" />
       <LineId Id="886" Count="0" />
-      <LineId Id="937" Count="6" />
       <LineId Id="904" Count="0" />
-      <LineId Id="898" Count="3" />
       <LineId Id="897" Count="0" />
       <LineId Id="446" Count="0" />
       <LineId Id="450" Count="0" />
@@ -821,8 +816,12 @@ END_IF
       <LineId Id="1394" Count="2" />
       <LineId Id="1316" Count="5" />
       <LineId Id="1403" Count="2" />
-      <LineId Id="1323" Count="5" />
-      <LineId Id="656" Count="0" />
+      <LineId Id="1323" Count="4" />
+      <LineId Id="1440" Count="0" />
+      <LineId Id="1328" Count="0" />
+      <LineId Id="1431" Count="0" />
+      <LineId Id="1434" Count="5" />
+      <LineId Id="1433" Count="0" />
     </LineIds>
     <LineIds Name="PRG_MainController.doEnableSystems">
       <LineId Id="17" Count="0" />

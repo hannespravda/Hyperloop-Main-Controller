@@ -2251,7 +2251,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{680062BA-6246-46A7-975C-31C3AAC8F62B}" Name="MainControl" PrjFilePath="MainControl\MainControl.plcproj" TmcFilePath="MainControl\MainControl.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="MainControl\MainControl.tmc" TmcHash="{F1B25825-B51E-E03A-CF95-9F4AA51FC71A}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" TmcPath="MainControl\MainControl.tmc" TmcHash="{48F76E42-07C2-16DC-2D3C-8027748406FA}">
 					<Name>MainControl Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
